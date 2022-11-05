@@ -12,7 +12,6 @@ const theme = createTheme({
   },
 });
 
-
 const Header = () => {
     const [alignment, setAlignment] = React.useState('ru');
   
