@@ -23,6 +23,7 @@ const Header = () => {
       setAlignment(newAlignment);
     };
     return(
+      <header>
         <AppBar position="static">
             <Toolbar>
                 <HomeOutlinedIcon />
@@ -46,8 +47,8 @@ const Header = () => {
                 <Buttons text="Вход" />
                 <Buttons text="Регистрация" />
             </Toolbar>
-            
         </AppBar>
+        </header>
     )
 }
 
