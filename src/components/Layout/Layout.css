@@ -2,9 +2,9 @@
     min-height: 80vh;
     padding: 0 20px;
   }
-  .layout > h3 {
-    margin-left: 5px;
-    text-align: center;
-    padding: 20px 0;
+
+.layout > h3 {
+  margin-left: 5px;
+  text-align: center;
+  padding: 20px 0;
   }
-  
