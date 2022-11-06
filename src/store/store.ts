@@ -3,10 +3,12 @@ import boardReducer from './reducers/BoardSlice';
 import authReducer from './reducers/AuthSlice';
 import userReducer from './reducers/UserSlice';
 import columnReducer from './reducers/ColumnSlice';
+import taskReducer from './reducers/TaskSlice';
 import { authAPI } from './services/authAPI';
 import { boardAPI } from './services/boardAPI';
 import { userAPI } from './services/userAPI';
 import { columnAPI } from './services/columnsAPI';
+import { taskAPI } from './services/taskAPI';
 
 const setupStore = () =>
   configureStore({
@@ -15,10 +17,12 @@ const setupStore = () =>
       [boardAPI.reducerPath]: boardAPI.reducer,
       [userAPI.reducerPath]: userAPI.reducer,
       [columnAPI.reducerPath]: columnAPI.reducer,
+      [taskAPI.reducerPath]: taskAPI.reducer,
       auth: authReducer,
       board: boardReducer,
       user: userReducer,
       column: columnReducer,
+      task: taskReducer,
     },
     middleware: (getDefaultMiddleware) => [
       ...getDefaultMiddleware(),
@@ -26,6 +30,7 @@ const setupStore = () =>
       boardAPI.middleware,
       userAPI.middleware,
       columnAPI.middleware,
+      taskAPI.middleware,
     ],
   });
 
