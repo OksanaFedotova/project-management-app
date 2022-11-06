@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { SigninRequest, SigninResponse, SignupRequest, User } from 'interfaces/IUser';
+import { TSigninRequest, ISigninResponse, ISignupRequest, IUser } from 'interfaces/IUser';
 import { RootState } from '../store';
 
 export const authAPI = createApi({
@@ -14,14 +14,14 @@ export const authAPI = createApi({
     },
   }),
   endpoints: (builder) => ({
-    signin: builder.mutation<SigninResponse, SigninRequest>({
+    signin: builder.mutation<ISigninResponse, TSigninRequest>({
       query: (body) => ({
         url: 'signin',
         method: 'POST',
         body: body,
       }),
     }),
-    signup: builder.mutation<User, SignupRequest>({
+    signup: builder.mutation<IUser, ISignupRequest>({
       query: (body) => ({
         url: 'signup',
         method: 'POST',

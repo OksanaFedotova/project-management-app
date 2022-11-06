@@ -1,24 +1,24 @@
-type AuthState = {
-  user: User | null;
+type TAuthState = {
+  user: IUser | null;
   token: string | null;
 };
 
-interface User {
+interface IUser {
   id: string;
   name: string;
   login: string;
 }
 
-interface SigninResponse {
+interface ISigninResponse {
   token: string;
 }
 
-type SigninRequest = Omit<SignupRequest, 'name'>;
+type TSigninRequest = Omit<ISignupRequest, 'name'>;
 
-interface SignupRequest {
+interface ISignupRequest {
   name: string;
   login: string;
   password: string;
 }
 
-export { AuthState, User, SigninRequest, SigninResponse, SignupRequest };
+export { TAuthState, IUser, TSigninRequest, ISigninResponse, ISignupRequest };

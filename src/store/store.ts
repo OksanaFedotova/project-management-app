@@ -1,18 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
 import boardReducer from './reducers/BoardSlice';
-import userReducer from './reducers/UserSlice';
 import authReducer from './reducers/AuthSlice';
 import { authAPI } from './services/authAPI';
+import { boardAPI } from './services/boardAPI';
 
 const setupStore = () =>
   configureStore({
     reducer: {
       [authAPI.reducerPath]: authAPI.reducer,
+      [boardAPI.reducerPath]: boardAPI.reducer,
       auth: authReducer,
-      user: userReducer,
       board: boardReducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authAPI.middleware),
+    middleware: (getDefaultMiddleware) => [
+      ...getDefaultMiddleware(),
+      authAPI.middleware,
+      boardAPI.middleware,
+    ],
   });
 
 export const store = setupStore();
