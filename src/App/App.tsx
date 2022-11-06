@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Login from 'routes/Login/Login';
 import { PrivateOutlet } from 'utils/PrivateOutlet';
 import './App.css';
-import HomePage from './routes/HomePage/HomePage';
+import HomePage from '../routes/HomePage';
 
 function App() {
   return (
