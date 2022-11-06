@@ -8,7 +8,7 @@ const initialState: TAuthState = {
   token: null,
 };
 
-const slice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
@@ -21,6 +21,6 @@ const slice = createSlice({
   },
 });
 
-export const { setUser, setToken } = slice.actions;
-export default slice.reducer;
+export const { setUser, setToken } = authSlice.actions;
+export default authSlice.reducer;
 export const selectCurrentUser = (state: RootState) => state.auth.user;

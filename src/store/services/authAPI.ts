@@ -3,6 +3,7 @@ import { TSigninRequest, ISigninResponse, ISignupRequest, IUser } from 'interfac
 import { RootState } from '../store';
 
 export const authAPI = createApi({
+  reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://serene-everglades-05199.herokuapp.com/',
     prepareHeaders: (headers, { getState }) => {

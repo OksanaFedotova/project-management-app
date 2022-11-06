@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Login from 'routes/Login/Login';
-import { PrivateOutlet } from 'utils/PrivateOutlet';
-import './App.css';
+import Login from 'routes/Login';
 import HomePage from '../routes/HomePage';
+import PrivateOutlet from 'utils/PrivateOutlet';
+import './App.css';
 
 function App() {
   return (

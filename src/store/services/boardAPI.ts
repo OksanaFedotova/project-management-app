@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IBoard, TBoardRequest } from 'interfaces/IBoard';
 
 export const boardAPI = createApi({
-  reducerPath: 'kanban api',
+  reducerPath: 'boardApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://serene-everglades-05199.herokuapp.com/' }),
   endpoints: (builder) => ({
     getAllBoards: builder.query({
