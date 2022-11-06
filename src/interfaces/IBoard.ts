@@ -1,9 +1,32 @@
 type TBoardRequest = Omit<IBoard, 'id'>;
+type TColumnRequest = Omit<IColumn, 'id'>;
 
 interface IBoard {
   id: string;
   title: string;
   description: string;
+  columns?: IColumn[];
 }
 
-export { IBoard, TBoardRequest };
+interface IColumn {
+  id: string;
+  title: string;
+  order: number;
+  tasks?: ITask[];
+}
+
+interface ITask {
+  id: string;
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+  files?: IFile[];
+}
+
+interface IFile {
+  filename: string;
+  fileSize: number;
+}
+
+export { IBoard, TBoardRequest, IColumn, ITask, IFile, TColumnRequest };

@@ -19,8 +19,8 @@ export const boardAPI = createApi({
       }),
     }),
     updateBoard: builder.mutation<IBoard, IBoard>({
-      query: (body) => ({
-        url: `boards/${body.id}`,
+      query: ({ id, ...body }) => ({
+        url: `boards/${id}`,
         method: 'PUT',
         body: body,
       }),
