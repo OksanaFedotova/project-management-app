@@ -1,8 +1,8 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import Buttons from '../Buttons/Buttons';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Buttons from '../Buttons';
 
 const theme = createTheme({
   palette: {
