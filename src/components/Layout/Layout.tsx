@@ -1,15 +1,15 @@
 import React from 'react';
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+import ILayout from 'interfaces/ILayout';
 import './Layout.css';
-import ILayout from '../../interfaces/ILayout';
 
-const Layout: React.FC<ILayout> = ({ title, content, children }) => {
+export default function Layout({ children }: ILayout) {
   return (
-    <div className="layout">
-      {title ? <h3>{title}</h3> : null}
-      <span>{content}</span>
-      <>{children}</>
-    </div>
+    <>
+      <Header />
+      <main>{children}</main>
+      <Footer />
+    </>
   );
-};
-
-export default Layout;
+}
