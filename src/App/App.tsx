@@ -6,6 +6,7 @@ import SignUpPage from 'routes/SignUpPage';
 import EditPage from 'routes/EditPage';
 import BoardsPage from 'routes/BoardsPage';
 import BoardPage from 'routes/BoardPage';
+import NotFoundPage from 'routes/NotFoundPage';
 import RedirectToWelcome from 'utils/RedirectToWelcome';
 import RedirectToBoards from 'utils/RedirectToBoards';
 import Redirect from 'utils/Redirect';
@@ -32,6 +33,7 @@ function App() {
         <Route path="/sign-up" element={<RedirectToBoards />}>
           <Route index element={<SignUpPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   );
