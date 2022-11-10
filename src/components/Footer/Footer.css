@@ -6,8 +6,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  background-color: #2278cf;
-  color: #ffffff;
+  background-color: var(--blue-color);
+  color: var(--white-color);
 }
 
 .github-links-box {

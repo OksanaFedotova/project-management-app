@@ -7,7 +7,7 @@ import Buttons from '../Buttons';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#fff',
+      main: '#ffffff',
     },
   },
 });

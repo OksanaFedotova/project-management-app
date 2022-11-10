@@ -16,3 +16,9 @@ body {
   justify-content: space-between;
   min-height: 100vh;
 }
+
+:root {
+  --white-color: #ffffff;
+  --blue-color: #2278cf;
+  --black-color: #000000;
+}
