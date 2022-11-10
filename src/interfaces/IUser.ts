@@ -1,6 +1,7 @@
 type TAuthState = {
   user: IUser | null;
-  token: string | null;
+  token: ISigninResponse | null;
+  isSignInPage: boolean | null;
 };
 
 interface IUser {
@@ -16,7 +17,7 @@ interface ISigninResponse {
 type TSigninRequest = Omit<ISignupRequest, 'name'>;
 
 interface ISignupRequest {
-  name: string;
+  name?: string;
   login: string;
   password: string;
 }
