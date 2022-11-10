@@ -1,9 +1,10 @@
-import { useAppDispatch } from 'hooks/redux';
 import React from 'react';
+import { useAppDispatch } from 'hooks/redux';
+import Layout from 'components/Layout';
 import { setUser } from 'store/reducers/AuthSlice';
 import { useSignupMutation } from 'store/services/authAPI';
 
-export default function Login() {
+export default function SignInPage() {
   const [signup] = useSignupMutation();
   const dispatch = useAppDispatch();
 
@@ -23,8 +24,12 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
-      <button type="submit">submit</button>
-    </form>
+    <Layout>
+      <div className="layout">
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <button type="submit">submit</button>
+        </form>
+      </div>
+    </Layout>
   );
 }
