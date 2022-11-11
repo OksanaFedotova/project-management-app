@@ -8,7 +8,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { blue, blueGrey } from '@mui/material/colors';
+import { blue } from '@mui/material/colors';
 
 const Modal = ({ title, btnYes, btnNo }: { title: string; btnYes: string; btnNo: string }) => {
   const [open, setOpen] = React.useState(false);
