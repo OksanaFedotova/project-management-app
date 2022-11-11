@@ -8,7 +8,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { blue } from '@mui/material/colors';
 
 const Modal = ({ title, btnYes, btnNo }: { title: string; btnYes: string; btnNo: string }) => {
   const [open, setOpen] = React.useState(false);
@@ -23,8 +22,6 @@ const Modal = ({ title, btnYes, btnNo }: { title: string; btnYes: string; btnNo:
     setOpen(false);
   };
 
-  const blueHover = blue[800];
-
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -38,15 +35,23 @@ const Modal = ({ title, btnYes, btnNo }: { title: string; btnYes: string; btnNo:
         maxWidth="xs"
         aria-labelledby="responsive-dialog-title"
       >
-        <CloseIcon
+        <Button
+          disableRipple={true}
           sx={{
-            position: 'absolute',
-            right: 0,
-            cursor: 'pointer',
-            ':hover': { color: blueHover },
+            justifyContent: 'flex-end',
+            ':hover': { background: 'none' },
           }}
-          onClick={handleClose}
-        />
+        >
+          <CloseIcon
+            sx={{
+              color: 'grey',
+              cursor: 'pointer',
+              ':hover': { border: 1, borderRadius: '50%' },
+            }}
+            onClick={handleClose}
+          />
+        </Button>
+
         <DialogTitle id="responsive-dialog-title" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
           {title}
         </DialogTitle>
