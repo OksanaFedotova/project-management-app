@@ -1,7 +1,7 @@
 .appbar {
-    position: static;
+  position: static;
 }
-  
+
 .appbar-sticky {
   position: fixed;
   background: var(--dark-blue) !important;
@@ -15,12 +15,11 @@
 .nav-link {
   text-decoration: none;
 }
-  
-  @media (max-width: 475px) {
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 10px 0;
-    }
+
+@media (max-width: 475px) {
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 0;
   }
-  
+}
