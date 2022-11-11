@@ -1,0 +1,26 @@
+.appbar {
+    position: static;
+}
+  
+.appbar-sticky {
+  position: fixed;
+  background: var(--dark-blue) !important;
+  z-index: 15;
+}
+
+.welcome-page-link {
+  cursor: pointer;
+}
+
+.nav-link {
+  text-decoration: none;
+}
+  
+  @media (max-width: 475px) {
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 10px 0;
+    }
+  }
+  

@@ -21,4 +21,19 @@
   flex-direction: row;
   align-items: center;
   column-gap: 5px;
+  text-decoration: none !important;
+  cursor: pointer;
 }
+
+.github-link:hover {
+  color: var(--black-color);
+}
+
+@media (max-width: 600px) {
+  .github-links-box {
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    justify-content: center;
+  }
+}
+

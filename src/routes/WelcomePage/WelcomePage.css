@@ -1,0 +1,131 @@
+.start-page {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    box-sizing: border-box;
+    text-align: justify;
+    align-content: center;
+    min-height: 100vh;
+    padding: 0 40px;
+    position: relative;
+  }
+  
+  .start-img {
+    width: 60%;
+    border-radius: 15px;
+    position: absolute;
+    right: 40px;
+    bottom: 80px;
+  }
+  
+  .start-left-block {
+    position: absolute;
+    top: 160px;
+    left: 120px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 50px;
+    justify-content: space-around;
+    z-index: 10;
+  }
+  
+  .h1 {
+    color: var(--orange-color);
+    display: inline-block;
+    font-size: 5rem;
+    position: relative;
+  }
+  
+  .start-text {
+    font-size: 1.9rem;
+    line-height: 40px;
+    width: 40%;
+  }
+  
+  @media (max-width: 1100px) {
+    .start-page {
+      flex-direction: column;
+    }
+  
+    .start-left-block {
+      position: static;
+      align-items: center;
+    }
+  
+    .start-text {
+      width: 100%;
+      text-align: justify;
+      font-size: 1.5rem;
+      padding-bottom: 80px;
+    }
+  
+    .start-img {
+      position: static;
+    }
+  
+    .h1 {
+      font-size: 4rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .h1 {
+      font-size: 3rem;
+    }
+  
+    .start-text {
+      font-size: 1.3rem;
+    }
+  
+    .start-img {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .h1 {
+      font-size: 2rem;
+    }
+  }
+  
+  @media (max-width: 475px) {
+    .h1 {
+      font-size: 1.6rem;
+    }
+  
+    .start-text {
+      line-height: 30px;
+      padding-bottom: 0;
+    }
+  
+    .start-left-block {
+      padding-top: 50px;
+    }
+  
+    .start-page {
+      row-gap: 50px;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    .h1 {
+      font-size: 3.5rem;
+      color: var(--blue-color);
+      text-align: center;
+    }
+  
+    .start-text {
+      display: none;
+    }
+  
+    .start-left-block {
+      padding-top: 70px;
+    }
+  
+    .start-page {
+      row-gap: 100px;
+    }
+  }
+  
