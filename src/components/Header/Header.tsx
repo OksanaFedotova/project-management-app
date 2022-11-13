@@ -56,20 +56,19 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
               <ToggleButton value="en">EN</ToggleButton>
             </ToggleButtonGroup>
           </ThemeProvider>
-          {!isAuth && (
+          {isAuth ? (
+            <NavLink to="/welcome" style={{ color: `inherit`, textDecoration: `none` }}>
+              <Buttons text="На главную" />
+            </NavLink>
+          ) : (
             <>
-              <NavLink to={'/sign-in'} style={{ color: `inherit`, textDecoration: `none` }}>
+              <NavLink to="/sign-in" style={{ color: `inherit`, textDecoration: `none` }}>
                 <Buttons text="Вход" />
               </NavLink>
-              <NavLink to={'/sign-up'} style={{ color: `inherit`, textDecoration: `none` }}>
+              <NavLink to="/sign-up" style={{ color: `inherit`, textDecoration: `none` }}>
                 <Buttons text="Регистрация" />
               </NavLink>
             </>
-          )}
-          {isAuth && (
-            <NavLink to={'/welcome'} style={{ color: `inherit`, textDecoration: `none` }}>
-              <Buttons text="На главную" />
-            </NavLink>
           )}
         </Toolbar>
       </AppBar>
