@@ -22,4 +22,12 @@ interface ISignupRequest {
   password: string;
 }
 
-export { TAuthState, IUser, TSigninRequest, ISigninResponse, ISignupRequest };
+type ErrorAuth = {
+  status: number;
+  data: {
+    message: string;
+    statusCode: number;
+  };
+};
+
+export { ErrorAuth, TAuthState, IUser, TSigninRequest, ISigninResponse, ISignupRequest };

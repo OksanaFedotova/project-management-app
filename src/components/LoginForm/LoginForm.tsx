@@ -1,28 +1,20 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { setToken, setUser } from 'store/reducers/AuthSlice';
 import { useSigninMutation, useSignupMutation } from 'store/services/authAPI';
-import { ISignupRequest } from 'interfaces/IUser';
+import { ErrorAuth, ISignupRequest } from 'interfaces/IUser';
 import './LoginForm.css';
-import {
-  Container,
-  CssBaseline,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Divider,
-  Link,
-} from '@mui/material';
+import { Container, Box, Typography, TextField, Button, Divider } from '@mui/material';
 
 export default function LoginForm() {
   const [signup] = useSignupMutation();
   const [signin] = useSigninMutation();
-
   const dispatch = useAppDispatch();
   const { isSignInPage } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -41,15 +33,17 @@ export default function LoginForm() {
       const userSignIn = await signin({ login, password }).unwrap();
       dispatch(setToken(userSignIn));
       localStorage.setItem('token', userSignIn.token);
-    } catch (err) {
-      console.log(err);
+      navigate('/boards');
+      toast.success('You are authorized');
+    } catch (e) {
+      const err = e as ErrorAuth;
+      toast.error(err.data.message);
     }
     reset();
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 0,
@@ -139,7 +133,7 @@ export default function LoginForm() {
                 message: 'Максимум 20 символов',
               },
               pattern: {
-                value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/i,
+                value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/i,
                 message: 'Пароль из латинских букв, цифр и спецсимволов',
               },
             })}
@@ -163,17 +157,13 @@ export default function LoginForm() {
           или
         </Divider>
         {isSignInPage ? (
-          <Link color="inherit" underline="hover">
-            <RouterLink to="/sign-up" className="link">
-              Ещё нет аккаунта? Зарегистрироваться
-            </RouterLink>
-          </Link>
+          <RouterLink to="/sign-up" className="link">
+            Ещё нет аккаунта? Зарегистрироваться
+          </RouterLink>
         ) : (
-          <Link color="inherit" underline="hover">
-            <RouterLink to="/sign-in" className="link">
-              Уже есть аккаунт? Войти
-            </RouterLink>
-          </Link>
+          <RouterLink to="/sign-in" className="link">
+            Уже есть аккаунт? Войти
+          </RouterLink>
         )}
       </Box>
     </Container>
