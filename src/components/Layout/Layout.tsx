@@ -8,7 +8,7 @@ export default function Layout({ children }: ILayout) {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <main className="layout">{children}</main>
       <Footer />
     </>
   );
