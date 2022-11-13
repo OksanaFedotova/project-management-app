@@ -6,5 +6,5 @@ export default function RedirectToBoards() {
   const auth = useAuth();
   const location = useLocation();
 
-  return auth.user ? <Navigate to="/boards" state={{ from: location }} /> : <Outlet />;
+  return auth.token ? <Navigate to="/boards" state={{ from: location }} /> : <Outlet />;
 }
