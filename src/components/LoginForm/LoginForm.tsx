@@ -20,6 +20,7 @@ import {
 export default function LoginForm() {
   const [signup] = useSignupMutation();
   const [signin] = useSigninMutation();
+
   const dispatch = useAppDispatch();
   const { isSignInPage } = useAppSelector((state) => state.auth);
 
@@ -39,6 +40,7 @@ export default function LoginForm() {
       }
       const userSignIn = await signin({ login, password }).unwrap();
       dispatch(setToken(userSignIn));
+      localStorage.setItem('token', userSignIn.token);
     } catch (err) {
       console.log(err);
     }
@@ -68,66 +70,37 @@ export default function LoginForm() {
         )}
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
           {!isSignInPage && (
-            <>
-              {errors.name ? (
-                <TextField
-                  error
-                  margin="normal"
-                  id="outlined-error-helper-text"
-                  fullWidth
-                  label="Имя обязательно"
-                />
-              ) : (
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="name"
-                  label="Имя"
-                  type="text"
-                  {...register('name', { required: true })}
-                />
-              )}
-            </>
-          )}
-          {errors.login ? (
-            <TextField
-              margin="normal"
-              error
-              id="outlined-error-helper-text"
-              fullWidth
-              label="Логин обязателен"
-            />
-          ) : (
             <TextField
               margin="normal"
               required
               fullWidth
-              id="login"
-              label="Логин"
+              id="name"
+              label={errors.name ? 'Имя обязательно' : 'Имя'}
               type="text"
-              {...register('login', { required: true })}
+              error={!!errors.name}
+              {...register('name', { required: true })}
             />
           )}
-          {errors.password ? (
-            <TextField
-              margin="normal"
-              error
-              id="outlined-error-helper-text"
-              fullWidth
-              label="Пароль обязателен"
-            />
-          ) : (
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="password"
-              label="Пароль"
-              type="password"
-              {...register('password', { required: true })}
-            />
-          )}
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="login"
+            label={errors.login ? 'Логин обязателен' : 'Логин'}
+            type="text"
+            error={!!errors.login}
+            {...register('login', { required: true })}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="password"
+            label={errors.password ? 'Пароль обязателен' : 'Пароль'}
+            type="password"
+            error={!!errors.password}
+            {...register('password', { required: true })}
+          />
           {isSignInPage ? (
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Войти
