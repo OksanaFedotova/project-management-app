@@ -3,7 +3,16 @@ import { ITaskUpdate, TTaskRequest } from 'interfaces/IBoard';
 
 export const taskAPI = createApi({
   reducerPath: 'taskApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://serene-everglades-05199.herokuapp.com/' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://serene-everglades-05199.herokuapp.com/',
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     getAllTasks: builder.query({
       query: ({ boardId, columnId }) => `boards/${boardId}/columns/${columnId}/tasks`,

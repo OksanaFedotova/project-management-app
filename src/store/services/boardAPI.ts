@@ -3,7 +3,16 @@ import { IBoard, TBoardRequest } from 'interfaces/IBoard';
 
 export const boardAPI = createApi({
   reducerPath: 'boardApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://serene-everglades-05199.herokuapp.com/' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://serene-everglades-05199.herokuapp.com/',
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     getAllBoards: builder.query({
       query: () => 'boards',

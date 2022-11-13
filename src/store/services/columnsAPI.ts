@@ -3,7 +3,16 @@ import { IColumn, TColumnRequest } from 'interfaces/IBoard';
 
 export const columnAPI = createApi({
   reducerPath: 'columnApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://serene-everglades-05199.herokuapp.com/' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://serene-everglades-05199.herokuapp.com/',
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     getAllColumns: builder.query({
       query: (idBoard) => `boards/${idBoard}/columns`,
