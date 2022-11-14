@@ -5,7 +5,6 @@ import { TAuthState, IUser, ISigninResponse } from 'interfaces/IUser';
 const initialState: TAuthState = {
   user: null,
   token: null,
-  isSignInPage: null,
 };
 
 const authSlice = createSlice({
@@ -18,11 +17,8 @@ const authSlice = createSlice({
     setToken: (state, action: PayloadAction<ISigninResponse>) => {
       state.token = action.payload;
     },
-    toggleIsSignInPage: (state, action: PayloadAction<boolean>) => {
-      state.isSignInPage = action.payload;
-    },
   },
 });
 
-export const { setUser, setToken, toggleIsSignInPage } = authSlice.actions;
+export const { setUser, setToken } = authSlice.actions;
 export default authSlice.reducer;

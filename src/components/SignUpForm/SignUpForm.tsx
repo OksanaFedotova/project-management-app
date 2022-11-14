@@ -9,7 +9,7 @@ import { ErrorAuth, ISignupRequest } from 'interfaces/IUser';
 import { Container, Box, Typography, TextField, Button, Divider } from '@mui/material';
 
 export default function SignUpForm() {
-  const [signup] = useSignupMutation();
+  const [signup, { isLoading }] = useSignupMutation();
   const [signin] = useSigninMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ export default function SignUpForm() {
     try {
       const userSignUp = await signup(data).unwrap();
       dispatch(setUser(userSignUp));
+      localStorage.setItem('userId', userSignUp.id);
       const userSignIn = await signin({ login, password }).unwrap();
       dispatch(setToken(userSignIn));
       localStorage.setItem('token', userSignIn.token);
@@ -40,6 +41,7 @@ export default function SignUpForm() {
 
   return (
     <Container component="main" maxWidth="xs">
+      {isLoading && <h2>Тут будет анимация загрузки с оверлеем</h2>}
       <Box
         sx={{
           marginTop: 0,

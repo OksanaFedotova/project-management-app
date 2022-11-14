@@ -7,10 +7,11 @@ import { setToken } from 'store/reducers/AuthSlice';
 import { useSigninMutation } from 'store/services/authAPI';
 import { ErrorAuth, ISignupRequest } from 'interfaces/IUser';
 import { Container, Box, Typography, TextField, Button, Divider } from '@mui/material';
+import parseToken from 'helpers/parseToken';
 import './SignInForm.css';
 
 export default function SignInForm() {
-  const [signin] = useSigninMutation();
+  const [signin, { isLoading }] = useSigninMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -27,6 +28,8 @@ export default function SignInForm() {
       const userSignIn = await signin({ login, password }).unwrap();
       dispatch(setToken(userSignIn));
       localStorage.setItem('token', userSignIn.token);
+      const parsedToken = parseToken(userSignIn.token);
+      localStorage.setItem('userId', parsedToken.userId);
       navigate('/boards');
       toast.success('You are authorized');
     } catch (e) {
@@ -38,6 +41,7 @@ export default function SignInForm() {
 
   return (
     <Container component="main" maxWidth="xs">
+      {isLoading && <h2>Тут будет анимация загрузки с оверлеем</h2>}
       <Box
         sx={{
           marginTop: 0,

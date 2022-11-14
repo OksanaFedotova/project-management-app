@@ -1,7 +1,6 @@
 type TAuthState = {
   user: IUser | null;
   token: ISigninResponse | null;
-  isSignInPage: boolean | null;
 };
 
 interface IUser {
