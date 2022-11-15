@@ -1,0 +1,76 @@
+.h2 {
+  text-align: center;
+  color: var(--blue-color);
+  font-size: 3rem;
+}
+
+.team-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 50px 0;
+  gap: 40px;
+}
+
+.team-member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+  flex-wrap: wrap;
+  padding: 10px;
+  border: 2px var(--blue-color) solid;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.team-member:hover > .github-link {
+  filter: invert(89%) sepia(79%) saturate(4768%) hue-rotate(296deg) brightness(100%) contrast(88%);
+}
+
+.team-member-image {
+  width: 90%;
+  height: 90%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.team-member-name {
+  padding: 20px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.team-member-role {
+  padding-bottom: 15px;
+}
+
+.team-member-decription {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.github-link:hover {
+  filter: invert(89%) sepia(79%) saturate(4768%) hue-rotate(296deg) brightness(100%) contrast(88%);
+}
+
+@media (max-width: 850px) {
+  .team-member {
+    width: 40%;
+  }
+}
+
+@media (max-width: 640px) {
+  .team-member {
+    width: 80%;
+  }
+
+  .team-member-image {
+    width: 45%;
+  }
+}
