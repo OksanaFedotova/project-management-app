@@ -1,9 +1,7 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from 'store/reducers/AuthSlice';
 
 export const useAuth = () => {
-  const user = useSelector(selectCurrentUser);
+  const token = localStorage.getItem('token');
 
-  return useMemo(() => ({ user }), [user]);
+  return useMemo(() => ({ token }), [token]);
 };

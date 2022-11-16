@@ -1,6 +1,6 @@
 type TAuthState = {
   user: IUser | null;
-  token: string | null;
+  token: ISigninResponse | null;
 };
 
 interface IUser {
@@ -16,9 +16,17 @@ interface ISigninResponse {
 type TSigninRequest = Omit<ISignupRequest, 'name'>;
 
 interface ISignupRequest {
-  name: string;
+  name?: string;
   login: string;
   password: string;
 }
 
-export { TAuthState, IUser, TSigninRequest, ISigninResponse, ISignupRequest };
+type ErrorAuth = {
+  status: number;
+  data: {
+    message: string;
+    statusCode: number;
+  };
+};
+
+export { ErrorAuth, TAuthState, IUser, TSigninRequest, ISigninResponse, ISignupRequest };

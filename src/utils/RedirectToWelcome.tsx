@@ -6,5 +6,5 @@ export default function RedirectToWelcome() {
   const auth = useAuth();
   const location = useLocation();
 
-  return auth.user ? <Outlet /> : <Navigate to="/welcome" state={{ from: location }} />;
+  return auth.token ? <Outlet /> : <Navigate to="/welcome" state={{ from: location }} />;
 }

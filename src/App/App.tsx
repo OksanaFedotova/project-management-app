@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import WelcomePage from 'routes/WelcomePage';
 import SignInPage from 'routes/SignInPage';
 import SignUpPage from 'routes/SignUpPage';
@@ -35,6 +37,7 @@ function App() {
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <ToastContainer />
     </div>
   );
 }

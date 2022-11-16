@@ -6,7 +6,7 @@ export default function Redirect() {
   const auth = useAuth();
   const location = useLocation();
 
-  return auth.user ? (
+  return auth.token ? (
     <Navigate to="/boards" state={{ from: location }} />
   ) : (
     <Navigate to="/welcome" state={{ from: location }} />
