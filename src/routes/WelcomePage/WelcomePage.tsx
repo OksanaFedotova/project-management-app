@@ -1,33 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import React from 'react';
 import Layout from '../../components/Layout';
 import homePageImage from '../../assets/homePageImage.jpg';
 import './WelcomePage.css';
 import Team from 'components/Team';
-import Buttons from 'components/Buttons';
 
 const HomePage = () => {
-  const [sticky, setSticky] = useState(false);
-
-  const handleScroll = () => {
-    if (window.pageYOffset > 0) {
-      setSticky(true);
-    } else {
-      setSticky(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   return (
     <>
-      <Header isSticky={sticky} />
       <Layout>
         <div className="start-page">
           <div className="start-left-block">
@@ -42,7 +21,6 @@ const HomePage = () => {
         </div>
         <Team />
       </Layout>
-      <Footer />
     </>
   );
 };
