@@ -21,6 +21,11 @@ interface ISignupRequest {
   password: string;
 }
 
+type TUpdateUser = {
+  id: string | null;
+  user: ISignupRequest;
+};
+
 type ErrorAuth = {
   status: number;
   data: {
@@ -29,4 +34,12 @@ type ErrorAuth = {
   };
 };
 
-export { ErrorAuth, TAuthState, IUser, TSigninRequest, ISigninResponse, ISignupRequest };
+export {
+  ErrorAuth,
+  TAuthState,
+  IUser,
+  TSigninRequest,
+  ISigninResponse,
+  ISignupRequest,
+  TUpdateUser,
+};

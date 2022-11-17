@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ISignupRequest, IUser } from 'interfaces/IUser';
+import { IUser, TUpdateUser } from 'interfaces/IUser';
 
 export const userAPI = createApi({
   reducerPath: 'userApi',
@@ -20,11 +20,11 @@ export const userAPI = createApi({
     getUserById: builder.query({
       query: (id) => `users/${id}`,
     }),
-    updateUser: builder.mutation<ISignupRequest, IUser>({
+    updateUser: builder.mutation<IUser, TUpdateUser>({
       query: (body) => ({
         url: `users/${body.id}`,
         method: 'PUT',
-        body: body,
+        body: body.user,
       }),
     }),
     deleteUser: builder.mutation({
