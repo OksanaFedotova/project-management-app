@@ -1,15 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Container, Box, Typography, TextField, Button } from '@mui/material';
-import { useUpdateUserMutation } from 'store/services/userAPI';
+import { useDeleteUserMutation, useUpdateUserMutation } from 'store/services/userAPI';
 import { ErrorAuth, ISignupRequest } from 'interfaces/IUser';
-import { setUpdatedUser } from 'store/reducers/AuthSlice';
+import { removeUser, setUpdatedUser } from 'store/reducers/AuthSlice';
 import { useAppDispatch } from 'hooks/redux';
 import { toast } from 'react-toastify';
 
 export default function EditProfile() {
-  const [update, { isLoading }] = useUpdateUserMutation();
+  const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
+  const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const userId = localStorage.getItem('userId');
 
   const {
     register,
@@ -19,21 +24,29 @@ export default function EditProfile() {
   } = useForm<ISignupRequest>({ mode: 'onChange' });
 
   const onSubmit = async (data: ISignupRequest) => {
-    const userId = localStorage.getItem('userId');
     try {
-      const userUpdate = await update({ id: userId, user: data }).unwrap();
+      const userUpdate = await updateUser({ _id: userId, user: data }).unwrap();
       dispatch(setUpdatedUser(userUpdate));
-      localStorage.setItem('userId', userUpdate.id);
       toast.success('Your profile updated');
     } catch (e) {
-      console.log(e);
       const err = e as ErrorAuth;
       toast.error(err.data.message);
     }
     reset();
   };
 
-  const deleteProfile = () => {};
+  const deleteProfile = async () => {
+    try {
+      await deleteUser({ _id: userId });
+      dispatch(removeUser);
+      toast.success('User is deleted!');
+      localStorage.clear();
+      navigate('/welcome');
+    } catch (e) {
+      const err = e as ErrorAuth;
+      toast.error(err.data.message);
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -46,7 +59,7 @@ export default function EditProfile() {
           alignItems: 'center',
         }}
       >
-        {isLoading ? (
+        {isLoadingUpdate || isLoadingDelete ? (
           <h2 style={{ color: '#000000' }}>Тут будет анимация загрузки с оверлеем</h2>
         ) : (
           <>
