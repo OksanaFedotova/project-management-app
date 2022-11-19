@@ -7,6 +7,7 @@ import { setToken, setUser } from 'store/reducers/AuthSlice';
 import { useSigninMutation, useSignupMutation } from 'store/services/authAPI';
 import { ErrorAuth, ISignupRequest } from 'interfaces/IUser';
 import { Container, Box, Typography, TextField, Button, Divider } from '@mui/material';
+import parseToken from 'helpers/parseToken';
 
 export default function SignUpForm() {
   const [signup, { isLoading }] = useSignupMutation();
@@ -26,10 +27,11 @@ export default function SignUpForm() {
     try {
       const userSignUp = await signup(data).unwrap();
       dispatch(setUser(userSignUp));
-      localStorage.setItem('userId', userSignUp.id);
       const userSignIn = await signin({ login, password }).unwrap();
       dispatch(setToken(userSignIn));
       localStorage.setItem('token', userSignIn.token);
+      const parsedToken = parseToken(userSignIn.token);
+      localStorage.setItem('userId', parsedToken.id);
       navigate('/boards');
       toast.success('You are authorized');
     } catch (e) {

@@ -4,7 +4,7 @@ import { IUser, TUpdateUser } from 'interfaces/IUser';
 export const userAPI = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://serene-everglades-05199.herokuapp.com/',
+    baseUrl: 'https://back-project-app-production.up.railway.app/',
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {
@@ -22,14 +22,14 @@ export const userAPI = createApi({
     }),
     updateUser: builder.mutation<IUser, TUpdateUser>({
       query: (body) => ({
-        url: `users/${body.id}`,
+        url: `users/${body._id}`,
         method: 'PUT',
         body: body.user,
       }),
     }),
     deleteUser: builder.mutation({
       query: (id) => ({
-        url: `users/${id}`,
+        url: `users/${id._id}`,
         method: 'DELETE',
       }),
     }),
