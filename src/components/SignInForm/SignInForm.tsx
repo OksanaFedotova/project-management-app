@@ -77,8 +77,8 @@ export default function SignInForm() {
                     message: 'Минимум 4 символа',
                   },
                   maxLength: {
-                    value: 20,
-                    message: 'Максимум 20 символов',
+                    value: 25,
+                    message: 'Максимум 25 символов',
                   },
                   pattern: {
                     value: /^[a-zA-Z0-9]+$/i,

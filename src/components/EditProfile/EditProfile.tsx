@@ -81,6 +81,10 @@ export default function EditProfile() {
                     value: true,
                     message: 'Имя обязательно',
                   },
+                  maxLength: {
+                    value: 25,
+                    message: 'Максимум 25 символов',
+                  },
                   pattern: {
                     value: /^[A-Za-z]+$/i,
                     message: 'Имя должно состоять из латинских букв',
@@ -106,8 +110,8 @@ export default function EditProfile() {
                     message: 'Минимум 4 символа',
                   },
                   maxLength: {
-                    value: 20,
-                    message: 'Максимум 20 символов',
+                    value: 25,
+                    message: 'Максимум 25 символов',
                   },
                   pattern: {
                     value: /^[a-zA-Z0-9]+$/i,
