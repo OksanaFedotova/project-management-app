@@ -7,6 +7,7 @@ import './Header.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import type { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 
 const theme = createTheme({
   palette: {
@@ -18,9 +19,11 @@ const theme = createTheme({
 
 const Header = ({ isSticky }: { isSticky: boolean }) => {
   const [alignment, setAlignment] = React.useState('ru');
+  localStorage.setItem('Language', alignment);
 
   const handleChange = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     setAlignment(newAlignment);
+    localStorage.setItem('Language', alignment);
   };
 
   const navigator = useNavigate();
@@ -40,7 +43,7 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
             className="welcome-page-link"
             onClick={() => navigator('..')}
           >
-            Главная
+            <FormattedMessage id="main_page_name" />
           </Typography>
           <ThemeProvider theme={theme}>
             <ToggleButtonGroup
@@ -58,15 +61,27 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
           </ThemeProvider>
           {isAuth ? (
             <NavLink to="/welcome" style={{ color: `inherit`, textDecoration: `none` }}>
-              <Buttons text="На главную" />
+              <Buttons>
+                <FormattedMessage id="to_main" />
+              </Buttons>
+              <Buttons>
+                <FormattedMessage id="to_edit_page" />
+              </Buttons>
+              <Buttons>
+                <FormattedMessage id="sign_out" />
+              </Buttons>
             </NavLink>
           ) : (
             <>
               <NavLink to="/sign-in" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons text="Вход" />
+                <Buttons>
+                  <FormattedMessage id="sign_in" />
+                </Buttons>
               </NavLink>
               <NavLink to="/sign-up" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons text="Регистрация" />
+                <Buttons>
+                  <FormattedMessage id="sign_up" />
+                </Buttons>
               </NavLink>
             </>
           )}
