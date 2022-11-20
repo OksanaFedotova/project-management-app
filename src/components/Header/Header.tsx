@@ -1,12 +1,11 @@
 import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from 'hooks/useAuth';
 import { AppBar, Toolbar, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Buttons from '../Buttons';
 import './Header.css';
-import { NavLink, useNavigate } from 'react-router-dom';
-import type { RootState } from '../../store/store';
-import { useSelector } from 'react-redux';
 
 const theme = createTheme({
   palette: {
@@ -25,7 +24,8 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
 
   const navigator = useNavigate();
 
-  const isAuth = useSelector((state: RootState) => state.auth.user);
+  const auth = useAuth();
+  const isAuth = auth.token;
 
   return (
     <header className={isSticky ? 'appbar-sticky' : 'appbar'}>
