@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import {
-  useCreateBoardMutation,
-  useDeleteBoardMutation,
-  useGetAllBoardsQuery,
-} from 'store/services/boardAPI';
+import { useDeleteBoardMutation, useGetAllBoardsQuery } from 'store/services/boardAPI';
 import Layout from 'components/Layout';
 import BoardCard from '../../components/BoardCard';
 import ChangeBoardForm from '../../components/BoardForm';
