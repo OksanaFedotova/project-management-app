@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -8,6 +8,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import type { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { useAppDispatch } from 'hooks/redux';
+import { setCurrentLocale } from 'store/reducers/LanguageSlice';
 
 const theme = createTheme({
   palette: {
@@ -18,12 +20,16 @@ const theme = createTheme({
 });
 
 const Header = ({ isSticky }: { isSticky: boolean }) => {
-  const [alignment, setAlignment] = React.useState('ru');
-  localStorage.setItem('Language', alignment);
+  const lang = useSelector((state: RootState) => state.translate.currentLocale);
+  const dispatch = useAppDispatch();
+  const [alignment, setAlignment] = useState(lang);
+  localStorage.setItem('Language', lang);
 
-  const handleChange = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
-    setAlignment(newAlignment);
-    localStorage.setItem('Language', alignment);
+  const handleChange = (event: React.MouseEvent<HTMLElement>) => {
+    const target = event.target as HTMLButtonElement;
+    setAlignment(target.value);
+    dispatch(setCurrentLocale(target.value));
+    localStorage.setItem('Language', target.value);
   };
 
   const navigator = useNavigate();
