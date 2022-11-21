@@ -40,7 +40,8 @@ export default function EditProfile() {
       await deleteUser({ _id: userId });
       dispatch(removeUser);
       toast.success('User is deleted!');
-      localStorage.clear();
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
       navigate('/welcome');
     } catch (e) {
       const err = e as ErrorAuth;
