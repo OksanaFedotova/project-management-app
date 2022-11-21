@@ -31,7 +31,7 @@ export default function SignInForm() {
       dispatch(setToken(userSignIn));
       localStorage.setItem('token', userSignIn.token);
       const parsedToken = parseToken(userSignIn.token);
-      localStorage.setItem('userId', parsedToken.userId);
+      localStorage.setItem('userId', parsedToken.id);
       navigate('/boards');
       toast.success('You are authorized');
     } catch (e) {
@@ -43,95 +43,102 @@ export default function SignInForm() {
 
   return (
     <Container component="main" maxWidth="xs">
-      {isLoading && <h2>Тут будет анимация загрузки с оверлеем</h2>}
       <Box
         sx={{
           marginTop: 0,
-          paddingTop: 8,
+          paddingTop: 16,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
         }}
       >
-        <Typography component="h1" variant="h5">
-          <FormattedMessage id="enter" />
-        </Typography>
-        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="login"
-            label={errors.login ? errors.login.message : intl.formatMessage({ id: `${'login'}` })}
-            type="text"
-            error={!!errors.login}
-            autoComplete="off"
-            {...register('login', {
-              required: {
-                value: true,
-                message: intl.formatMessage({ id: `${'login_required'}` }),
-              },
-              minLength: {
-                value: 4,
-                message: intl.formatMessage({ id: `${'min_length'}` }),
-              },
-              maxLength: {
-                value: 20,
-                message: intl.formatMessage({ id: `${'max_length'}` }),
-              },
-              pattern: {
-                value: /^[a-zA-Z0-9]+$/i,
-                message: intl.formatMessage({ id: `${'login_pattern'}` }),
-              },
-            })}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="password"
-            label={
-              errors.password
-                ? errors.password.message
-                : intl.formatMessage({ id: `${'password'}` })
-            }
-            type="password"
-            error={!!errors.password}
-            autoComplete="off"
-            {...register('password', {
-              required: {
-                value: true,
-                message: intl.formatMessage({ id: `${'password_required'}` }),
-              },
-              minLength: {
-                value: 6,
-                message: intl.formatMessage({ id: `${'pass_min_length'}` }),
-              },
-              maxLength: {
-                value: 20,
-                message: intl.formatMessage({ id: `${'max_length'}` }),
-              },
-              pattern: {
-                value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/i,
-                message: intl.formatMessage({ id: `${'login_pattern'}` }),
-              },
-            })}
-          />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            <FormattedMessage id="enter" />
-          </Button>
-        </Box>
-        <Divider
-          sx={{
-            marginBottom: 1,
-            width: 390,
-          }}
-        >
-          <FormattedMessage id="or" />
-        </Divider>
-        <RouterLink to="/sign-up" className="link">
-          <FormattedMessage id="have_no_account" />
-        </RouterLink>
+        {isLoading ? (
+          <h2 style={{ color: '#000000' }}>Тут будет анимация загрузки с оверлеем</h2>
+        ) : (
+          <>
+            <Typography component="h1" variant="h5">
+              <FormattedMessage id="enter" />
+            </Typography>
+            <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="login"
+                label={
+                  errors.login ? errors.login.message : intl.formatMessage({ id: `${'login'}` })
+                }
+                type="text"
+                error={!!errors.login}
+                autoComplete="off"
+                {...register('login', {
+                  required: {
+                    value: true,
+                    message: intl.formatMessage({ id: `${'login_required'}` }),
+                  },
+                  minLength: {
+                    value: 4,
+                    message: intl.formatMessage({ id: `${'min_length'}` }),
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: intl.formatMessage({ id: `${'max_length'}` }),
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z0-9]+$/i,
+                    message: intl.formatMessage({ id: `${'login_pattern'}` }),
+                  },
+                })}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="password"
+                label={
+                  errors.password
+                    ? errors.password.message
+                    : intl.formatMessage({ id: `${'password'}` })
+                }
+                type="password"
+                error={!!errors.password}
+                autoComplete="off"
+                {...register('password', {
+                  required: {
+                    value: true,
+                    message: intl.formatMessage({ id: `${'password_required'}` }),
+                  },
+                  minLength: {
+                    value: 6,
+                    message: intl.formatMessage({ id: `${'pass_min_length'}` }),
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: intl.formatMessage({ id: `${'max_length'}` }),
+                  },
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/i,
+                    message: intl.formatMessage({ id: `${'login_pattern'}` }),
+                  },
+                })}
+              />
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                <FormattedMessage id="enter" />
+              </Button>
+            </Box>
+            <Divider
+              sx={{
+                marginBottom: 1,
+                width: 390,
+              }}
+            >
+              <FormattedMessage id="or" />
+            </Divider>
+            <RouterLink to="/sign-up" className="link">
+              <FormattedMessage id="have_no_account" />
+            </RouterLink>
+          </>
+        )}
       </Box>
     </Container>
   );

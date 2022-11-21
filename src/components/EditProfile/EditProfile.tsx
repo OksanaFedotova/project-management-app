@@ -1,19 +1,20 @@
 import React from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import { useAppDispatch } from 'hooks/redux';
-import { setToken, setUser } from 'store/reducers/AuthSlice';
-import { useSigninMutation, useSignupMutation } from 'store/services/authAPI';
+import { Container, Box, Typography, TextField, Button } from '@mui/material';
+import { useDeleteUserMutation, useUpdateUserMutation } from 'store/services/userAPI';
 import { ErrorAuth, ISignupRequest } from 'interfaces/IUser';
-import { Container, Box, Typography, TextField, Button, Divider } from '@mui/material';
-import parseToken from 'helpers/parseToken';
+import { removeUser, setUpdatedUser } from 'store/reducers/AuthSlice';
+import { useAppDispatch } from 'hooks/redux';
+import { toast } from 'react-toastify';
 
-export default function SignUpForm() {
-  const [signup, { isLoading }] = useSignupMutation();
-  const [signin] = useSigninMutation();
+export default function EditProfile() {
+  const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
+  const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const userId = localStorage.getItem('userId');
 
   const {
     register,
@@ -23,22 +24,28 @@ export default function SignUpForm() {
   } = useForm<ISignupRequest>({ mode: 'onChange' });
 
   const onSubmit = async (data: ISignupRequest) => {
-    const { login, password } = data;
     try {
-      const userSignUp = await signup(data).unwrap();
-      dispatch(setUser(userSignUp));
-      const userSignIn = await signin({ login, password }).unwrap();
-      dispatch(setToken(userSignIn));
-      localStorage.setItem('token', userSignIn.token);
-      const parsedToken = parseToken(userSignIn.token);
-      localStorage.setItem('userId', parsedToken.id);
-      navigate('/boards');
-      toast.success('You are authorized');
+      const userUpdate = await updateUser({ _id: userId, user: data }).unwrap();
+      dispatch(setUpdatedUser(userUpdate));
+      toast.success('Your profile updated');
     } catch (e) {
       const err = e as ErrorAuth;
       toast.error(err.data.message);
     }
     reset();
+  };
+
+  const deleteProfile = async () => {
+    try {
+      await deleteUser({ _id: userId });
+      dispatch(removeUser);
+      toast.success('User is deleted!');
+      localStorage.clear();
+      navigate('/welcome');
+    } catch (e) {
+      const err = e as ErrorAuth;
+      toast.error(err.data.message);
+    }
   };
 
   return (
@@ -52,12 +59,12 @@ export default function SignUpForm() {
           alignItems: 'center',
         }}
       >
-        {isLoading ? (
+        {isLoadingUpdate || isLoadingDelete ? (
           <h2 style={{ color: '#000000' }}>Тут будет анимация загрузки с оверлеем</h2>
         ) : (
           <>
             <Typography component="h1" variant="h5">
-              Регистрация
+              Редактирование профиля
             </Typography>
             <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
               <TextField
@@ -68,7 +75,7 @@ export default function SignUpForm() {
                 label={errors.name ? errors.name.message : 'Имя'}
                 type="text"
                 error={!!errors.name}
-                autoComplete="off"
+                autoComplete="on"
                 {...register('name', {
                   required: {
                     value: true,
@@ -92,7 +99,7 @@ export default function SignUpForm() {
                 label={errors.login ? errors.login.message : 'Логин'}
                 type="text"
                 error={!!errors.login}
-                autoComplete="off"
+                autoComplete="on"
                 {...register('login', {
                   required: {
                     value: true,
@@ -120,7 +127,7 @@ export default function SignUpForm() {
                 label={errors.password ? errors.password.message : 'Пароль'}
                 type="password"
                 error={!!errors.password}
-                autoComplete="off"
+                autoComplete="on"
                 {...register('password', {
                   required: {
                     value: true,
@@ -140,21 +147,23 @@ export default function SignUpForm() {
                   },
                 })}
               />
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Зарегистрироваться
+              <Button
+                type="submit"
+                variant="contained"
+                color="success"
+                sx={{ mt: 3, mb: 2, mr: 4, ml: 2 }}
+              >
+                Редактировать
+              </Button>
+              <Button
+                onClick={deleteProfile}
+                variant="outlined"
+                color="error"
+                sx={{ mt: 3, mb: 2, mr: 2 }}
+              >
+                Удалить профиль
               </Button>
             </Box>
-            <Divider
-              sx={{
-                marginBottom: 1,
-                width: 390,
-              }}
-            >
-              или
-            </Divider>
-            <RouterLink to="/sign-in" className="link">
-              Уже есть аккаунт? Войти
-            </RouterLink>
           </>
         )}
       </Box>

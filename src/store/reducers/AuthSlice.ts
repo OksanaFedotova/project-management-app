@@ -14,11 +14,21 @@ const authSlice = createSlice({
     setUser: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
     },
+    setUpdatedUser(state, action: PayloadAction<Omit<IUser, 'id'>>) {
+      if (state.user) {
+        state.user.login = action.payload.login;
+        state.user.name = action.payload.name;
+      }
+    },
     setToken: (state, action: PayloadAction<ISigninResponse>) => {
       state.token = action.payload;
+    },
+    removeUser: (state) => {
+      state.user = null;
+      state.token = null;
     },
   },
 });
 
-export const { setUser, setToken } = authSlice.actions;
+export const { setUser, setUpdatedUser, setToken, removeUser } = authSlice.actions;
 export default authSlice.reducer;

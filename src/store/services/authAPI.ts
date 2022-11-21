@@ -4,7 +4,7 @@ import { TSigninRequest, ISigninResponse, ISignupRequest, IUser } from 'interfac
 export const authAPI = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://serene-everglades-05199.herokuapp.com/',
+    baseUrl: 'https://back-project-app-production.up.railway.app/auth/',
   }),
   endpoints: (builder) => ({
     signin: builder.mutation<ISigninResponse, TSigninRequest>({
