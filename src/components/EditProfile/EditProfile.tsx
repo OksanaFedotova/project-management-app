@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useForm } from 'react-hook-form';ъ
+import { useForm } from 'react-hook-form';
 import { useAppDispatch } from 'hooks/redux';
 import { removeUser, setUpdatedUser } from 'store/reducers/AuthSlice';
 import ModalDelete from 'components/ModalDelete';
@@ -43,7 +43,7 @@ export default function EditProfile() {
     }
     reset();
   };
-  
+
   const deleteProfile = async (type: string) => {
     if (type === 'Да') {
       try {
