@@ -1,23 +1,21 @@
 import React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { CardActions, CardContent, Typography, Button, Card } from '@mui/material';
 import { IBoard } from 'interfaces/IBoard';
 
 export default function BoardCard({
   board,
   handleDelete,
   handleUpdate,
+  onClick,
 }: {
   board: IBoard;
   handleDelete: (id: string) => void;
   handleUpdate: (id: string) => void;
+  onClick: () => void;
 }) {
   const { title, description, id } = board;
   return (
-    <Card key={id} sx={{ maxWidth: 275, margin: 1 }}>
+    <Card key={id} sx={{ maxWidth: 275, margin: 1 }} onClick={onClick}>
       <CardContent>
         <Typography variant="h5" color="text.secondary" gutterBottom>
           {title}
