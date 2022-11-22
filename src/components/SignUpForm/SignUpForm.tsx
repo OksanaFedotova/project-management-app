@@ -17,6 +17,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import parseToken from 'helpers/parseToken';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 export default function SignUpForm() {
   const [signup] = useSignupMutation();
@@ -24,6 +25,7 @@ export default function SignUpForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const intl = useIntl();
 
   const {
     register,
@@ -70,7 +72,7 @@ export default function SignUpForm() {
           </Backdrop>
         )}
         <Typography component="h1" variant="h5">
-          Регистрация
+          <FormattedMessage id="sign_up" />
         </Typography>
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
           <TextField
@@ -78,22 +80,26 @@ export default function SignUpForm() {
             required
             fullWidth
             id="name"
-            label={errors.name ? errors.name.message : 'Имя'}
+            label={
+              errors.name
+                ? errors.name.message
+                : intl.formatMessage({ id: `${'name_placeholder'}` })
+            }
             type="text"
             error={!!errors.name}
             autoComplete="off"
             {...register('name', {
               required: {
                 value: true,
-                message: 'Имя обязательно',
+                message: intl.formatMessage({ id: `${'name_required'}` }),
               },
               maxLength: {
                 value: 25,
-                message: 'Максимум 25 символов',
+                message: intl.formatMessage({ id: `${'login_max_length'}` }),
               },
               pattern: {
                 value: /^[A-Za-z]+$/i,
-                message: 'Имя должно состоять из латинских букв',
+                message: intl.formatMessage({ id: `${'name_pattern'}` }),
               },
             })}
           />
@@ -102,26 +108,26 @@ export default function SignUpForm() {
             required
             fullWidth
             id="login"
-            label={errors.login ? errors.login.message : 'Логин'}
+            label={errors.login ? errors.login.message : intl.formatMessage({ id: `${'login'}` })}
             type="text"
             error={!!errors.login}
             autoComplete="off"
             {...register('login', {
               required: {
                 value: true,
-                message: 'Логин обязателен',
+                message: intl.formatMessage({ id: `${'login_required'}` }),
               },
               minLength: {
                 value: 4,
-                message: 'Минимум 4 символа',
+                message: intl.formatMessage({ id: `${'min_length'}` }),
               },
               maxLength: {
                 value: 25,
-                message: 'Максимум 25 символов',
+                message: intl.formatMessage({ id: `${'login_max_length'}` }),
               },
               pattern: {
                 value: /^[a-zA-Z0-9]+$/i,
-                message: 'Логин из латинских букв или цифр',
+                message: intl.formatMessage({ id: `${'login_pattern'}` }),
               },
             })}
           />
@@ -130,31 +136,35 @@ export default function SignUpForm() {
             required
             fullWidth
             id="password"
-            label={errors.password ? errors.password.message : 'Пароль'}
+            label={
+              errors.password
+                ? errors.password.message
+                : intl.formatMessage({ id: `${'password'}` })
+            }
             type="password"
             error={!!errors.password}
             autoComplete="off"
             {...register('password', {
               required: {
                 value: true,
-                message: 'Пароль обязателен',
+                message: intl.formatMessage({ id: `${'password_required'}` }),
               },
               minLength: {
                 value: 6,
-                message: 'Минимум 6 символов',
+                message: intl.formatMessage({ id: `${'pass_min_length'}` }),
               },
               maxLength: {
                 value: 20,
-                message: 'Максимум 20 символов',
+                message: intl.formatMessage({ id: `${'max_length'}` }),
               },
               pattern: {
                 value: /^(?=.*\d)(?=.*[a-z])(?=.*[@$!%*#?&])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/,
-                message: 'Cодержит заглавные и прописные буквы, цифры и спецсимволы',
+                message: intl.formatMessage({ id: `${'password_pattern'}` }),
               },
             })}
           />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Зарегистрироваться
+            <FormattedMessage id="register" />
           </Button>
         </Box>
         <Divider
@@ -163,10 +173,10 @@ export default function SignUpForm() {
             width: 390,
           }}
         >
-          или
+          <FormattedMessage id="or" />
         </Divider>
         <RouterLink to="/sign-in" className="link">
-          Уже есть аккаунт? Войти
+          <FormattedMessage id="have_account" />
         </RouterLink>
       </Box>
     </Container>

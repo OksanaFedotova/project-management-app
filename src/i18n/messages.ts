@@ -42,6 +42,8 @@ export const messages = {
     delete_confirm: 'Вы действительно хотите удалить?',
     yes: 'Удалить',
     no: 'Отмена',
+    have_account: 'Уже есть аккаунт? Войти',
+    register: 'Зарегистрироваться',
   },
   [LOCALES.ENGLISH]: {
     project_title: 'Task manager',
@@ -84,5 +86,7 @@ export const messages = {
     delete_confirm: 'Do you really want to delete?',
     yes: 'Delete',
     no: 'Cancel',
+    have_account: 'Already have an account? Sign In',
+    register: 'Sign Up',
   },
 };
