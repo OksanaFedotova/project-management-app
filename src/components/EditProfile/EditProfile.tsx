@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { useDeleteUserMutation, useUpdateUserMutation } from 'store/services/userAPI';
 import { ErrorAuth, ISignupRequest } from 'interfaces/IUser';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 export default function EditProfile() {
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
@@ -24,6 +25,7 @@ export default function EditProfile() {
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
   const userId = localStorage.getItem('userId');
+  const intl = useIntl();
 
   const {
     register,
@@ -67,9 +69,9 @@ export default function EditProfile() {
     <Container component="main" maxWidth="xs">
       {isModal && (
         <ModalDelete
-          title="Вы действительно хотите удалить?"
-          btnSubmit="Да"
-          btnCancel="Нет"
+          title={intl.formatMessage({ id: `${'delete_confirm'}` })}
+          btnSubmit={intl.formatMessage({ id: `${'yes'}` })}
+          btnCancel={intl.formatMessage({ id: `${'no'}` })}
           open={true}
           handleClick={deleteProfile}
         />
@@ -89,7 +91,7 @@ export default function EditProfile() {
           </Backdrop>
         )}
         <Typography component="h1" variant="h5">
-          Редактирование профиля
+          <FormattedMessage id="edit_profile" />
         </Typography>
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
           <TextField
@@ -97,22 +99,26 @@ export default function EditProfile() {
             required
             fullWidth
             id="name"
-            label={errors.name ? errors.name.message : 'Имя'}
+            label={
+              errors.name
+                ? errors.name.message
+                : intl.formatMessage({ id: `${'name_placeholder'}` })
+            }
             type="text"
             error={!!errors.name}
             autoComplete="on"
             {...register('name', {
               required: {
                 value: true,
-                message: 'Имя обязательно',
+                message: intl.formatMessage({ id: `${'name_required'}` }),
               },
               maxLength: {
                 value: 25,
-                message: 'Максимум 25 символов',
+                message: intl.formatMessage({ id: `${'login_max_length'}` }),
               },
               pattern: {
                 value: /^[A-Za-z]+$/i,
-                message: 'Имя должно состоять из латинских букв',
+                message: intl.formatMessage({ id: `${'name_pattern'}` }),
               },
             })}
           />
@@ -121,26 +127,26 @@ export default function EditProfile() {
             required
             fullWidth
             id="login"
-            label={errors.login ? errors.login.message : 'Логин'}
+            label={errors.login ? errors.login.message : intl.formatMessage({ id: `${'login'}` })}
             type="text"
             error={!!errors.login}
             autoComplete="on"
             {...register('login', {
               required: {
                 value: true,
-                message: 'Логин обязателен',
+                message: intl.formatMessage({ id: `${'login_required'}` }),
               },
               minLength: {
                 value: 4,
-                message: 'Минимум 4 символа',
+                message: intl.formatMessage({ id: `${'min_length'}` }),
               },
               maxLength: {
                 value: 25,
-                message: 'Максимум 25 символов',
+                message: intl.formatMessage({ id: `${'login_max_length'}` }),
               },
               pattern: {
                 value: /^[a-zA-Z0-9]+$/i,
-                message: 'Логин из латинских букв или цифр',
+                message: intl.formatMessage({ id: `${'login_pattern'}` }),
               },
             })}
           />
@@ -149,26 +155,30 @@ export default function EditProfile() {
             required
             fullWidth
             id="password"
-            label={errors.password ? errors.password.message : 'Пароль'}
+            label={
+              errors.password
+                ? errors.password.message
+                : intl.formatMessage({ id: `${'password'}` })
+            }
             type="password"
             error={!!errors.password}
             autoComplete="on"
             {...register('password', {
               required: {
                 value: true,
-                message: 'Пароль обязателен',
+                message: intl.formatMessage({ id: `${'password_required'}` }),
               },
               minLength: {
                 value: 6,
-                message: 'Минимум 6 символов',
+                message: intl.formatMessage({ id: `${'pass_min_length'}` }),
               },
               maxLength: {
                 value: 20,
-                message: 'Максимум 20 символов',
+                message: intl.formatMessage({ id: `${'max_length'}` }),
               },
               pattern: {
                 value: /^(?=.*\d)(?=.*[a-z])(?=.*[@$!%*#?&])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/,
-                message: 'Cодержит заглавные и прописные буквы, цифры и спецсимволы',
+                message: intl.formatMessage({ id: `${'password_pattern'}` }),
               },
             })}
           />
@@ -176,9 +186,9 @@ export default function EditProfile() {
             type="submit"
             variant="contained"
             color="success"
-            sx={{ mt: 3, mb: 2, mr: 4, ml: 2 }}
+            sx={{ mt: 3, mb: 2, mr: 3, ml: 2 }}
           >
-            Редактировать
+            <FormattedMessage id="edit" />
           </Button>
           <Button
             onClick={() => setIsModal(true)}
@@ -186,7 +196,7 @@ export default function EditProfile() {
             color="error"
             sx={{ mt: 3, mb: 2, mr: 2 }}
           >
-            Удалить профиль
+            <FormattedMessage id="delete_profile" />
           </Button>
         </Box>
       </Box>

@@ -89,7 +89,7 @@ export default function SignInForm() {
                 message: intl.formatMessage({ id: `${'min_length'}` }),
               },
               maxLength: {
-                value: 20,
+                value: 25,
                 message: intl.formatMessage({ id: `${'login_max_length'}` }),
               },
               pattern: {
