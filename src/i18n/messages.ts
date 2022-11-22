@@ -28,9 +28,11 @@ export const messages = {
     min_length: 'Минимум 4 символа',
     password: 'Пароль',
     max_length: 'Максимум 20 символов',
+    login_max_length: 'Максимум 25 символов',
     login_pattern: 'Логин из латинских букв или цифр',
     password_required: 'Пароль обязателен',
     pass_min_length: 'Минимум 6 символов',
+    password_pattern: 'Cодержит заглавные и прописные буквы, цифры и спецсимволы',
   },
   [LOCALES.ENGLISH]: {
     project_title: 'Task manager',
@@ -59,8 +61,10 @@ export const messages = {
     min_length: 'Min: 4 characters',
     password: 'Password',
     max_length: 'Max: 20 symbols',
+    login_max_length: 'Max: 25 symbols',
     login_pattern: 'Latin letters or numbers only',
     password_required: 'Password required',
     pass_min_length: 'Min: 6 characters',
+    password_pattern: 'Contains uppercase and lowercase letters, numbers and special characters',
   },
 };
