@@ -7,8 +7,8 @@ import {
   Typography,
   TextField,
   Button,
-  CircularProgress,
   Backdrop,
+  CircularProgress,
 } from '@mui/material';
 import { useDeleteUserMutation, useUpdateUserMutation } from 'store/services/userAPI';
 import { ErrorAuth, ISignupRequest } from 'interfaces/IUser';
@@ -151,8 +151,8 @@ export default function EditProfile() {
                 message: 'Максимум 20 символов',
               },
               pattern: {
-                value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/i,
-                message: 'Пароль из латинских букв и цифр',
+                value: /^(?=.*\d)(?=.*[a-z])(?=.*[@$!%*#?&])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/,
+                message: 'Cодержит заглавные и прописные буквы, цифры и спецсимволы',
               },
             })}
           />
