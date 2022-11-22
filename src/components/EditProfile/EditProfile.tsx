@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';ъ
+import { useAppDispatch } from 'hooks/redux';
+import { removeUser, setUpdatedUser } from 'store/reducers/AuthSlice';
+import ModalDelete from 'components/ModalDelete';
 import {
   Container,
   Box,
@@ -12,16 +16,13 @@ import {
 } from '@mui/material';
 import { useDeleteUserMutation, useUpdateUserMutation } from 'store/services/userAPI';
 import { ErrorAuth, ISignupRequest } from 'interfaces/IUser';
-import { removeUser, setUpdatedUser } from 'store/reducers/AuthSlice';
-import { useAppDispatch } from 'hooks/redux';
-import { toast } from 'react-toastify';
 
 export default function EditProfile() {
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const [isModal, setIsModal] = useState(false);
   const userId = localStorage.getItem('userId');
 
   const {
@@ -42,23 +43,37 @@ export default function EditProfile() {
     }
     reset();
   };
-
-  const deleteProfile = async () => {
-    try {
-      await deleteUser({ _id: userId });
-      dispatch(removeUser);
-      toast.success('User is deleted!');
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      navigate('/welcome');
-    } catch (e) {
-      const err = e as ErrorAuth;
-      toast.error(err.data.message);
+  
+  const deleteProfile = async (type: string) => {
+    if (type === 'Да') {
+      try {
+        await deleteUser({ _id: userId });
+        dispatch(removeUser);
+        toast.success('User is deleted!');
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        navigate('/welcome');
+      } catch (e) {
+        const err = e as ErrorAuth;
+        toast.error(err.data.message);
+      }
+      setIsModal(false);
+    } else {
+      setIsModal(false);
     }
   };
 
   return (
     <Container component="main" maxWidth="xs">
+      {isModal && (
+        <ModalDelete
+          title="Вы действительно хотите удалить?"
+          btnSubmit="Да"
+          btnCancel="Нет"
+          open={true}
+          handleClick={deleteProfile}
+        />
+      )}
       <Box
         sx={{
           marginTop: 0,
@@ -166,7 +181,7 @@ export default function EditProfile() {
             Редактировать
           </Button>
           <Button
-            onClick={deleteProfile}
+            onClick={() => setIsModal(true)}
             variant="outlined"
             color="error"
             sx={{ mt: 3, mb: 2, mr: 2 }}
