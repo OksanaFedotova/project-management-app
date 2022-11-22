@@ -7,7 +7,7 @@ import { IBoard } from 'interfaces/IBoard';
 import './BoardsPage.css';
 
 export default function BoardsPage() {
-  const boards = useGetAllBoardsQuery('').currentData;
+  const { data } = useGetAllBoardsQuery('');
   const [boardForm, setBoardForm] = useState({ isActive: false, id: '' });
   const [deleteBoard] = useDeleteBoardMutation();
   const handleDelete = (id: string) => {
@@ -18,8 +18,8 @@ export default function BoardsPage() {
     <Layout>
       <div className="layout">
         <div className="boards-container">
-          {boards &&
-            boards.map((board: IBoard) => (
+          {data &&
+            data.map((board: IBoard) => (
               <BoardCard
                 key={board.id}
                 board={board}
@@ -29,13 +29,13 @@ export default function BoardsPage() {
             ))}
         </div>
         <button onClick={() => setBoardForm({ isActive: true, id: '' })}>Добавить</button>
-        {boardForm.isActive && (
-          <ChangeBoardForm
-            id={boardForm.id}
-            onClick={() => setBoardForm({ isActive: false, id: '' })}
-          />
-        )}
       </div>
+      {boardForm.isActive && (
+        <ChangeBoardForm
+          id={boardForm.id}
+          onClick={() => setBoardForm({ isActive: false, id: '' })}
+        />
+      )}
     </Layout>
   );
 }
