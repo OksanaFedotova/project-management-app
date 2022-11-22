@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { URL } from 'configs/constants';
 import { IUser, TUpdateUser } from 'interfaces/IUser';
 
 export const userAPI = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://back-project-app-production.up.railway.app/',
+    baseUrl: URL,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {
@@ -22,14 +23,14 @@ export const userAPI = createApi({
     }),
     updateUser: builder.mutation<IUser, TUpdateUser>({
       query: (body) => ({
-        url: `users/${body._id}`,
+        url: `users/${body.id}`,
         method: 'PUT',
         body: body.user,
       }),
     }),
     deleteUser: builder.mutation({
       query: (id) => ({
-        url: `users/${id._id}`,
+        url: `users/${id.id}`,
         method: 'DELETE',
       }),
     }),

@@ -34,7 +34,7 @@ export default function EditProfile() {
 
   const onSubmit = async (data: ISignupRequest) => {
     try {
-      const userUpdate = await updateUser({ _id: userId, user: data }).unwrap();
+      const userUpdate = await updateUser({ id: userId, user: data }).unwrap();
       dispatch(setUpdatedUser(userUpdate));
       toast.success('Your profile updated');
     } catch (e) {
@@ -47,7 +47,7 @@ export default function EditProfile() {
   const deleteProfile = async (type: string) => {
     if (type === 'Да') {
       try {
-        await deleteUser({ _id: userId });
+        await deleteUser({ id: userId });
         dispatch(removeUser);
         toast.success('User is deleted!');
         localStorage.removeItem('token');
