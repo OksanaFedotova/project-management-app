@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IBoard, TBoardRequest } from 'interfaces/IBoard';
 
+//const url = `https://back-project-app-production.up.railway.app/`;
+
 export const boardAPI = createApi({
   reducerPath: 'boardApi',
   baseQuery: fetchBaseQuery({

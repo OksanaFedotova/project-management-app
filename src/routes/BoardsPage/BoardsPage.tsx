@@ -5,9 +5,11 @@ import BoardCard from '../../components/BoardCard';
 import ChangeBoardForm from '../../components/BoardForm';
 import { IBoard } from 'interfaces/IBoard';
 import './BoardsPage.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function BoardsPage() {
   const { data } = useGetAllBoardsQuery('');
+  const navigator = useNavigate();
   const [boardForm, setBoardForm] = useState({ isActive: false, id: '' });
   const [deleteBoard] = useDeleteBoardMutation();
   const handleDelete = (id: string) => {
@@ -25,6 +27,7 @@ export default function BoardsPage() {
                 board={board}
                 handleDelete={() => handleDelete(board.id)}
                 handleUpdate={() => setBoardForm({ isActive: true, id: board.id })}
+                onClick={() => navigator(`${board.id}`)}
               />
             ))}
         </div>
