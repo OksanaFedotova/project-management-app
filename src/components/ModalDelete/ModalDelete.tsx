@@ -10,32 +10,23 @@ const ModalDelete = ({
   title,
   btnSubmit,
   btnCancel,
+  handleClick,
+  open,
 }: {
   title: string;
   btnSubmit: string;
   btnCancel: string;
+  handleClick: (type: string) => void;
+  open: boolean;
 }) => {
-  const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Открыть модальное окно
-      </Button>
       <Dialog
         fullScreen={fullScreen}
         open={open}
-        onClose={handleClose}
         fullWidth={true}
         maxWidth="xs"
         aria-labelledby="responsive-dialog-title"
@@ -47,10 +38,10 @@ const ModalDelete = ({
           {title}
         </DialogTitle>
         <DialogActions sx={{ display: 'flex', justifyContent: 'center', pb: 3 }}>
-          <Button onClick={handleClose} variant="contained" color="error">
+          <Button onClick={() => handleClick(btnSubmit)} variant="contained" color="error">
             {btnSubmit}
           </Button>
-          <Button onClick={handleClose} variant="outlined">
+          <Button onClick={() => handleClick(btnCancel)} variant="outlined">
             {btnCancel}
           </Button>
         </DialogActions>

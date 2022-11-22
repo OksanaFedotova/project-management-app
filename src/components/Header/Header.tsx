@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useAuth } from 'hooks/useAuth';
+import { useAppDispatch } from 'hooks/redux';
+import { removeUser } from 'store/reducers/AuthSlice';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  ToggleButtonGroup,
+  ToggleButton,
+  Button,
+} from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Buttons from '../Buttons';
 import './Header.css';
-import { NavLink, useNavigate } from 'react-router-dom';
 import type { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { useAppDispatch } from 'hooks/redux';
 import { setCurrentLocale } from 'store/reducers/LanguageSlice';
 
 const theme = createTheme({
@@ -18,7 +28,6 @@ const theme = createTheme({
     },
   },
 });
-
 const Header = ({ isSticky }: { isSticky: boolean }) => {
   const lang = useSelector((state: RootState) => state.translate.currentLocale);
   const dispatch = useAppDispatch();
@@ -33,8 +42,15 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
   };
 
   const navigator = useNavigate();
-
-  const isAuth = useSelector((state: RootState) => state.auth.user);
+  const auth = useAuth();
+  const isAuth = auth.token;
+  const logout = () => {
+    dispatch(removeUser);
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    navigator('/welcome');
+    toast.success('You are logged out!');
+  };
 
   return (
     <header className={isSticky ? 'appbar-sticky' : 'appbar'}>
@@ -66,17 +82,21 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
             </ToggleButtonGroup>
           </ThemeProvider>
           {isAuth ? (
-            <NavLink to="/welcome" style={{ color: `inherit`, textDecoration: `none` }}>
-              <Buttons>
-                <FormattedMessage id="to_main" />
-              </Buttons>
-              <Buttons>
-                <FormattedMessage id="to_edit_page" />
-              </Buttons>
-              <Buttons>
+            <>
+              <NavLink to="/welcome" style={{ color: `inherit`, textDecoration: `none` }}>
+                <Buttons>
+                  <FormattedMessage id="to_main" />
+                </Buttons>
+              </NavLink>
+              <NavLink to="/edit-profile" style={{ color: `inherit`, textDecoration: `none` }}>
+                <Buttons>
+                  <FormattedMessage id="to_edit_page" />
+                </Buttons>
+              </NavLink>
+              <Button variant="outlined" color="inherit" sx={{ mr: 1 }} onClick={logout}>
                 <FormattedMessage id="sign_out" />
-              </Buttons>
-            </NavLink>
+              </Button>
+            </>
           ) : (
             <>
               <NavLink to="/sign-in" style={{ color: `inherit`, textDecoration: `none` }}>
