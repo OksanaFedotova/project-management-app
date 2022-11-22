@@ -1,7 +1,17 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from 'hooks/useAuth';
-import { AppBar, Toolbar, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { useAppDispatch } from 'hooks/redux';
+import { removeUser } from 'store/reducers/AuthSlice';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  ToggleButtonGroup,
+  ToggleButton,
+  Button,
+} from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Buttons from '../Buttons';
@@ -17,6 +27,8 @@ const theme = createTheme({
 
 const Header = ({ isSticky }: { isSticky: boolean }) => {
   const [alignment, setAlignment] = React.useState('ru');
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     setAlignment(newAlignment);
@@ -26,6 +38,14 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
 
   const auth = useAuth();
   const isAuth = auth.token;
+
+  const logout = () => {
+    dispatch(removeUser);
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    navigate('/welcome');
+    toast.success('You are logged out!');
+  };
 
   return (
     <header className={isSticky ? 'appbar-sticky' : 'appbar'}>
@@ -57,9 +77,17 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
             </ToggleButtonGroup>
           </ThemeProvider>
           {isAuth ? (
-            <NavLink to="/welcome" style={{ color: `inherit`, textDecoration: `none` }}>
-              <Buttons text="На главную" />
-            </NavLink>
+            <>
+              <NavLink to="/welcome" style={{ color: `inherit`, textDecoration: `none` }}>
+                <Buttons text="На главную" />
+              </NavLink>
+              <NavLink to="/edit-profile" style={{ color: `inherit`, textDecoration: `none` }}>
+                <Buttons text="Редактировать профиль" />
+              </NavLink>
+              <Button variant="outlined" color="inherit" sx={{ mr: 1 }} onClick={logout}>
+                Выйти
+              </Button>
+            </>
           ) : (
             <>
               <NavLink to="/sign-in" style={{ color: `inherit`, textDecoration: `none` }}>
