@@ -6,6 +6,8 @@ import ChangeBoardForm from '../../components/BoardForm';
 import { IBoard } from 'interfaces/IBoard';
 import './BoardsPage.css';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 export default function BoardsPage() {
   const { data } = useGetAllBoardsQuery('');
@@ -31,7 +33,14 @@ export default function BoardsPage() {
               />
             ))}
         </div>
-        <button onClick={() => setBoardForm({ isActive: true, id: '' })}>Добавить</button>
+        <Button
+          variant="contained"
+          sx={{ p: 5 }}
+          onClick={() => setBoardForm({ isActive: true, id: '' })}
+        >
+          <AddCircleOutlineIcon sx={{ mr: 1 }} />
+          Добавить доску
+        </Button>
       </div>
       {boardForm.isActive && (
         <ChangeBoardForm
