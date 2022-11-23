@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Box, TextField } from '@mui/material';
 import { useCreateBoardMutation, useUpdateBoardMutation } from 'store/services/boardAPI';
 import FormInputs from 'interfaces/IFormBoards';
+import { useIntl } from 'react-intl';
 
 export default function BoardForm({ id, onClick }: { id?: string; onClick: () => void }) {
   const {
@@ -19,13 +20,14 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
       : createBoard({ title, description }).catch((e) => console.error(e));
     onClick();
   };
+  const intl = useIntl();
   const ru = {
-    label: 'Обязательно',
-    title: 'Название',
-    descripion: 'Описание',
-    change: 'Изменить',
-    add: 'Добавить',
-    close: 'Закрыть',
+    label: intl.formatMessage({ id: `${'board_label'}` }),
+    title: intl.formatMessage({ id: `${'board_title'}` }),
+    descripion: intl.formatMessage({ id: `${'board_description'}` }),
+    change: intl.formatMessage({ id: `${'change'}` }),
+    add: intl.formatMessage({ id: `${'add'}` }),
+    close: intl.formatMessage({ id: `${'close'}` }),
   };
   const theme = ru;
 
