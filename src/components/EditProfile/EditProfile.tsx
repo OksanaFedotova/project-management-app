@@ -2,9 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
+import { useAuth } from 'hooks/useAuth';
 import { useAppDispatch } from 'hooks/redux';
 import { removeUser, setUpdatedUser } from 'store/reducers/AuthSlice';
 import ModalDelete from 'components/ModalDelete';
+import { ErrorAuth, ISignupRequest, IUser } from 'interfaces/IUser';
+import {
+  useDeleteUserMutation,
+  useGetUserByIdQuery,
+  useUpdateUserMutation,
+} from 'store/services/userAPI';
 import {
   Container,
   Box,
@@ -13,9 +20,8 @@ import {
   Button,
   Backdrop,
   CircularProgress,
+  Divider,
 } from '@mui/material';
-import { useDeleteUserMutation, useUpdateUserMutation } from 'store/services/userAPI';
-import { ErrorAuth, ISignupRequest } from 'interfaces/IUser';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 export default function EditProfile() {
@@ -26,6 +32,25 @@ export default function EditProfile() {
   const [isModal, setIsModal] = useState(false);
   const userId = localStorage.getItem('userId');
   const intl = useIntl();
+  const { data, isLoading: isLoadingName } = useGetUserByIdQuery(userId);
+  const auth = useAuth();
+  const isAuth = auth.token;
+
+  const getUserName = (): Omit<IUser, '_id'> => {
+    if (data && isAuth) {
+      console.log(data);
+      return {
+        name: data.name,
+        login: data.login,
+      };
+    }
+    return {
+      name: 'Name',
+      login: 'Login',
+    };
+  };
+
+  const { name, login } = getUserName();
 
   const {
     register,
@@ -47,7 +72,7 @@ export default function EditProfile() {
   };
 
   const deleteProfile = async (type: string) => {
-    if (type === 'Да') {
+    if (type === intl.formatMessage({ id: `${'yes'}` })) {
       try {
         await deleteUser({ _id: userId });
         dispatch(removeUser);
@@ -76,6 +101,21 @@ export default function EditProfile() {
           handleClick={deleteProfile}
         />
       )}
+      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <Typography component="h3" variant="h6" paddingTop={15}>
+          <span>Имя: {data && name}</span>
+        </Typography>
+        <Typography component="h3" variant="h6">
+          <span> Логин: {data && login}</span>
+        </Typography>
+      </div>
+
+      <Divider
+        sx={{
+          marginBottom: 1,
+          width: 390,
+        }}
+      />
       <Box
         sx={{
           marginTop: 0,
@@ -85,7 +125,7 @@ export default function EditProfile() {
           alignItems: 'center',
         }}
       >
-        {(isLoadingUpdate || isLoadingDelete) && (
+        {(isLoadingUpdate || isLoadingDelete || isLoadingName) && (
           <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
             <CircularProgress color="inherit" size={60} />
           </Backdrop>

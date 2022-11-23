@@ -1,10 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IColumn, TColumnRequest } from 'interfaces/IBoard';
 
+//const url = `https://back-project-app-production.up.railway.app/`; //может быть вынести это в отдельный фалй типа config?
+const url = 'https://serene-everglades-05199.herokuapp.com/';
 export const columnAPI = createApi({
   reducerPath: 'columnApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://serene-everglades-05199.herokuapp.com/',
+    baseUrl: url,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {
