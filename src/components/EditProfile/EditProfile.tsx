@@ -103,10 +103,15 @@ export default function EditProfile() {
       )}
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
         <Typography component="h3" variant="h6" paddingTop={15}>
-          <span>Имя: {data && name}</span>
+          <span>
+            <FormattedMessage id="name_placeholder" />: {data && name}
+          </span>
         </Typography>
         <Typography component="h3" variant="h6">
-          <span> Логин: {data && login}</span>
+          <span>
+            {' '}
+            <FormattedMessage id="login" />: {data && login}
+          </span>
         </Typography>
       </div>
 
