@@ -4,7 +4,7 @@ type TAuthState = {
 };
 
 interface IUser {
-  _id: string;
+  id: string;
   name: string;
   login: string;
 }
@@ -22,7 +22,7 @@ interface ISignupRequest {
 }
 
 type TUpdateUser = {
-  _id: string | null;
+  id: string | null;
   user: ISignupRequest;
 };
 
