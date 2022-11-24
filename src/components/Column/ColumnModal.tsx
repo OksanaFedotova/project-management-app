@@ -4,10 +4,10 @@ import { Button, Box, TextField } from '@mui/material';
 import { useCreateColumnMutation } from 'store/services/columnsAPI';
 
 export default function ColumnModal({
-  id,
+  idBoard,
   onClick,
 }: {
-  id: string | undefined;
+  idBoard: string;
   onClick: () => void;
 }) {
   const {
@@ -15,10 +15,13 @@ export default function ColumnModal({
     handleSubmit,
     formState: { errors },
   } = useForm<{ title: string }>({ mode: 'onSubmit' });
+
+  const [createColumn] = useCreateColumnMutation();
   const onSubmit = ({ title }: { title: string }) => {
+    const body = { title: title };
+    createColumn({ idBoard, body }).catch((e) => console.error(e));
     onClick();
   };
-  const [createColumn] = useCreateColumnMutation();
   const ru = {
     label: 'Обязательно',
     title: 'Название',
