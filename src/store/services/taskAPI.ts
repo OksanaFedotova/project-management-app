@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { URL } from 'configs/constants';
 import { ITaskUpdate, TTaskRequest } from 'interfaces/IBoard';
 
 export const taskAPI = createApi({
   reducerPath: 'taskApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://serene-everglades-05199.herokuapp.com/',
+    baseUrl: URL,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {
