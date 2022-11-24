@@ -14,7 +14,7 @@ export const boardAPI = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Boards'],
+  tagTypes: ['Boards', 'Columns'],
   endpoints: (builder) => ({
     getAllBoards: builder.query({
       query: () => 'boards',
@@ -22,7 +22,7 @@ export const boardAPI = createApi({
     }),
     getBoardById: builder.query({
       query: (id) => `boards/${id}`,
-      providesTags: ['Boards'],
+      providesTags: ['Boards', 'Columns'],
     }),
     createBoard: builder.mutation<IBoard, TBoardRequest>({
       query: (body) => ({
