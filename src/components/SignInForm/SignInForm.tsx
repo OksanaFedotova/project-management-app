@@ -40,7 +40,7 @@ export default function SignInForm() {
       dispatch(setToken(userSignIn));
       localStorage.setItem('token', userSignIn.token);
       const parsedToken = parseToken(userSignIn.token);
-      localStorage.setItem('userId', parsedToken.id);
+      localStorage.setItem('userId', parsedToken.userId);
       navigate('/boards');
       toast.success('You are authorized');
     } catch (e) {

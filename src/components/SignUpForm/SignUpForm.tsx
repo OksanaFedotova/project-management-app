@@ -16,7 +16,6 @@ import {
   Backdrop,
   CircularProgress,
 } from '@mui/material';
-import parseToken from 'helpers/parseToken';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 export default function SignUpForm() {
@@ -43,8 +42,7 @@ export default function SignUpForm() {
       const userSignIn = await signin({ login, password }).unwrap();
       dispatch(setToken(userSignIn));
       localStorage.setItem('token', userSignIn.token);
-      const parsedToken = parseToken(userSignIn.token);
-      localStorage.setItem('userId', parsedToken.id);
+      localStorage.setItem('userId', userSignUp.id);
       navigate('/boards');
       toast.success('You are authorized');
     } catch (e) {
