@@ -25,10 +25,22 @@ export default function BoardCard({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={() => handleUpdate(id)}>
+        <Button
+          size="small"
+          onClick={(e: React.SyntheticEvent<EventTarget>) => {
+            e.stopPropagation();
+            handleUpdate(id);
+          }}
+        >
           Изменить
         </Button>
-        <Button size="small" onClick={() => handleDelete(id)}>
+        <Button
+          size="small"
+          onClick={(e: React.SyntheticEvent<EventTarget>) => {
+            e.stopPropagation();
+            handleDelete(id);
+          }}
+        >
           Удалить
         </Button>
       </CardActions>
