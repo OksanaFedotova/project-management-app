@@ -25,7 +25,6 @@ export default function BoardPage() {
     addColumn: 'добавить список',
   };
   const theme = ru;
-  console.log(data);
   return (
     <Layout>
       {data && (

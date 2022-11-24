@@ -1,6 +1,13 @@
 type TBoardRequest = Omit<IBoard, 'id'>;
 type TColumnRequest = Omit<IColumn, 'id'>;
-type TTaskRequest = Omit<ITaskUpdate, 'id'>;
+
+type TTaskRequest = {
+  title: string;
+  description: string;
+  userId: string;
+  boardId?: string;
+  columnId?: string;
+};
 
 interface ITaskUpdate {
   id: string;

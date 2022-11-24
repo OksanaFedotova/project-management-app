@@ -1,9 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Box, TextField } from '@mui/material';
-import { useCreateColumnMutation } from 'store/services/columnsAPI';
-import { TTaskRequest } from 'interfaces/IBoard';
 import { useCreateTaskMutation } from 'store/services/taskAPI';
+import { TTaskRequest } from 'interfaces/IBoard';
+import { Button, Box, TextField } from '@mui/material';
 
 export default function TaskModal({
   columnId,

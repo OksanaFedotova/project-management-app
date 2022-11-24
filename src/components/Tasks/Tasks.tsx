@@ -1,9 +1,8 @@
-import { ListItem, ListItemText } from '@mui/material';
-import { ITask, IColumn } from 'interfaces/IBoard';
 import React from 'react';
+import { ITask } from 'interfaces/IBoard';
+import { ListItem, ListItemText } from '@mui/material';
 
 export default function Tasks({ tasks }: { tasks: ITask[] }) {
-  //   const tasksData = props;
   return (
     <>
       {tasks &&
@@ -14,7 +13,4 @@ export default function Tasks({ tasks }: { tasks: ITask[] }) {
         ))}
     </>
   );
-}
-
-{
 }
