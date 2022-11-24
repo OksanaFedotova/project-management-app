@@ -36,7 +36,7 @@ export default function EditProfile() {
   const auth = useAuth();
   const isAuth = auth.token;
 
-  const getUserName = (): Omit<IUser, '_id'> => {
+  const getUserName = (): Omit<IUser, 'id'> => {
     if (data && isAuth) {
       console.log(data);
       return {

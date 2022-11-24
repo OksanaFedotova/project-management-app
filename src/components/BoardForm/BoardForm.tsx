@@ -1,8 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Box, TextField } from '@mui/material';
+import { Button, Box, TextField, Typography } from '@mui/material';
 import { useCreateBoardMutation, useUpdateBoardMutation } from 'store/services/boardAPI';
 import FormInputs from 'interfaces/IFormBoards';
+import './BoardForm.css';
 import { useIntl } from 'react-intl';
 
 export default function BoardForm({ id, onClick }: { id?: string; onClick: () => void }) {
@@ -32,38 +33,55 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
   const theme = ru;
 
   return (
-    <div className="boards-form">
-      <Box
-        onSubmit={handleSubmit(onSubmit)}
-        component="form"
-        sx={{
-          width: 350,
-          display: 'flex',
-          flexDirection: 'column',
-          '& .MuiTextField-root': { m: 1 },
-          backgroundColor: '#ffffff',
-        }}
-        autoComplete="off"
-      >
-        <TextField
-          {...register('title', { required: true })}
-          id="outlined-required"
-          label={theme.label}
-          defaultValue={theme.title}
-          error={!!errors.title}
-        />
-        <TextField
-          {...register('description', { required: true })}
-          id="outlined-required"
-          label={theme.label}
-          defaultValue={theme.descripion}
-          multiline
-          error={!!errors.description}
-        />
-        {id && <Button type="submit">{theme.change}</Button>}
-        {!id && <Button type="submit">{theme.add}</Button>}
-        <Button onClick={onClick}>{theme.close}</Button>
-      </Box>
+    <div className="form-wrapper">
+      <div className="boards-form">
+        <Box
+          onSubmit={handleSubmit(onSubmit)}
+          component="form"
+          sx={{
+            width: 350,
+            display: 'flex',
+            flexDirection: 'column',
+            '& .MuiTextField-root': { m: 1 },
+            backgroundColor: '#ffffff',
+          }}
+          autoComplete="off"
+        >
+          <Typography align="center" sx={{ pt: 1, pb: 2, textTransform: 'uppercase' }}>
+            Создать доску
+          </Typography>
+          <TextField
+            {...register('title', { required: true })}
+            id="outlined-required"
+            label={theme.label}
+            defaultValue={theme.title}
+            error={!!errors.title}
+          />
+          <TextField
+            {...register('description', { required: true })}
+            id="outlined-required"
+            label={theme.label}
+            defaultValue={theme.descripion}
+            multiline
+            error={!!errors.description}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+            {id && (
+              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                {theme.change}
+              </Button>
+            )}
+            {!id && (
+              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                {theme.add}
+              </Button>
+            )}
+            <Button variant="outlined" sx={{ mt: 2 }} onClick={onClick}>
+              {theme.close}
+            </Button>
+          </Box>
+        </Box>
+      </div>
     </div>
   );
 }

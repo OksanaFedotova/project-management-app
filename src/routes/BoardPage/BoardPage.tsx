@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetBoardByIdQuery } from 'store/services/boardAPI';
-import { Button, fabClasses } from '@mui/material';
+import { Button } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
 import { useIntl } from 'react-intl';
@@ -9,10 +9,13 @@ import { useIntl } from 'react-intl';
 import './BoardPage.css';
 import BoardForm from 'components/BoardForm';
 import ColumnModal from 'components/Column/ColumnModal';
+import ColumnCard from 'components/Column/ColumnCard';
+import IColumnCard from 'interfaces/IColumnCard';
 
 export default function BoardPage() {
   const { id } = useParams();
-  const { data } = useGetBoardByIdQuery(id);
+  const boardId = id ? id : '';
+  const { data } = useGetBoardByIdQuery(boardId);
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
   const [addActive, setAddActive] = useState(false);
@@ -43,8 +46,11 @@ export default function BoardPage() {
           {descriptionActive && (
             <BoardDescription title={data.title} description={data.description} />
           )}
-          {changeActive && <BoardForm id={id} onClick={() => setChangeActive(false)} />}
-          {addActive && <ColumnModal id={id} onClick={() => setAddActive(false)} />}
+          {changeActive && <BoardForm id={boardId} onClick={() => setChangeActive(false)} />}
+          {addActive && <ColumnModal idBoard={boardId} onClick={() => setAddActive(false)} />}
+          {data.columns.map((column: IColumnCard) => (
+            <ColumnCard key={column.id} data={column} />
+          ))}
         </section>
       )}
     </Layout>

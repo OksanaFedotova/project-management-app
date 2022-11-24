@@ -14,12 +14,15 @@ export const columnAPI = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Columns'],
   endpoints: (builder) => ({
     getAllColumns: builder.query({
       query: (idBoard) => `boards/${idBoard}/columns`,
+      providesTags: ['Columns'],
     }),
     getColumnById: builder.query({
       query: ({ boardId, columnId }) => `boards/${boardId}/columns/${columnId}`,
+      providesTags: ['Columns'],
     }),
     createColumn: builder.mutation<IColumn, { idBoard: string; body: { title: string } }>({
       query: ({ idBoard, body }) => ({
@@ -27,6 +30,7 @@ export const columnAPI = createApi({
         method: 'POST',
         body: body,
       }),
+      invalidatesTags: ['Columns'],
     }),
     updateColumn: builder.mutation<
       IColumn,
@@ -37,12 +41,14 @@ export const columnAPI = createApi({
         method: 'PUT',
         body: body,
       }),
+      invalidatesTags: ['Columns'],
     }),
-    deleteBoard: builder.mutation({
+    deleteColumn: builder.mutation({
       query: ({ idBoard, idColumn }) => ({
-        url: `boards/${idBoard}/colimns/${idColumn}`,
+        url: `boards/${idBoard}/columns/${idColumn}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Columns'],
     }),
   }),
 });
@@ -50,7 +56,7 @@ export const columnAPI = createApi({
 export const {
   useGetAllColumnsQuery,
   useCreateColumnMutation,
-  useDeleteBoardMutation,
+  useDeleteColumnMutation,
   useGetColumnByIdQuery,
   useUpdateColumnMutation,
 } = columnAPI;
