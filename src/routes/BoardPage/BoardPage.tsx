@@ -4,6 +4,7 @@ import { useGetBoardByIdQuery } from 'store/services/boardAPI';
 import { Button, fabClasses } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
+import { useIntl } from 'react-intl';
 
 import './BoardPage.css';
 import BoardForm from 'components/BoardForm';
@@ -15,11 +16,12 @@ export default function BoardPage() {
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
   const [addActive, setAddActive] = useState(false);
+  const intl = useIntl();
   const ru = {
-    description: 'описание',
-    delete: 'удалить',
-    change: 'изменить',
-    addColumn: 'добавить список',
+    description: intl.formatMessage({ id: `${'board_description'}` }),
+    delete: intl.formatMessage({ id: `${'yes'}` }),
+    change: intl.formatMessage({ id: `${'change'}` }),
+    addColumn: intl.formatMessage({ id: `${'add_list'}` }),
   };
   const theme = ru;
   console.log(data);
