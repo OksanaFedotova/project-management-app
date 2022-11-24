@@ -14,13 +14,16 @@ export const taskAPI = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Tasks'],
   endpoints: (builder) => ({
     getAllTasks: builder.query({
       query: ({ boardId, columnId }) => `boards/${boardId}/columns/${columnId}/tasks`,
+      providesTags: ['Tasks'],
     }),
     getTaskById: builder.query({
       query: ({ boardId, columnId, taskId }) =>
         `boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
+      providesTags: ['Tasks'],
     }),
     createTask: builder.mutation<
       ITaskUpdate,
@@ -31,6 +34,7 @@ export const taskAPI = createApi({
         method: 'POST',
         body: body,
       }),
+      invalidatesTags: ['Tasks'],
     }),
     updateTask: builder.mutation<ITaskUpdate, { idTask: string; body: TTaskRequest }>({
       query: ({ idTask, body }) => ({
@@ -38,12 +42,14 @@ export const taskAPI = createApi({
         method: 'PUT',
         body: body,
       }),
+      invalidatesTags: ['Tasks'],
     }),
     deleteTask: builder.mutation({
       query: ({ idBoard, idColumn, idTask }) => ({
         url: `boards/${idBoard}/colimns/${idColumn}/tasks/${idTask}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Tasks'],
     }),
   }),
 });

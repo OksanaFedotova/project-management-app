@@ -27,7 +27,6 @@ export default function BoardPage() {
     addColumn: intl.formatMessage({ id: `${'add_list'}` }),
   };
   const theme = ru;
-  console.log(data);
   return (
     <Layout>
       {data && (
