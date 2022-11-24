@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { URL } from 'configs/constants';
 import { TSigninRequest, ISigninResponse, ISignupRequest, IUser } from 'interfaces/IUser';
 
 export const authAPI = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://back-project-app-production.up.railway.app/auth/',
+    baseUrl: `${URL}`,
   }),
   endpoints: (builder) => ({
     signin: builder.mutation<ISigninResponse, TSigninRequest>({

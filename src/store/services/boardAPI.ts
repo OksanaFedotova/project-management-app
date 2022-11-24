@@ -1,12 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { URL } from 'configs/constants';
 import { IBoard, TBoardRequest } from 'interfaces/IBoard';
-
-//const url = `https://back-project-app-production.up.railway.app/`;
 
 export const boardAPI = createApi({
   reducerPath: 'boardApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://back-project-app-production.up.railway.app/',
+    baseUrl: URL,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {
