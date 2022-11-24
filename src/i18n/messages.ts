@@ -50,6 +50,7 @@ export const messages = {
     add: 'Добавить',
     close: 'Закрыть',
     change: 'Изменить',
+    add_board: 'Добавить доску',
   },
   [LOCALES.ENGLISH]: {
     project_title: 'Task manager',
@@ -100,5 +101,6 @@ export const messages = {
     add: 'Add',
     close: 'Close',
     change: 'Change',
+    add_board: 'Add board',
   },
 };

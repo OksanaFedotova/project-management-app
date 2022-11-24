@@ -8,6 +8,7 @@ import './BoardsPage.css';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { FormattedMessage } from 'react-intl';
 
 export default function BoardsPage() {
   const { data } = useGetAllBoardsQuery('');
@@ -39,7 +40,7 @@ export default function BoardsPage() {
           onClick={() => setBoardForm({ isActive: true, id: '' })}
         >
           <AddCircleOutlineIcon sx={{ mr: 1 }} />
-          Добавить доску
+          <FormattedMessage id="add_board" />
         </Button>
       </div>
       {boardForm.isActive && (
