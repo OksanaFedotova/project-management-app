@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Box, TextField } from '@mui/material';
 import { useCreateColumnMutation } from 'store/services/columnsAPI';
+import { useIntl } from 'react-intl';
 
 export default function ColumnModal({
   idBoard,
@@ -22,11 +23,12 @@ export default function ColumnModal({
     createColumn({ idBoard, body }).catch((e) => console.error(e));
     onClick();
   };
+  const intl = useIntl();
   const ru = {
-    label: 'Обязательно',
-    title: 'Название',
-    change: 'Изменить',
-    close: 'Закрыть',
+    label: intl.formatMessage({ id: `${'board_label'}` }),
+    title: intl.formatMessage({ id: `${'board_title'}` }),
+    change: intl.formatMessage({ id: `${'change'}` }),
+    close: intl.formatMessage({ id: `${'close'}` }),
   };
   const theme = ru;
   return (

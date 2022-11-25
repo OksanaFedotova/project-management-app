@@ -5,6 +5,7 @@ import Tasks from 'components/Tasks';
 import TaskModal from 'components/Tasks/TaskModal';
 import IColumnCard from 'interfaces/IColumnCard';
 import { CardContent, Typography, Card, Button } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function ColumnCard({ data }: { data: IColumnCard }) {
@@ -46,6 +47,9 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
           Создать задачу
         </Button>
       </Card>
+      <Button onClick={() => setAddActive(true)}>
+        <FormattedMessage id="create_task" />
+      </Button>
       {addActive && (
         <TaskModal
           columnId={id}

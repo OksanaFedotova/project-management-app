@@ -5,6 +5,7 @@ import { useCreateTaskMutation, useUpdateTaskMutation } from 'store/services/tas
 import { ITaskResponse, TTaskRequest } from 'interfaces/IBoard';
 import { ErrorAuth } from 'interfaces/IUser';
 import { Button, Box, TextField } from '@mui/material';
+import { useIntl } from 'react-intl';
 
 export default function TaskModal({
   columnId,
@@ -67,13 +68,13 @@ export default function TaskModal({
     }
     onClick();
   };
-
+  const intl = useIntl();
   const ru = {
-    title: 'Название',
-    description: 'Описание',
-    create: 'Создать',
+    title: intl.formatMessage({ id: `${'board_title'}` }),
+    description: intl.formatMessage({ id: `${'board_description'}` }),
+    create: intl.formatMessage({ id: `${'create'}` }),
     edit: 'Изменить',
-    close: 'Закрыть',
+    close: intl.formatMessage({ id: `${'close'}` }),
   };
   const theme = ru;
   return (

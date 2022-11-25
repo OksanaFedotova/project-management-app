@@ -4,6 +4,7 @@ import authReducer from './reducers/AuthSlice';
 import userReducer from './reducers/UserSlice';
 import columnReducer from './reducers/ColumnSlice';
 import taskReducer from './reducers/TaskSlice';
+import languageReducer from './reducers/LanguageSlice';
 import { authAPI } from './services/authAPI';
 import { boardAPI } from './services/boardAPI';
 import { userAPI } from './services/userAPI';
@@ -23,6 +24,7 @@ const setupStore = () =>
       user: userReducer,
       column: columnReducer,
       task: taskReducer,
+      translate: languageReducer,
     },
     middleware: (getDefaultMiddleware) => [
       ...getDefaultMiddleware(),
