@@ -4,7 +4,7 @@ import { Button, Box, TextField, Typography } from '@mui/material';
 import { useCreateBoardMutation, useUpdateBoardMutation } from 'store/services/boardAPI';
 import FormInputs from 'interfaces/IFormBoards';
 import './BoardForm.css';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 export default function BoardForm({ id, onClick }: { id?: string; onClick: () => void }) {
   const {
@@ -48,7 +48,7 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
           autoComplete="off"
         >
           <Typography align="center" sx={{ pt: 1, pb: 2, textTransform: 'uppercase' }}>
-            Создать доску
+            <FormattedMessage id="board" />
           </Typography>
           <TextField
             {...register('title', { required: true })}
