@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from 'hooks/useAuth';
@@ -16,6 +16,10 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Buttons from '../Buttons';
 import './Header.css';
+import type { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
+import { setCurrentLocale } from 'store/reducers/LanguageSlice';
 
 const theme = createTheme({
   palette: {
@@ -24,26 +28,27 @@ const theme = createTheme({
     },
   },
 });
-
 const Header = ({ isSticky }: { isSticky: boolean }) => {
-  const [alignment, setAlignment] = React.useState('ru');
+  const lang = useSelector((state: RootState) => state.translate.currentLocale);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const [alignment, setAlignment] = useState(lang);
+  localStorage.setItem('Language', lang);
 
-  const handleChange = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
-    setAlignment(newAlignment);
+  const handleChange = (event: React.MouseEvent<HTMLElement>) => {
+    const target = event.target as HTMLButtonElement;
+    setAlignment(target.value);
+    dispatch(setCurrentLocale(target.value));
+    localStorage.setItem('Language', target.value);
   };
 
   const navigator = useNavigate();
-
   const auth = useAuth();
   const isAuth = auth.token;
-
   const logout = () => {
     dispatch(removeUser);
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
-    navigate('/welcome');
+    navigator('/welcome');
     toast.success('You are logged out!');
   };
 
@@ -60,7 +65,7 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
             className="welcome-page-link"
             onClick={() => navigator('..')}
           >
-            Главная
+            <FormattedMessage id="main_page_name" />
           </Typography>
           <ThemeProvider theme={theme}>
             <ToggleButtonGroup
@@ -79,22 +84,30 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
           {isAuth ? (
             <>
               <NavLink to="/welcome" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons text="На главную" />
+                <Buttons>
+                  <FormattedMessage id="to_main" />
+                </Buttons>
               </NavLink>
               <NavLink to="/edit-profile" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons text="Редактировать профиль" />
+                <Buttons>
+                  <FormattedMessage id="to_edit_page" />
+                </Buttons>
               </NavLink>
               <Button variant="outlined" color="inherit" sx={{ mr: 1 }} onClick={logout}>
-                Выйти
+                <FormattedMessage id="sign_out" />
               </Button>
             </>
           ) : (
             <>
               <NavLink to="/sign-in" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons text="Вход" />
+                <Buttons>
+                  <FormattedMessage id="sign_in" />
+                </Buttons>
               </NavLink>
               <NavLink to="/sign-up" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons text="Регистрация" />
+                <Buttons>
+                  <FormattedMessage id="sign_up" />
+                </Buttons>
               </NavLink>
             </>
           )}

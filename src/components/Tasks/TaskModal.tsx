@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useCreateTaskMutation } from 'store/services/taskAPI';
 import { TTaskRequest } from 'interfaces/IBoard';
 import { Button, Box, TextField } from '@mui/material';
+import { useIntl } from 'react-intl';
 
 export default function TaskModal({
   columnId,
@@ -26,12 +27,12 @@ export default function TaskModal({
     createTask({ columnId, boardId, body: { title, description, userId } });
     onClick();
   };
-
+  const intl = useIntl();
   const ru = {
-    title: 'Название',
-    description: 'Описание',
-    create: 'Создать',
-    close: 'Закрыть',
+    title: intl.formatMessage({ id: `${'board_title'}` }),
+    description: intl.formatMessage({ id: `${'board_description'}` }),
+    create: intl.formatMessage({ id: `${'create'}` }),
+    close: intl.formatMessage({ id: `${'close'}` }),
   };
   const theme = ru;
   return (

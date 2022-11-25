@@ -4,6 +4,7 @@ import { Button, Box, TextField, Typography } from '@mui/material';
 import { useCreateBoardMutation, useUpdateBoardMutation } from 'store/services/boardAPI';
 import FormInputs from 'interfaces/IFormBoards';
 import './BoardForm.css';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 export default function BoardForm({ id, onClick }: { id?: string; onClick: () => void }) {
   const {
@@ -20,13 +21,14 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
       : createBoard({ title, description }).catch((e) => console.error(e));
     onClick();
   };
+  const intl = useIntl();
   const ru = {
-    label: 'Обязательно',
-    title: 'Название',
-    descripion: 'Описание',
-    change: 'Изменить',
-    add: 'Добавить',
-    close: 'Закрыть',
+    label: intl.formatMessage({ id: `${'board_label'}` }),
+    title: intl.formatMessage({ id: `${'board_title'}` }),
+    descripion: intl.formatMessage({ id: `${'board_description'}` }),
+    change: intl.formatMessage({ id: `${'change'}` }),
+    add: intl.formatMessage({ id: `${'add'}` }),
+    close: intl.formatMessage({ id: `${'close'}` }),
   };
   const theme = ru;
 
@@ -42,13 +44,11 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
             flexDirection: 'column',
             '& .MuiTextField-root': { m: 1 },
             backgroundColor: '#ffffff',
-            p: 3,
-            borderRadius: 3,
           }}
           autoComplete="off"
         >
           <Typography align="center" sx={{ pt: 1, pb: 2, textTransform: 'uppercase' }}>
-            Создать доску
+            <FormattedMessage id="board" />
           </Typography>
           <TextField
             {...register('title', { required: true })}
