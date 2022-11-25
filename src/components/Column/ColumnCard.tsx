@@ -21,7 +21,12 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
       </Card>
       <Button onClick={() => setAddActive(true)}>Создать задачу</Button>
       {addActive && (
-        <TaskModal columnId={id} boardId={boardId as string} onClick={() => setAddActive(false)} />
+        <TaskModal
+          columnId={id}
+          boardId={boardId as string}
+          isCreate={true}
+          onClick={() => setAddActive(false)}
+        />
       )}
     </>
   );

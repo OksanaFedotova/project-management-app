@@ -9,7 +9,7 @@ type TTaskRequest = {
   columnId?: string;
 };
 
-interface ITaskUpdate {
+interface ITaskResponse {
   id: string;
   title: string;
   order: number;
@@ -47,4 +47,13 @@ interface IFile {
   fileSize: number;
 }
 
-export { IBoard, TBoardRequest, IColumn, ITask, IFile, TColumnRequest, TTaskRequest, ITaskUpdate };
+export {
+  IBoard,
+  TBoardRequest,
+  IColumn,
+  ITask,
+  IFile,
+  TColumnRequest,
+  TTaskRequest,
+  ITaskResponse,
+};
