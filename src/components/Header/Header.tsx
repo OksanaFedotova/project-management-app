@@ -11,6 +11,7 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   Button,
+  Box,
 } from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -56,17 +57,23 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
     <header className={isSticky ? 'appbar-sticky' : 'appbar'}>
       <AppBar className={isSticky ? 'appbar-sticky' : 'appbar'}>
         <Toolbar className="toolbar">
-          <HomeOutlinedIcon className="welcome-page-link" onClick={() => navigator('..')} />
-          <Typography
-            variant="h6"
-            color="inherit"
-            sx={{ flexGrow: 1, pl: 1 }}
-            component="div"
-            className="welcome-page-link"
-            onClick={() => navigator('..')}
-          >
-            <FormattedMessage id="main_page_name" />
-          </Typography>
+          <HomeOutlinedIcon className="welcome-page-link" onClick={() => navigator('/welcome')} />
+          {isAuth ? (
+            <Box sx={{ flexGrow: 1, pl: 2 }} component="div">
+              <NavLink to="/boards" style={{ color: `inherit`, textDecoration: `none` }}>
+                <Buttons>
+                  <FormattedMessage id="boards_page_link" />
+                </Buttons>
+              </NavLink>
+            </Box>
+          ) : (
+            <Typography
+              sx={{ flexGrow: 1, pl: 1 }}
+              component="div"
+              className="welcome-page-link"
+              onClick={() => navigator('..')}
+            />
+          )}
           <ThemeProvider theme={theme}>
             <ToggleButtonGroup
               color="primary"
