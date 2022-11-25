@@ -27,7 +27,7 @@ export default function TaskModal({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ title: string; description: string }>({ mode: 'onSubmit' });
+  } = useForm<{ title: string; description: string }>({ mode: 'onChange' });
 
   const onSubmit = ({ title, description }: Omit<TTaskRequest, 'userId'>) => {
     if (isCreate) {
@@ -91,14 +91,32 @@ export default function TaskModal({
         autoComplete="off"
       >
         <TextField
-          {...register('title', { required: true })}
           label={errors.title ? errors.title.message : theme.title}
           error={!!errors.title}
+          {...register('title', {
+            required: {
+              value: true,
+              message: 'Название обязательно',
+            },
+            maxLength: {
+              value: 50,
+              message: 'Максимум 50 символов',
+            },
+          })}
         />
         <TextField
-          {...register('description', { required: true })}
           label={errors.description ? errors.description.message : theme.description}
           error={!!errors.description}
+          {...register('description', {
+            required: {
+              value: true,
+              message: 'Описание обязательно',
+            },
+            maxLength: {
+              value: 100,
+              message: 'Максимум 100 символов',
+            },
+          })}
         />
         <Button type="submit">{isCreate ? theme.create : theme.edit}</Button>
         <Button onClick={onClick}>{theme.close}</Button>

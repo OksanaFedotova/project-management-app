@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useDeleteTaskMutation, useUpdateTaskMutation } from 'store/services/taskAPI';
+import { useDeleteTaskMutation } from 'store/services/taskAPI';
 import ModalDelete from 'components/ModalDelete';
 import { ITaskResponse } from 'interfaces/IBoard';
-import { IconButton, ListItem, ListItemText } from '@mui/material';
+import { IconButton, ListItem, ListItemText, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import TaskModal from './TaskModal';
@@ -48,30 +48,57 @@ export default function Tasks({ tasks }: { tasks: ITaskResponse[] }) {
           onClick={() => setAddActive(false)}
         />
       )}
-      {tasks &&
-        tasks.map((item: ITaskResponse) => (
-          <ListItem key={item.id} sx={{ border: 'solid 1px', marginBottom: 1 }}>
-            <ListItemText primary={item.title} />
-            <IconButton
-              aria-label="edit"
-              onClick={() => {
-                setAddActive(true);
-                setCurrTask(item);
+      <div style={{ overflow: 'hidden auto' }}>
+        {tasks &&
+          tasks.map((item: ITaskResponse) => (
+            <ListItem
+              key={item.id}
+              sx={{
+                borderRadius: 2,
+                backgroundColor: '#FFFFFF',
+                marginBottom: 1,
+                padding: 1,
+                display: 'flex',
+                justifyContent: 'space-between',
+                cursor: 'grab',
               }}
             >
-              <EditIcon />
-            </IconButton>
-            <IconButton
-              aria-label="delete"
-              onClick={() => {
-                setIsModal(true);
-                setCurrTask(item);
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </ListItem>
-        ))}
+              <div>
+                <Typography variant="subtitle1" sx={{ maxWidth: 200, overflowWrap: 'break-word' }}>
+                  {item.title}
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ maxWidth: 200, overflowWrap: 'break-word', color: '#777777' }}
+                >
+                  {item.description}
+                </Typography>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <IconButton
+                  sx={{ padding: 0.5 }}
+                  aria-label="edit"
+                  onClick={() => {
+                    setAddActive(true);
+                    setCurrTask(item);
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  sx={{ padding: 0.5 }}
+                  aria-label="delete"
+                  onClick={() => {
+                    setIsModal(true);
+                    setCurrTask(item);
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </div>
+            </ListItem>
+          ))}
+      </div>
     </>
   );
 }
