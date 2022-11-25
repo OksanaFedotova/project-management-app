@@ -54,6 +54,7 @@ export default function BoardPage() {
               gap: 20,
               overflowX: 'auto',
               alignItems: 'flex-start',
+              marginBottom: 4,
             }}
           >
             {data.columns.map((column: IColumnCard) => (

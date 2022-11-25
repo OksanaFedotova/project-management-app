@@ -56,7 +56,7 @@ export default function Tasks({ tasks }: { tasks: ITaskResponse[] }) {
               sx={{
                 borderRadius: 2,
                 backgroundColor: '#FFFFFF',
-                marginBottom: 1,
+                marginBottom: 0.5,
                 padding: 1,
                 display: 'flex',
                 justifyContent: 'space-between',

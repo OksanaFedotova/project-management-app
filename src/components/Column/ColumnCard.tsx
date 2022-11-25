@@ -20,8 +20,9 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
         sx={{
           maxWidth: 350,
           minWidth: 350,
+          maxHeight: 'calc(100vh - 300px)',
           margin: 0.5,
-          padding: 1,
+          padding: 0.5,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -29,12 +30,12 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
           backgroundColor: '#F2F7FF',
         }}
       >
-        <Typography variant="h5" sx={{ m: 1 }}>
+        <Typography variant="h6" sx={{ m: 0.5 }}>
           {title}
         </Typography>
         <CardContent
           sx={{
-            padding: 1.5,
+            padding: 0.5,
             width: 330,
             overflow: 'hidden auto',
             minHeight: 8,
@@ -44,12 +45,9 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
           <Tasks tasks={tasksArray} />
         </CardContent>
         <Button sx={{ mb: 1.5 }} startIcon={<AddIcon />} onClick={() => setAddActive(true)}>
-          Создать задачу
+          <FormattedMessage id="create_task" />
         </Button>
       </Card>
-      <Button onClick={() => setAddActive(true)}>
-        <FormattedMessage id="create_task" />
-      </Button>
       {addActive && (
         <TaskModal
           columnId={id}
