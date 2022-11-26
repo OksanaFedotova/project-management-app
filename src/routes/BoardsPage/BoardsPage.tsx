@@ -6,8 +6,9 @@ import ChangeBoardForm from '../../components/BoardForm';
 import { IBoard } from 'interfaces/IBoard';
 import './BoardsPage.css';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { FormattedMessage } from 'react-intl';
 
 export default function BoardsPage() {
   const { data } = useGetAllBoardsQuery('');
@@ -33,14 +34,16 @@ export default function BoardsPage() {
               />
             ))}
         </div>
-        <Button
-          variant="contained"
-          sx={{ p: 5 }}
-          onClick={() => setBoardForm({ isActive: true, id: '' })}
-        >
-          <AddCircleOutlineIcon sx={{ mr: 1 }} />
-          Добавить доску
-        </Button>
+        <Box textAlign="center">
+          <Button
+            variant="contained"
+            sx={{ p: 5, mb: 5 }}
+            onClick={() => setBoardForm({ isActive: true, id: '' })}
+          >
+            <AddCircleOutlineIcon sx={{ mr: 1 }} />
+            <FormattedMessage id="add_board" />
+          </Button>
+        </Box>
       </div>
       {boardForm.isActive && (
         <ChangeBoardForm

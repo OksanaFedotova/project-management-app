@@ -4,6 +4,7 @@ import notFoundImage from '../../assets/notFound.jpg';
 import './NotFoundPage.css';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
 
 export default function NotFoundPage() {
   return (
@@ -12,7 +13,9 @@ export default function NotFoundPage() {
         <div className="not-found-page">
           <img className="not-found-img" src={notFoundImage} alt="Not Found Page Image" />
           <NavLink to="/welcome" style={{ color: `inherit`, textDecoration: `none` }}>
-            <Button variant="contained">На главную</Button>
+            <Button variant="contained">
+              <FormattedMessage id="to_main" />
+            </Button>
           </NavLink>
         </div>
       </Layout>

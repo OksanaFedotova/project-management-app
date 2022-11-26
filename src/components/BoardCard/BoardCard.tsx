@@ -1,6 +1,7 @@
 import React from 'react';
 import { CardActions, CardContent, Typography, Button, Card } from '@mui/material';
 import { IBoard } from 'interfaces/IBoard';
+import { FormattedMessage } from 'react-intl';
 
 export default function BoardCard({
   board,
@@ -32,7 +33,7 @@ export default function BoardCard({
             handleUpdate(id);
           }}
         >
-          Изменить
+          <FormattedMessage id="change" />
         </Button>
         <Button
           size="small"
@@ -41,7 +42,7 @@ export default function BoardCard({
             handleDelete(id);
           }}
         >
-          Удалить
+          <FormattedMessage id="yes" />
         </Button>
       </CardActions>
     </Card>

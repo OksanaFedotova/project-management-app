@@ -1,8 +1,15 @@
 type TBoardRequest = Omit<IBoard, 'id'>;
 type TColumnRequest = Omit<IColumn, 'id'>;
-type TTaskRequest = Omit<ITaskUpdate, 'id'>;
 
-interface ITaskUpdate {
+type TTaskRequest = {
+  title: string;
+  description: string;
+  userId: string;
+  boardId?: string;
+  columnId?: string;
+};
+
+interface ITaskResponse {
   id: string;
   title: string;
   order: number;
@@ -40,4 +47,13 @@ interface IFile {
   fileSize: number;
 }
 
-export { IBoard, TBoardRequest, IColumn, ITask, IFile, TColumnRequest, TTaskRequest, ITaskUpdate };
+export {
+  IBoard,
+  TBoardRequest,
+  IColumn,
+  ITask,
+  IFile,
+  TColumnRequest,
+  TTaskRequest,
+  ITaskResponse,
+};
