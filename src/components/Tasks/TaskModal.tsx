@@ -36,32 +36,45 @@ export default function TaskModal({
   };
   const theme = ru;
   return (
-    <div className="boards-form">
-      <Box
-        onSubmit={handleSubmit(onSubmit)}
-        component="form"
-        sx={{
-          width: 350,
-          display: 'flex',
-          flexDirection: 'column',
-          '& .MuiTextField-root': { m: 1 },
-          backgroundColor: '#ffffff',
-        }}
-        autoComplete="off"
-      >
-        <TextField
-          {...register('title', { required: true })}
-          label={errors.title ? errors.title.message : theme.title}
-          error={!!errors.title}
-        />
-        <TextField
-          {...register('description', { required: true })}
-          label={errors.description ? errors.description.message : theme.description}
-          error={!!errors.description}
-        />
-        <Button type="submit">{theme.create}</Button>
-        <Button onClick={onClick}>{theme.close}</Button>
-      </Box>
+    <div className="form-wrapper">
+      <div className="boards-form">
+        <Box
+          onSubmit={handleSubmit(onSubmit)}
+          component="form"
+          sx={(theme) => ({
+            width: 350,
+            display: 'flex',
+            flexDirection: 'column',
+            '& .MuiTextField-root': { m: 1 },
+            backgroundColor: '#ffffff',
+            p: 3,
+            borderRadius: 3,
+            [theme.breakpoints.down('sm')]: {
+              width: 300,
+            },
+          })}
+          autoComplete="off"
+        >
+          <TextField
+            {...register('title', { required: true })}
+            label={errors.title ? errors.title.message : theme.title}
+            error={!!errors.title}
+          />
+          <TextField
+            {...register('description', { required: true })}
+            label={errors.description ? errors.description.message : theme.description}
+            error={!!errors.description}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+            <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+              {theme.create}
+            </Button>
+            <Button variant="outlined" sx={{ mt: 2 }} onClick={onClick}>
+              {theme.close}
+            </Button>
+          </Box>
+        </Box>
+      </div>
     </div>
   );
 }

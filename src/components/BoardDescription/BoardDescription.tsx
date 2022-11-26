@@ -11,7 +11,7 @@ export default function BoardDescription({
 }) {
   console.log(title, description);
   return (
-    <Card sx={{ maxWidth: 275, margin: 1 }}>
+    <Card sx={{ width: 300, margin: 1 }}>
       <Typography variant="h2">
         <FormattedMessage id="board" />
       </Typography>

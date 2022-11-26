@@ -14,7 +14,7 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
   const [addActive, setAddActive] = useState(false);
   return (
     <>
-      <Card key={id} sx={{ maxWidth: 275, margin: 1 }}>
+      <Card key={id} sx={{ width: 300, margin: 1 }}>
         <CardContent>
           <Typography variant="h5">{title}</Typography>
           <Tasks tasks={tasksArray} />
