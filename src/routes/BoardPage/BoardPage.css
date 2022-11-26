@@ -1,3 +1,5 @@
 .board-container {
-  margin-top: 100px;
+  margin-top: 64px;
+  padding: 20px 0;
+  height: calc(100vh - 140px);
 }

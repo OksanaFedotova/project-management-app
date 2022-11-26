@@ -76,7 +76,7 @@ export default function EditProfile() {
       try {
         await deleteUser({ id: userId });
         dispatch(removeUser);
-        toast.success('User is deleted!');
+        toast.success('User deleted!');
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         navigate('/welcome');
