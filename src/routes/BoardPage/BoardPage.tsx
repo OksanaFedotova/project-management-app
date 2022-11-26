@@ -10,11 +10,13 @@ import BoardForm from 'components/BoardForm';
 import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
 import IColumnCard from 'interfaces/IColumnCard';
+import { useGetAllColumnsQuery } from 'store/services/columnsAPI';
 
 export default function BoardPage() {
   const { id } = useParams();
   const boardId = id ? id : '';
   const { data } = useGetBoardByIdQuery(boardId);
+  const columns = useGetAllColumnsQuery(boardId).data;
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
   const [addActive, setAddActive] = useState(false);
@@ -25,7 +27,6 @@ export default function BoardPage() {
     addColumn: 'добавить список',
   };
   const theme = ru;
-  console.log(data);
   return (
     <Layout>
       {data && (
@@ -46,9 +47,8 @@ export default function BoardPage() {
           )}
           {changeActive && <BoardForm id={boardId} onClick={() => setChangeActive(false)} />}
           {addActive && <ColumnModal idBoard={boardId} onClick={() => setAddActive(false)} />}
-          {data.columns.map((column: IColumnCard) => (
-            <ColumnCard key={column.id} data={column} />
-          ))}
+          {columns &&
+            columns.map((column: IColumnCard) => <ColumnCard key={column.id} data={column} />)}
         </section>
       )}
     </Layout>
