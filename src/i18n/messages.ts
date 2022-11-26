@@ -55,6 +55,8 @@ export const messages = {
     board: 'Доска',
     create_task: 'Создать задачу',
     create: 'Создать',
+    start_work: 'Начать пользоваться',
+    boards_page_link: 'Доски',
   },
   [LOCALES.ENGLISH]: {
     project_title: 'Task manager',
@@ -110,5 +112,7 @@ export const messages = {
     board: 'Board',
     create_task: 'Create task',
     create: 'Create',
+    start_work: 'Get started',
+    boards_page_link: 'Boards',
   },
 };
