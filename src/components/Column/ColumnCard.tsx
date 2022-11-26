@@ -6,6 +6,7 @@ import TaskModal from 'components/Tasks/TaskModal';
 import IColumnCard from 'interfaces/IColumnCard';
 import { CardContent, Typography, Card, Button } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function ColumnCard({ data }: { data: IColumnCard }) {
   const { id, title } = data;
@@ -14,17 +15,46 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
   const [addActive, setAddActive] = useState(false);
   return (
     <>
-      <Card key={id} sx={{ width: 300, margin: 1 }}>
-        <CardContent>
-          <Typography variant="h5">{title}</Typography>
+      <Card
+        key={id}
+        sx={{
+          maxWidth: 350,
+          minWidth: 350,
+          maxHeight: 'calc(100vh - 300px)',
+          margin: 0.5,
+          padding: 0.5,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          boxShadow: '0 0 10px 0 #D2D7E0',
+          backgroundColor: '#F2F7FF',
+        }}
+      >
+        <Typography variant="h6" sx={{ m: 0.5 }}>
+          {title}
+        </Typography>
+        <CardContent
+          sx={{
+            padding: 0.5,
+            width: 330,
+            overflow: 'hidden auto',
+            minHeight: 8,
+            maxHeight: 'calc(100vh - 270px)',
+          }}
+        >
           <Tasks tasks={tasksArray} />
         </CardContent>
+        <Button sx={{ mb: 1.5 }} startIcon={<AddIcon />} onClick={() => setAddActive(true)}>
+          <FormattedMessage id="create_task" />
+        </Button>
       </Card>
-      <Button onClick={() => setAddActive(true)}>
-        <FormattedMessage id="create_task" />
-      </Button>
       {addActive && (
-        <TaskModal columnId={id} boardId={boardId as string} onClick={() => setAddActive(false)} />
+        <TaskModal
+          columnId={id}
+          boardId={boardId as string}
+          isCreate={true}
+          onClick={() => setAddActive(false)}
+        />
       )}
     </>
   );
