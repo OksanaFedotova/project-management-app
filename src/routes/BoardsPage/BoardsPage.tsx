@@ -21,7 +21,7 @@ export default function BoardsPage() {
 
   return (
     <Layout>
-      <div className="layout">
+      <div>
         <div className="boards-container">
           {data &&
             data.map((board: IBoard) => (
@@ -33,17 +33,17 @@ export default function BoardsPage() {
                 onClick={() => navigator(`${board.id}`)}
               />
             ))}
+          <Box textAlign="center">
+            <Button
+              variant="contained"
+              sx={{ pr: 8, pl: 8, pt: 5, pb: 5, mt: 6, ml: 1 }}
+              onClick={() => setBoardForm({ isActive: true, id: '' })}
+            >
+              <AddCircleOutlineIcon sx={{ mr: 1 }} />
+              <FormattedMessage id="add_board" />
+            </Button>
+          </Box>
         </div>
-        <Box textAlign="center">
-          <Button
-            variant="contained"
-            sx={{ p: 5, mb: 5 }}
-            onClick={() => setBoardForm({ isActive: true, id: '' })}
-          >
-            <AddCircleOutlineIcon sx={{ mr: 1 }} />
-            <FormattedMessage id="add_board" />
-          </Button>
-        </Box>
       </div>
       {boardForm.isActive && (
         <ChangeBoardForm
