@@ -4,15 +4,18 @@ import { useGetAllTasksQuery } from 'store/services/taskAPI';
 import Tasks from 'components/Tasks';
 import TaskModal from 'components/Tasks/TaskModal';
 import IColumnCard from 'interfaces/IColumnCard';
-import { CardContent, Typography, Card, Button } from '@mui/material';
+import { CardContent, Typography, Card, Button, Box } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ModalDeleteColumns from './ColumnDeleteModal';
 
 export default function ColumnCard({ data }: { data: IColumnCard }) {
   const { id, title } = data;
   const { id: boardId } = useParams<string>();
   const { data: tasksArray } = useGetAllTasksQuery({ boardId, columnId: id });
   const [addActive, setAddActive] = useState(false);
+  const [deleteColumnActive, setDeleteColumnActive] = useState(false);
   return (
     <>
       <Card
@@ -30,9 +33,23 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
           backgroundColor: '#F2F7FF',
         }}
       >
-        <Typography variant="h6" sx={{ m: 0.5 }}>
-          {title}
-        </Typography>
+        <Box sx={{ display: 'flex' }}>
+          <Typography variant="h6" sx={{ m: 0.5 }}>
+            {title}
+          </Typography>
+          <Button
+            sx={{ mb: 1.5 }}
+            startIcon={<DeleteIcon />}
+            onClick={() => setDeleteColumnActive(true)}
+          />
+        </Box>
+        {deleteColumnActive && (
+          <ModalDeleteColumns
+            idBoard={boardId as string}
+            idColumn={id}
+            onClick={() => setDeleteColumnActive(false)}
+          />
+        )}
         <CardContent
           sx={{
             padding: 0.5,

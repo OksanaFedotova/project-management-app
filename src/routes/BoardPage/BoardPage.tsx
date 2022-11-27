@@ -12,11 +12,13 @@ import BoardForm from 'components/BoardForm';
 import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
 import IColumnCard from 'interfaces/IColumnCard';
+import { useGetAllColumnsQuery } from 'store/services/columnsAPI';
 
 export default function BoardPage() {
   const { id } = useParams();
   const boardId = id ? id : '';
   const { data } = useGetBoardByIdQuery(boardId);
+  const columns = useGetAllColumnsQuery(boardId).data;
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
   const [addActive, setAddActive] = useState(false);
@@ -68,9 +70,8 @@ export default function BoardPage() {
               onDragUpdate={onDragUpdate}
               onDragEnd={onDragEnd}
             >
-              {data.columns.map((column: IColumnCard) => (
-                <ColumnCard key={column.id} data={column} />
-              ))}
+              {columns &&
+                columns.map((column: IColumnCard) => <ColumnCard key={column.id} data={column} />)}
             </DragDropContext>
           </div>
         </section>

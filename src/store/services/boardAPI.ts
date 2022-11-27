@@ -22,7 +22,7 @@ export const boardAPI = createApi({
     }),
     getBoardById: builder.query({
       query: (id) => `boards/${id}`,
-      providesTags: ['Boards', 'Columns'],
+      providesTags: ['Boards'],
     }),
     createBoard: builder.mutation<IBoard, TBoardRequest>({
       query: (body) => ({
