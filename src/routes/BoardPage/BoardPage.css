@@ -7,7 +7,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 30px;
-  overflow-X: auto;
+  overflow-x: auto;
   align-items: flex-start;
   margin: 25px 0;
 }
