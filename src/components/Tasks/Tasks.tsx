@@ -7,6 +7,7 @@ import { IconButton, ListItem, ListItemText, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import TaskModal from './TaskModal';
+import { useIntl } from 'react-intl';
 
 export default function Tasks({ tasks }: { tasks: ITaskResponse[] }) {
   const [isModal, setIsModal] = useState(false);
@@ -18,7 +19,7 @@ export default function Tasks({ tasks }: { tasks: ITaskResponse[] }) {
   const deleteHandler = async (type: string) => {
     if (currTask) {
       const { boardId, columnId, id } = currTask;
-      if (type === 'Да') {
+      if (type === intl.formatMessage({ id: `${'yes'}` })) {
         await deleteTask({ boardId, columnId, idTask: id });
         toast.success('Task deleted!');
         setIsModal(false);
@@ -27,14 +28,15 @@ export default function Tasks({ tasks }: { tasks: ITaskResponse[] }) {
       }
     }
   };
+  const intl = useIntl();
 
   return (
     <>
       {isModal && (
         <ModalDelete
-          title="Вы действительно хотите удалить?"
-          btnSubmit="Да"
-          btnCancel="Нет"
+          title={intl.formatMessage({ id: `${'delete_confirm'}` })}
+          btnSubmit={intl.formatMessage({ id: `${'yes'}` })}
+          btnCancel={intl.formatMessage({ id: `${'no'}` })}
           open={true}
           handleClick={deleteHandler}
         />
