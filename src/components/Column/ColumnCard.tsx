@@ -42,7 +42,7 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
             maxHeight: 'calc(100vh - 270px)',
           }}
         >
-          <Tasks tasks={tasksArray} />
+          <Tasks tasks={tasksArray} columnId={id} />
         </CardContent>
         <Button sx={{ mb: 1.5 }} startIcon={<AddIcon />} onClick={() => setAddActive(true)}>
           <FormattedMessage id="create_task" />

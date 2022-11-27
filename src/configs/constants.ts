@@ -1,2 +1,2 @@
-const URL = 'https://serene-everglades-05199.herokuapp.com/';
+const URL = 'https://prompt-twig-production.up.railway.app/';
 export { URL };

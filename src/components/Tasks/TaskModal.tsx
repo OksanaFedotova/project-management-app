@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useCreateTaskMutation, useUpdateTaskMutation } from 'store/services/taskAPI';
 import { ITaskResponse, TTaskRequest } from 'interfaces/IBoard';
 import { ErrorAuth } from 'interfaces/IUser';
-import { Button, Box, TextField } from '@mui/material';
+import { Button, Box, TextField, Backdrop } from '@mui/material';
 import { useIntl } from 'react-intl';
 
 export default function TaskModal({
@@ -78,7 +78,7 @@ export default function TaskModal({
   };
   const theme = ru;
   return (
-    <div className="boards-form">
+    <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
       <Box
         onSubmit={handleSubmit(onSubmit)}
         component="form"
@@ -88,6 +88,8 @@ export default function TaskModal({
           flexDirection: 'column',
           '& .MuiTextField-root': { m: 1 },
           backgroundColor: '#ffffff',
+          borderRadius: 2,
+          padding: 2,
         }}
         autoComplete="off"
       >
@@ -119,9 +121,15 @@ export default function TaskModal({
             },
           })}
         />
-        <Button type="submit">{isCreate ? theme.create : theme.edit}</Button>
-        <Button onClick={onClick}>{theme.close}</Button>
+        <div style={{ display: 'flex', justifyContent: 'space-evenly', padding: 3 }}>
+          <Button type="submit" variant="contained">
+            {isCreate ? theme.create : theme.edit}
+          </Button>
+          <Button variant="outlined" onClick={onClick}>
+            {theme.close}
+          </Button>
+        </div>
       </Box>
-    </div>
+    </Backdrop>
   );
 }

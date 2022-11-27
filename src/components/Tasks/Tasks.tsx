@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { toast } from 'react-toastify';
 import { useDeleteTaskMutation } from 'store/services/taskAPI';
 import ModalDelete from 'components/ModalDelete';
 import { ITaskResponse } from 'interfaces/IBoard';
-import { IconButton, ListItem, ListItemText, Typography } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { ListItem } from '@mui/material';
 import TaskModal from './TaskModal';
+import Task from './Task';
 
-export default function Tasks({ tasks }: { tasks: ITaskResponse[] }) {
+export default function Tasks({ tasks, columnId }: { tasks: ITaskResponse[]; columnId: string }) {
   const [isModal, setIsModal] = useState(false);
   const [addActive, setAddActive] = useState(false);
   const [currTask, setCurrTask] = useState<ITaskResponse>();
@@ -48,57 +48,47 @@ export default function Tasks({ tasks }: { tasks: ITaskResponse[] }) {
           onClick={() => setAddActive(false)}
         />
       )}
-      <div style={{ overflow: 'hidden auto' }}>
-        {tasks &&
-          tasks.map((item: ITaskResponse) => (
-            <ListItem
-              key={item.id}
-              sx={{
-                borderRadius: 2,
-                backgroundColor: '#FFFFFF',
-                marginBottom: 0.5,
-                padding: 1,
-                display: 'flex',
-                justifyContent: 'space-between',
-                cursor: 'grab',
-              }}
-            >
-              <div>
-                <Typography variant="subtitle1" sx={{ maxWidth: 200, overflowWrap: 'break-word' }}>
-                  {item.title}
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  sx={{ maxWidth: 200, overflowWrap: 'break-word', color: '#777777' }}
-                >
-                  {item.description}
-                </Typography>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <IconButton
-                  sx={{ padding: 0.5 }}
-                  aria-label="edit"
-                  onClick={() => {
-                    setAddActive(true);
-                    setCurrTask(item);
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  sx={{ padding: 0.5 }}
-                  aria-label="delete"
-                  onClick={() => {
-                    setIsModal(true);
-                    setCurrTask(item);
-                  }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </div>
-            </ListItem>
-          ))}
-      </div>
+      <Droppable droppableId={columnId}>
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            {tasks &&
+              [...tasks]
+                .sort((a, b) => a.order - b.order)
+                .map((item: ITaskResponse, index: number) => (
+                  <Draggable draggableId={item.id} index={index} key={item.id}>
+                    {(provided) => (
+                      <div
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        <ListItem
+                          sx={{
+                            borderRadius: 2,
+                            backgroundColor: '#FFFFFF',
+                            marginBottom: 0.5,
+                            padding: 1,
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            cursor: 'grab',
+                          }}
+                          draggable={true}
+                        >
+                          <Task
+                            task={item}
+                            setTask={setCurrTask}
+                            setAdd={setAddActive}
+                            setIsModal={setIsModal}
+                          />
+                        </ListItem>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </>
   );
 }

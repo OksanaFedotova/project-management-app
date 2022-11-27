@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { DragDropContext } from 'react-beautiful-dnd';
 import { useGetBoardByIdQuery } from 'store/services/boardAPI';
 import { Button } from '@mui/material';
 import Layout from 'components/Layout';
@@ -27,6 +28,11 @@ export default function BoardPage() {
     addColumn: intl.formatMessage({ id: `${'add_list'}` }),
   };
   const theme = ru;
+
+  function onDragStart() {}
+  function onDragUpdate() {}
+  function onDragEnd() {}
+
   return (
     <Layout>
       {data && (
@@ -57,9 +63,15 @@ export default function BoardPage() {
               marginBottom: 4,
             }}
           >
-            {data.columns.map((column: IColumnCard) => (
-              <ColumnCard key={column.id} data={column} />
-            ))}
+            <DragDropContext
+              onDragStart={onDragStart}
+              onDragUpdate={onDragUpdate}
+              onDragEnd={onDragEnd}
+            >
+              {data.columns.map((column: IColumnCard) => (
+                <ColumnCard key={column.id} data={column} />
+              ))}
+            </DragDropContext>
           </div>
         </section>
       )}
