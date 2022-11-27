@@ -36,7 +36,7 @@ export default function BoardsPage() {
           <Box textAlign="center">
             <Button
               variant="contained"
-              sx={{ pr: 8, pl: 8, pt: 5, pb: 5, mt: 6, ml: 1 }}
+              sx={{ pr: 8, pl: 8, pt: 5, pb: 5, ml: 1 }}
               onClick={() => setBoardForm({ isActive: true, id: '' })}
             >
               <AddCircleOutlineIcon sx={{ mr: 1 }} />

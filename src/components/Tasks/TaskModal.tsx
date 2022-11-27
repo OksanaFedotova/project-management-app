@@ -78,50 +78,63 @@ export default function TaskModal({
   };
   const theme = ru;
   return (
-    <div className="boards-form">
-      <Box
-        onSubmit={handleSubmit(onSubmit)}
-        component="form"
-        sx={{
-          width: 350,
-          display: 'flex',
-          flexDirection: 'column',
-          '& .MuiTextField-root': { m: 1 },
-          backgroundColor: '#ffffff',
-        }}
-        autoComplete="off"
-      >
-        <TextField
-          label={errors.title ? errors.title.message : theme.title}
-          error={!!errors.title}
-          {...register('title', {
-            required: {
-              value: true,
-              message: 'Название обязательно',
-            },
-            maxLength: {
-              value: 50,
-              message: 'Максимум 50 символов',
+    <div className="form-wrapper">
+      <div className="boards-form">
+        <Box
+          onSubmit={handleSubmit(onSubmit)}
+          component="form"
+          sx={(theme) => ({
+            width: 350,
+            display: 'flex',
+            flexDirection: 'column',
+            '& .MuiTextField-root': { m: 1 },
+            backgroundColor: '#ffffff',
+            p: 3,
+            borderRadius: 3,
+            [theme.breakpoints.down('sm')]: {
+              width: 300,
             },
           })}
-        />
-        <TextField
-          label={errors.description ? errors.description.message : theme.description}
-          error={!!errors.description}
-          {...register('description', {
-            required: {
-              value: true,
-              message: 'Описание обязательно',
-            },
-            maxLength: {
-              value: 100,
-              message: 'Максимум 100 символов',
-            },
-          })}
-        />
-        <Button type="submit">{isCreate ? theme.create : theme.edit}</Button>
-        <Button onClick={onClick}>{theme.close}</Button>
-      </Box>
+          autoComplete="off"
+        >
+          <TextField
+            label={errors.title ? errors.title.message : theme.title}
+            error={!!errors.title}
+            {...register('title', {
+              required: {
+                value: true,
+                message: intl.formatMessage({ id: `${'title_required'}` }),
+              },
+              maxLength: {
+                value: 50,
+                message: intl.formatMessage({ id: `${'task_max_length'}` }),
+              },
+            })}
+          />
+          <TextField
+            label={errors.description ? errors.description.message : theme.description}
+            error={!!errors.description}
+            {...register('description', {
+              required: {
+                value: true,
+                message: intl.formatMessage({ id: `${'description_required'}` }),
+              },
+              maxLength: {
+                value: 100,
+                message: intl.formatMessage({ id: `${'description_max_length'}` }),
+              },
+            })}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+            <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+              {isCreate ? theme.create : theme.edit}
+            </Button>
+            <Button variant="outlined" sx={{ mt: 2 }} onClick={onClick}>
+              {theme.close}
+            </Button>
+          </Box>
+        </Box>
+      </div>
     </div>
   );
 }

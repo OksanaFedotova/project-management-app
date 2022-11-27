@@ -57,6 +57,10 @@ export const messages = {
     create: 'Создать',
     start_work: 'Начать пользоваться',
     boards_page_link: 'Доски',
+    title_required: 'Название обязательно',
+    task_max_length: 'Максимум 50 символов',
+    description_required: 'Описание обязательно',
+    description_max_length: 'Максимум 100 символов',
   },
   [LOCALES.ENGLISH]: {
     project_title: 'Task manager',
@@ -114,5 +118,9 @@ export const messages = {
     create: 'Create',
     start_work: 'Get started',
     boards_page_link: 'Boards',
+    title_required: 'Title required',
+    task_max_length: 'Max: 50 symbols',
+    description_required: 'Description required',
+    description_max_length: 'Max: 100 symbols',
   },
 };
