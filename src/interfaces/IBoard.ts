@@ -3,6 +3,7 @@ type TColumnRequest = Omit<IColumn, 'id'>;
 
 type TTaskRequest = {
   title: string;
+  order?: number;
   description: string;
   userId: string;
   boardId?: string;

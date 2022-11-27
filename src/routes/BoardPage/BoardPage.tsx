@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { useGetBoardByIdQuery } from 'store/services/boardAPI';
 import { Button } from '@mui/material';
 import Layout from 'components/Layout';
@@ -13,15 +13,30 @@ import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
 import IColumnCard from 'interfaces/IColumnCard';
 import { useGetAllColumnsQuery } from 'store/services/columnsAPI';
+import { IColumn, ITask } from 'interfaces/IBoard';
+import { useUpdateTaskMutation } from 'store/services/taskAPI';
 
 export default function BoardPage() {
   const { id } = useParams();
   const boardId = id ? id : '';
   const { data } = useGetBoardByIdQuery(boardId);
-  const columns = useGetAllColumnsQuery(boardId).data;
+
+  const [updateTask] = useUpdateTaskMutation();
+
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
   const [addActive, setAddActive] = useState(false);
+
+  const [columns, setColumns] = useState<IColumnCard[]>();
+  const [tasks, setTasks] = useState<IColumnCard>();
+  const [finishColumnId, setFinishColumnId] = useState<string>();
+
+  useEffect(() => {
+    if (data) {
+      setColumns(data.columns);
+    }
+  }, []);
+
   const intl = useIntl();
   const ru = {
     description: intl.formatMessage({ id: `${'board_description'}` }),
@@ -33,7 +48,51 @@ export default function BoardPage() {
 
   function onDragStart() {}
   function onDragUpdate() {}
-  function onDragEnd() {}
+  async function onDragEnd(result: DropResult) {
+    if (data) {
+      const columns = data.columns;
+      const { destination, source, draggableId } = result;
+      setFinishColumnId(destination?.droppableId);
+
+      if (!destination) return;
+      if (destination.droppableId === source.droppableId && destination.index === source.index) {
+        return;
+      }
+      const startColumn = columns.find((column: IColumnCard) => column.id === source.droppableId);
+      const finishColumn = columns.find(
+        (column: IColumnCard) => column.id === destination.droppableId
+      );
+      console.log(startColumn);
+      const newTaskIds: ITask[] = Array.from(startColumn.tasks);
+      const currTask = newTaskIds.find((task) => task.id === draggableId);
+      newTaskIds.splice(source.index, 1);
+      newTaskIds.splice(destination.index, 0, currTask!);
+      console.log(finishColumn);
+      const newColumn = {
+        id: finishColumn.id,
+        order: finishColumn.order,
+        title: finishColumn.title,
+        tasks: newTaskIds,
+      };
+      setTasks(newColumn);
+      const filteredColumns = columns.filter((column: IColumnCard) => column.id !== newColumn.id);
+      setColumns([...filteredColumns, newColumn]);
+      if (currTask) {
+        const newData = {
+          idTask: draggableId,
+          body: {
+            title: currTask.title,
+            order: ++destination.index,
+            description: currTask.description,
+            userId: currTask.userId,
+            boardId,
+            columnId: destination.droppableId,
+          },
+        };
+        return await updateTask(newData);
+      }
+    }
+  }
 
   return (
     <Layout>
@@ -71,7 +130,14 @@ export default function BoardPage() {
               onDragEnd={onDragEnd}
             >
               {columns &&
-                columns.map((column: IColumnCard) => <ColumnCard key={column.id} data={column} />)}
+                [...columns]
+                  .sort((a, b) => a.order - b.order)
+                  .map((column: IColumnCard) => (
+                    <ColumnCard
+                      key={column.id}
+                      data={column.id === finishColumnId ? tasks! : column}
+                    />
+                  ))}
             </DragDropContext>
           </div>
         </section>
