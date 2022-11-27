@@ -1,5 +1,31 @@
 .board-container {
-  margin-top: 64px;
-  padding: 20px 0;
-  height: calc(100vh - 140px);
+  padding-top: 100px;
+}
+
+.board-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+  overflow-X: auto;
+  align-items: flex-start;
+  margin: 25px 0;
+}
+
+@media (max-width: 775px) {
+  .board-list {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 550px) {
+  .board-container {
+    padding-top: 150px;
+  }
+}
+
+@media (max-width: 347px) {
+  .board-container {
+    padding-top: 200px;
+  }
 }
