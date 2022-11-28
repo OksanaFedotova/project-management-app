@@ -62,12 +62,10 @@ export default function BoardPage() {
       const finishColumn = columns.find(
         (column: IColumnCard) => column.id === destination.droppableId
       );
-      console.log(startColumn);
       const newTaskIds: ITask[] = Array.from(startColumn.tasks);
       const currTask = newTaskIds.find((task) => task.id === draggableId);
       newTaskIds.splice(source.index, 1);
-      newTaskIds.splice(destination.index, 0, currTask!);
-      console.log(finishColumn);
+      currTask && newTaskIds.splice(destination.index, 0, currTask);
       const newColumn = {
         id: finishColumn.id,
         order: finishColumn.order,
@@ -135,7 +133,7 @@ export default function BoardPage() {
                   .map((column: IColumnCard) => (
                     <ColumnCard
                       key={column.id}
-                      data={column.id === finishColumnId ? tasks! : column}
+                      data={column.id === finishColumnId ? (tasks ? tasks : column) : column}
                     />
                   ))}
             </DragDropContext>

@@ -56,7 +56,7 @@ export default function Tasks({ tasks, columnId }: { tasks: ITaskResponse[]; col
                 .sort((a, b) => a.order - b.order)
                 .map((item: ITaskResponse, index: number) => (
                   <Draggable draggableId={item.id} index={index} key={item.id}>
-                    {(provided) => (
+                    {(provided, snapshot) => (
                       <div
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -65,7 +65,8 @@ export default function Tasks({ tasks, columnId }: { tasks: ITaskResponse[]; col
                         <ListItem
                           sx={{
                             borderRadius: 2,
-                            backgroundColor: '#FFFFFF',
+                            backgroundColor: snapshot.isDragging ? '#d1e6fa' : '#FFFFFF',
+                            transition: 'background-color .3 s ease',
                             marginBottom: 0.5,
                             padding: 1,
                             flexDirection: 'column',
