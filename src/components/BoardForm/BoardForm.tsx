@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Box, TextField, Typography } from '@mui/material';
+import { Button, Box, TextField, Typography, Backdrop, CircularProgress } from '@mui/material';
 import { useCreateBoardMutation, useUpdateBoardMutation } from 'store/services/boardAPI';
 import FormInputs from 'interfaces/IFormBoards';
 import './BoardForm.css';
@@ -12,13 +12,13 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>({ mode: 'onSubmit' });
-  const [updateBoard] = useUpdateBoardMutation();
-  const [createBoard] = useCreateBoardMutation();
+  const [updateBoard, { isLoading: isLoadingUpdate }] = useUpdateBoardMutation();
+  const [createBoard, { isLoading: isLoadingUCreate }] = useCreateBoardMutation();
 
-  const onSubmit = ({ title, description }: FormInputs) => {
+  const onSubmit = async ({ title, description }: FormInputs) => {
     id
-      ? updateBoard({ title, description, id }).catch((e) => console.error(e))
-      : createBoard({ title, description }).catch((e) => console.error(e));
+      ? await updateBoard({ title, description, id }).catch((e) => console.error(e))
+      : await createBoard({ title, description }).catch((e) => console.error(e));
     onClick();
   };
   const intl = useIntl();
@@ -33,55 +33,62 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
   const theme = ru;
 
   return (
-    <div className="form-wrapper">
-      <div className="boards-form">
-        <Box
-          onSubmit={handleSubmit(onSubmit)}
-          component="form"
-          sx={{
-            width: 350,
-            display: 'flex',
-            flexDirection: 'column',
-            '& .MuiTextField-root': { m: 1 },
-            backgroundColor: '#ffffff',
-          }}
-          autoComplete="off"
-        >
-          <Typography align="center" sx={{ pt: 1, pb: 2, textTransform: 'uppercase' }}>
-            <FormattedMessage id="board" />
-          </Typography>
-          <TextField
-            {...register('title', { required: true })}
-            id="outlined-required"
-            label={theme.label}
-            defaultValue={theme.title}
-            error={!!errors.title}
-          />
-          <TextField
-            {...register('description', { required: true })}
-            id="outlined-required"
-            label={theme.label}
-            defaultValue={theme.descripion}
-            multiline
-            error={!!errors.description}
-          />
-          <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-            {id && (
-              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-                {theme.change}
+    <>
+      {(isLoadingUpdate || isLoadingUCreate) && (
+        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+          <CircularProgress color="inherit" size={60} />
+        </Backdrop>
+      )}
+      <div className="form-wrapper">
+        <div className="boards-form">
+          <Box
+            onSubmit={handleSubmit(onSubmit)}
+            component="form"
+            sx={{
+              width: 350,
+              display: 'flex',
+              flexDirection: 'column',
+              '& .MuiTextField-root': { m: 1 },
+              backgroundColor: '#ffffff',
+            }}
+            autoComplete="off"
+          >
+            <Typography align="center" sx={{ pt: 1, pb: 2, textTransform: 'uppercase' }}>
+              <FormattedMessage id="board" />
+            </Typography>
+            <TextField
+              {...register('title', { required: true })}
+              id="outlined-required"
+              label={theme.label}
+              defaultValue={theme.title}
+              error={!!errors.title}
+            />
+            <TextField
+              {...register('description', { required: true })}
+              id="outlined-required"
+              label={theme.label}
+              defaultValue={theme.descripion}
+              multiline
+              error={!!errors.description}
+            />
+            <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+              {id && (
+                <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                  {theme.change}
+                </Button>
+              )}
+              {!id && (
+                <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                  {theme.add}
+                </Button>
+              )}
+              <Button variant="outlined" sx={{ mt: 2 }} onClick={onClick}>
+                {theme.close}
               </Button>
-            )}
-            {!id && (
-              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-                {theme.add}
-              </Button>
-            )}
-            <Button variant="outlined" sx={{ mt: 2 }} onClick={onClick}>
-              {theme.close}
-            </Button>
+            </Box>
           </Box>
-        </Box>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

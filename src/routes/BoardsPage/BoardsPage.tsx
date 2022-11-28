@@ -6,15 +6,15 @@ import ChangeBoardForm from '../../components/BoardForm';
 import { IBoard } from 'interfaces/IBoard';
 import './BoardsPage.css';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { FormattedMessage } from 'react-intl';
 
 export default function BoardsPage() {
-  const { data } = useGetAllBoardsQuery('');
+  const { data, isLoading: isLoadingData } = useGetAllBoardsQuery('');
   const navigator = useNavigate();
   const [boardForm, setBoardForm] = useState({ isActive: false, id: '' });
-  const [deleteBoard] = useDeleteBoardMutation();
+  const [deleteBoard, { isLoading: isLoadingDelete }] = useDeleteBoardMutation();
   const handleDelete = (id: string) => {
     deleteBoard(id).catch((e) => console.error(e));
   };
@@ -22,6 +22,11 @@ export default function BoardsPage() {
   return (
     <Layout>
       <div className="layout">
+        {(isLoadingDelete || isLoadingData) && (
+          <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+            <CircularProgress color="inherit" size={60} />
+          </Backdrop>
+        )}
         <div className="boards-container">
           {data &&
             data.map((board: IBoard) => (

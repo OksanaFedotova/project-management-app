@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetBoardByIdQuery } from 'store/services/boardAPI';
-import { Button } from '@mui/material';
+import { Backdrop, Button, CircularProgress } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
 import { useIntl } from 'react-intl';
@@ -16,7 +16,7 @@ import { useGetAllColumnsQuery } from 'store/services/columnsAPI';
 export default function BoardPage() {
   const { id } = useParams();
   const boardId = id ? id : '';
-  const { data } = useGetBoardByIdQuery(boardId);
+  const { data, isLoading: isLoadingData } = useGetBoardByIdQuery(boardId);
   const columns = useGetAllColumnsQuery(boardId).data;
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
@@ -31,6 +31,11 @@ export default function BoardPage() {
   const theme = ru;
   return (
     <Layout>
+      {isLoadingData && (
+        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+          <CircularProgress color="inherit" size={60} />
+        </Backdrop>
+      )}
       {data && (
         <section
           className="board-container"

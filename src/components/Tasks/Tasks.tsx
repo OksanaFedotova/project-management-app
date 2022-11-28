@@ -3,7 +3,14 @@ import { toast } from 'react-toastify';
 import { useDeleteTaskMutation } from 'store/services/taskAPI';
 import ModalDelete from 'components/ModalDelete';
 import { ITaskResponse } from 'interfaces/IBoard';
-import { IconButton, ListItem, ListItemText, Typography } from '@mui/material';
+import {
+  Backdrop,
+  CircularProgress,
+  IconButton,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import TaskModal from './TaskModal';
@@ -13,7 +20,7 @@ export default function Tasks({ tasks }: { tasks: ITaskResponse[] }) {
   const [addActive, setAddActive] = useState(false);
   const [currTask, setCurrTask] = useState<ITaskResponse>();
 
-  const [deleteTask] = useDeleteTaskMutation();
+  const [deleteTask, { isLoading: isLoadingDelete }] = useDeleteTaskMutation();
 
   const deleteHandler = async (type: string) => {
     if (currTask) {
@@ -30,6 +37,11 @@ export default function Tasks({ tasks }: { tasks: ITaskResponse[] }) {
 
   return (
     <>
+      {isLoadingDelete && (
+        <Backdrop sx={{ color: '#fff', zIndex: 1500 }} open={true}>
+          <CircularProgress color="inherit" size={60} />
+        </Backdrop>
+      )}
       {isModal && (
         <ModalDelete
           title="Вы действительно хотите удалить?"
