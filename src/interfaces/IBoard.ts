@@ -24,14 +24,14 @@ interface IBoard {
   id: string;
   title: string;
   description: string;
-  columns?: IColumn[];
+  columns: IColumn[];
 }
 
 interface IColumn {
   id: string;
   title: string;
   order: number;
-  tasks?: ITask[];
+  tasks: ITask[];
 }
 
 interface ITask {
@@ -40,7 +40,7 @@ interface ITask {
   order: number;
   description: string;
   userId: string;
-  files?: IFile[];
+  files: IFile[];
 }
 
 interface IFile {

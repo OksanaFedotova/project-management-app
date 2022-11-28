@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetAllTasksQuery } from 'store/services/boardAPI';
 import Tasks from 'components/Tasks';
 import TaskModal from 'components/Tasks/TaskModal';
-import IColumnCard from 'interfaces/IColumnCard';
 import { CardContent, Typography, Card, Button, Box } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModalDeleteColumns from './ColumnDeleteModal';
+import { IColumn } from 'interfaces/IBoard';
 
-export default function ColumnCard({ data }: { data: IColumnCard }) {
-  const { id, title } = data;
+export default function ColumnCard({ data }: { data: IColumn }) {
+  const { id, title, tasks } = data;
   const { id: boardId } = useParams<string>();
-  const { data: tasksArray } = useGetAllTasksQuery({ boardId, columnId: id });
   const [addActive, setAddActive] = useState(false);
   const [deleteColumnActive, setDeleteColumnActive] = useState(false);
   return (
@@ -61,7 +59,7 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
             maxHeight: 'calc(100vh - 270px)',
           }}
         >
-          <Tasks tasks={tasksArray} columnId={id} />
+          <Tasks tasks={tasks} columnId={id} />
         </CardContent>
         <Button sx={{ mb: 1.5 }} startIcon={<AddIcon />} onClick={() => setAddActive(true)}>
           <FormattedMessage id="create_task" />

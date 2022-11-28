@@ -1,13 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { URL } from 'configs/constants';
-import {
-  IBoard,
-  TBoardRequest,
-  IColumn,
-  TColumnRequest,
-  ITaskResponse,
-  TTaskRequest,
-} from 'interfaces/IBoard';
+import { IBoard, IColumn, TColumnRequest, ITaskResponse, TTaskRequest } from 'interfaces/IBoard';
 
 export const boardAPI = createApi({
   reducerPath: 'boardApi',
@@ -27,11 +20,11 @@ export const boardAPI = createApi({
       query: () => 'boards',
       providesTags: ['Boards'],
     }),
-    getBoardById: builder.query({
+    getBoardById: builder.query<IBoard, string>({
       query: (id) => `boards/${id}`,
       providesTags: ['Boards', 'Columns', 'Tasks'],
     }),
-    createBoard: builder.mutation<IBoard, TBoardRequest>({
+    createBoard: builder.mutation<IBoard, { title: string; description: string }>({
       query: (body) => ({
         url: 'boards',
         method: 'POST',
@@ -39,7 +32,7 @@ export const boardAPI = createApi({
       }),
       invalidatesTags: ['Boards'],
     }),
-    updateBoard: builder.mutation<IBoard, IBoard>({
+    updateBoard: builder.mutation<IBoard, { title: string; description: string; id: string }>({
       query: ({ id, ...body }) => ({
         url: `boards/${id}`,
         method: 'PUT',
@@ -108,9 +101,12 @@ export const boardAPI = createApi({
       }),
       invalidatesTags: ['Tasks'],
     }),
-    updateTask: builder.mutation<ITaskResponse, { idTask: string; body: TTaskRequest }>({
-      query: ({ idTask, body }) => ({
-        url: `boards/${body.boardId}/columns/${body.columnId}/tasks/${idTask}`,
+    updateTask: builder.mutation<
+      ITaskResponse,
+      { idTask: string; idColumn: string; body: TTaskRequest }
+    >({
+      query: ({ idTask, idColumn, body }) => ({
+        url: `boards/${body.boardId}/columns/${idColumn}/tasks/${idTask}`,
         method: 'PUT',
         body: body,
       }),

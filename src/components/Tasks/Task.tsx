@@ -1,5 +1,5 @@
 import React from 'react';
-import { ITaskResponse } from 'interfaces/IBoard';
+import { ITask } from 'interfaces/IBoard';
 import { IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -10,8 +10,8 @@ export default function Task({
   setAdd,
   setIsModal,
 }: {
-  task: ITaskResponse;
-  setTask: (task: ITaskResponse) => void;
+  task: ITask;
+  setTask: (task: ITask) => void;
   setAdd: (bool: boolean) => void;
   setIsModal: (bool: boolean) => void;
 }) {
