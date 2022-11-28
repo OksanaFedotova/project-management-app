@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useCreateTaskMutation, useUpdateTaskMutation } from 'store/services/taskAPI';
+import { useCreateTaskMutation, useUpdateTaskMutation } from 'store/services/boardAPI';
 import { ITaskResponse, TTaskRequest } from 'interfaces/IBoard';
 import { ErrorAuth } from 'interfaces/IUser';
 import { Button, Box, TextField, Backdrop } from '@mui/material';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetAllTasksQuery } from 'store/services/taskAPI';
+import { useGetAllTasksQuery } from 'store/services/boardAPI';
 import Tasks from 'components/Tasks';
 import TaskModal from 'components/Tasks/TaskModal';
 import IColumnCard from 'interfaces/IColumnCard';
@@ -24,10 +24,12 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
           maxWidth: 350,
           minWidth: 350,
           maxHeight: 'calc(100vh - 300px)',
+          minHeight: 180,
           margin: 0.5,
           padding: 0.5,
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'space-between',
           alignItems: 'center',
           boxShadow: '0 0 10px 0 #D2D7E0',
           backgroundColor: '#F2F7FF',

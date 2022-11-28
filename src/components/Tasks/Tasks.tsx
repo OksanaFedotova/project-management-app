@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { toast } from 'react-toastify';
-import { useDeleteTaskMutation } from 'store/services/taskAPI';
+import { useDeleteTaskMutation } from 'store/services/boardAPI';
 import ModalDelete from 'components/ModalDelete';
 import { ITaskResponse } from 'interfaces/IBoard';
 import { ListItem } from '@mui/material';

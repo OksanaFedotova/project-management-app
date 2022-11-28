@@ -12,16 +12,22 @@ import BoardForm from 'components/BoardForm';
 import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
 import IColumnCard from 'interfaces/IColumnCard';
-import { useGetAllColumnsQuery } from 'store/services/columnsAPI';
-import { IColumn, ITask } from 'interfaces/IBoard';
-import { useUpdateTaskMutation } from 'store/services/taskAPI';
+import { ITask } from 'interfaces/IBoard';
+import {
+  useCreateTaskMutation,
+  useDeleteTaskMutation,
+  useUpdateTaskMutation,
+} from 'store/services/boardAPI';
 
 export default function BoardPage() {
   const { id } = useParams();
   const boardId = id ? id : '';
   const { data } = useGetBoardByIdQuery(boardId);
+  const userId = localStorage.getItem('userId');
 
   const [updateTask] = useUpdateTaskMutation();
+  const [createTask] = useCreateTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
 
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
@@ -58,36 +64,77 @@ export default function BoardPage() {
       if (destination.droppableId === source.droppableId && destination.index === source.index) {
         return;
       }
+
       const startColumn = columns.find((column: IColumnCard) => column.id === source.droppableId);
       const finishColumn = columns.find(
         (column: IColumnCard) => column.id === destination.droppableId
       );
-      const newTaskIds: ITask[] = Array.from(startColumn.tasks);
-      const currTask = newTaskIds.find((task) => task.id === draggableId);
-      newTaskIds.splice(source.index, 1);
-      currTask && newTaskIds.splice(destination.index, 0, currTask);
-      const newColumn = {
-        id: finishColumn.id,
-        order: finishColumn.order,
-        title: finishColumn.title,
-        tasks: newTaskIds,
-      };
-      setTasks(newColumn);
-      const filteredColumns = columns.filter((column: IColumnCard) => column.id !== newColumn.id);
-      setColumns([...filteredColumns, newColumn]);
-      if (currTask) {
-        const newData = {
-          idTask: draggableId,
-          body: {
-            title: currTask.title,
-            order: ++destination.index,
-            description: currTask.description,
-            userId: currTask.userId,
-            boardId,
-            columnId: destination.droppableId,
-          },
+
+      if (startColumn === finishColumn) {
+        const newTasks: ITask[] = Array.from(startColumn.tasks);
+        const currTask = newTasks.find((task) => task.id === draggableId);
+        newTasks.splice(source.index, 1);
+        currTask && newTasks.splice(destination.index, 0, currTask);
+        const newColumn = {
+          id: finishColumn.id,
+          order: finishColumn.order,
+          title: finishColumn.title,
+          tasks: newTasks,
         };
-        return await updateTask(newData);
+        setTasks(newColumn);
+        const filteredColumns = columns.filter((column: IColumnCard) => column.id !== newColumn.id);
+        setColumns([...filteredColumns, newColumn]);
+        if (currTask) {
+          const newData = {
+            idTask: draggableId,
+            body: {
+              title: currTask.title,
+              order: ++destination.index,
+              description: currTask.description,
+              userId: currTask.userId,
+              boardId,
+              columnId: destination.droppableId,
+            },
+          };
+          return await updateTask(newData);
+        }
+      } else {
+        const startTasks: ITask[] = Array.from(startColumn.tasks);
+        const currTask = startTasks.find((task) => task.id === draggableId);
+        startTasks.splice(source.index, 1);
+
+        const newStart = {
+          id: startColumn.id,
+          order: startColumn.order,
+          title: startColumn.title,
+          tasks: startTasks,
+        };
+
+        const finishTasks: ITask[] = Array.from(finishColumn.tasks);
+        currTask && finishTasks.splice(destination.index, 0, currTask);
+        const newFinish = {
+          id: finishColumn.id,
+          order: finishColumn.order,
+          title: finishColumn.title,
+          tasks: finishTasks,
+        };
+
+        const filteredColumns = columns.filter(
+          (column: IColumnCard) => column.id !== newStart.id && column.id !== newFinish.id
+        );
+        setColumns([...filteredColumns, newStart, newFinish]);
+
+        await deleteTask({ boardId, columnId: startColumn.id, idTask: currTask!.id });
+        currTask &&
+          (await createTask({
+            boardId,
+            columnId: finishColumn.id,
+            body: {
+              title: currTask.title,
+              description: currTask.description,
+              userId: userId ? userId : '',
+            },
+          }));
       }
     }
   }
@@ -112,20 +159,21 @@ export default function BoardPage() {
           )}
           {changeActive && <BoardForm id={boardId} onClick={() => setChangeActive(false)} />}
           {addActive && <ColumnModal idBoard={boardId} onClick={() => setAddActive(false)} />}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              gap: 20,
-              overflowX: 'auto',
-              alignItems: 'flex-start',
-              marginBottom: 4,
-            }}
+
+          <DragDropContext
+            onDragStart={onDragStart}
+            onDragUpdate={onDragUpdate}
+            onDragEnd={onDragEnd}
           >
-            <DragDropContext
-              onDragStart={onDragStart}
-              onDragUpdate={onDragUpdate}
-              onDragEnd={onDragEnd}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 20,
+                overflowX: 'auto',
+                alignItems: 'flex-start',
+                marginBottom: 4,
+              }}
             >
               {columns &&
                 [...columns]
@@ -136,8 +184,8 @@ export default function BoardPage() {
                       data={column.id === finishColumnId ? (tasks ? tasks : column) : column}
                     />
                   ))}
-            </DragDropContext>
-          </div>
+            </div>
+          </DragDropContext>
         </section>
       )}
     </Layout>
