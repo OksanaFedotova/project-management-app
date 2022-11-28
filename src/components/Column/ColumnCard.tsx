@@ -4,15 +4,7 @@ import { useGetAllTasksQuery } from 'store/services/taskAPI';
 import Tasks from 'components/Tasks';
 import TaskModal from 'components/Tasks/TaskModal';
 import IColumnCard from 'interfaces/IColumnCard';
-import {
-  CardContent,
-  Typography,
-  Card,
-  Button,
-  Box,
-  CircularProgress,
-  Backdrop,
-} from '@mui/material';
+import { CardContent, Typography, Card, Button, Box } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -21,7 +13,7 @@ import ModalDeleteColumns from './ColumnDeleteModal';
 export default function ColumnCard({ data }: { data: IColumnCard }) {
   const { id, title } = data;
   const { id: boardId } = useParams<string>();
-  const { data: tasksArray, isLoading: isLoadingTasks } = useGetAllTasksQuery({
+  const { data: tasksArray } = useGetAllTasksQuery({
     boardId,
     columnId: id,
   });
@@ -29,11 +21,6 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
   const [deleteColumnActive, setDeleteColumnActive] = useState(false);
   return (
     <>
-      {isLoadingTasks && (
-        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
-          <CircularProgress color="inherit" size={60} />
-        </Backdrop>
-      )}
       <Card
         key={id}
         sx={{
