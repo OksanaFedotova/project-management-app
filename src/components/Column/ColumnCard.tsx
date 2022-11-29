@@ -16,14 +16,13 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
   const [addActive, setAddActive] = useState(false);
   const [deleteColumnActive, setDeleteColumnActive] = useState(false);
   return (
-    <Draggable draggableId={id} index={index}>
+  <Draggable draggableId={id} index={index}>
       {(provided) => (
         <div {...provided.draggableProps} ref={provided.innerRef}>
           <Card
             key={id}
             sx={{
-              maxWidth: 350,
-              minWidth: 350,
+              width: 350,
               maxHeight: 'calc(100vh - 300px)',
               minHeight: 180,
               margin: 0.5,
@@ -55,13 +54,16 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
               />
             )}
             <CardContent
-              sx={{
+              sx={(theme) => ({
                 padding: 0.5,
                 width: 330,
                 overflow: 'hidden auto',
                 minHeight: 8,
                 maxHeight: 'calc(100vh - 270px)',
-              }}
+                [theme.breakpoints.down('sm')]: {
+                  width: 270,
+                },
+              })}
             >
               <Tasks tasks={tasks} columnId={id} />
             </CardContent>

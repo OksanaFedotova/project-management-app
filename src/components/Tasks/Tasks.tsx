@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { toast } from 'react-toastify';
+import { useIntl } from 'react-intl';
 import { useDeleteTaskMutation } from 'store/services/boardAPI';
 import ModalDelete from 'components/ModalDelete';
-import { ITask } from 'interfaces/IBoard';
-import { ListItem } from '@mui/material';
 import TaskModal from './TaskModal';
 import Task from './Task';
-import { useParams } from 'react-router-dom';
+import { ITask } from 'interfaces/IBoard';
+import { ListItem } from '@mui/material';
 
 export default function Tasks({ tasks, columnId }: { tasks: ITask[]; columnId: string }) {
   const { id } = useParams();
@@ -21,7 +22,7 @@ export default function Tasks({ tasks, columnId }: { tasks: ITask[]; columnId: s
   const deleteHandler = async (type: string) => {
     if (currTask) {
       const { id } = currTask;
-      if (type === 'Да') {
+      if (type === intl.formatMessage({ id: `${'yes'}` })) {
         await deleteTask({ boardId, columnId, idTask: id });
         toast.success('Task deleted!');
         setIsModal(false);
@@ -30,14 +31,15 @@ export default function Tasks({ tasks, columnId }: { tasks: ITask[]; columnId: s
       }
     }
   };
+  const intl = useIntl();
 
   return (
     <>
       {isModal && (
         <ModalDelete
-          title="Вы действительно хотите удалить?"
-          btnSubmit="Да"
-          btnCancel="Нет"
+          title={intl.formatMessage({ id: `${'delete_confirm'}` })}
+          btnSubmit={intl.formatMessage({ id: `${'yes'}` })}
+          btnCancel={intl.formatMessage({ id: `${'no'}` })}
           open={true}
           handleClick={deleteHandler}
         />

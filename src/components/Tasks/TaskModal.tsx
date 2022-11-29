@@ -68,68 +68,75 @@ export default function TaskModal({
     }
     onClick();
   };
+
   const intl = useIntl();
   const ru = {
     title: intl.formatMessage({ id: `${'board_title'}` }),
     description: intl.formatMessage({ id: `${'board_description'}` }),
     create: intl.formatMessage({ id: `${'create'}` }),
-    edit: 'Изменить',
+    edit: intl.formatMessage({ id: `${'change'}` }),
     close: intl.formatMessage({ id: `${'close'}` }),
   };
   const theme = ru;
+
   return (
-    <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
-      <Box
-        onSubmit={handleSubmit(onSubmit)}
-        component="form"
-        sx={{
-          width: 350,
-          display: 'flex',
-          flexDirection: 'column',
-          '& .MuiTextField-root': { m: 1 },
-          backgroundColor: '#ffffff',
-          borderRadius: 2,
-          padding: 2,
-        }}
-        autoComplete="off"
-      >
-        <TextField
-          label={errors.title ? errors.title.message : theme.title}
-          error={!!errors.title}
-          {...register('title', {
-            required: {
-              value: true,
-              message: 'Название обязательно',
-            },
-            maxLength: {
-              value: 50,
-              message: 'Максимум 50 символов',
+    <div className="form-wrapper">
+      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+        <Box
+          onSubmit={handleSubmit(onSubmit)}
+          component="form"
+          sx={(theme) => ({
+            width: 350,
+            display: 'flex',
+            flexDirection: 'column',
+            '& .MuiTextField-root': { m: 1 },
+            backgroundColor: '#ffffff',
+            p: 3,
+            borderRadius: 3,
+            [theme.breakpoints.down('sm')]: {
+              width: 300,
             },
           })}
-        />
-        <TextField
-          label={errors.description ? errors.description.message : theme.description}
-          error={!!errors.description}
-          {...register('description', {
-            required: {
-              value: true,
-              message: 'Описание обязательно',
-            },
-            maxLength: {
-              value: 100,
-              message: 'Максимум 100 символов',
-            },
-          })}
-        />
-        <div style={{ display: 'flex', justifyContent: 'space-evenly', padding: 3 }}>
-          <Button type="submit" variant="contained">
-            {isCreate ? theme.create : theme.edit}
-          </Button>
-          <Button variant="outlined" onClick={onClick}>
-            {theme.close}
-          </Button>
-        </div>
-      </Box>
-    </Backdrop>
+          autoComplete="off"
+        >
+          <TextField
+            label={errors.title ? errors.title.message : theme.title}
+            error={!!errors.title}
+            {...register('title', {
+              required: {
+                value: true,
+                message: intl.formatMessage({ id: `${'title_required'}` }),
+              },
+              maxLength: {
+                value: 50,
+                message: intl.formatMessage({ id: `${'task_max_length'}` }),
+              },
+            })}
+          />
+          <TextField
+            label={errors.description ? errors.description.message : theme.description}
+            error={!!errors.description}
+            {...register('description', {
+              required: {
+                value: true,
+                message: intl.formatMessage({ id: `${'description_required'}` }),
+              },
+              maxLength: {
+                value: 100,
+                message: intl.formatMessage({ id: `${'description_max_length'}` }),
+              },
+            })}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'space-evenly', padding: 3 }}>
+            <Button type="submit" variant="contained">
+              {isCreate ? theme.create : theme.edit}
+            </Button>
+            <Button variant="outlined" onClick={onClick}>
+              {theme.close}
+            </Button>
+          </Box>
+        </Box>
+      </Backdrop>
+    </div>
   );
 }
