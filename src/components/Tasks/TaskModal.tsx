@@ -73,7 +73,7 @@ export default function TaskModal({
     title: intl.formatMessage({ id: `${'board_title'}` }),
     description: intl.formatMessage({ id: `${'board_description'}` }),
     create: intl.formatMessage({ id: `${'create'}` }),
-    edit: 'Изменить',
+    edit: intl.formatMessage({ id: `${'change'}` }),
     close: intl.formatMessage({ id: `${'close'}` }),
   };
   const theme = ru;
@@ -88,13 +88,18 @@ export default function TaskModal({
         <Box
           onSubmit={handleSubmit(onSubmit)}
           component="form"
-          sx={{
+          sx={(theme) => ({
             width: 350,
             display: 'flex',
             flexDirection: 'column',
             '& .MuiTextField-root': { m: 1 },
             backgroundColor: '#ffffff',
-          }}
+            p: 3,
+            borderRadius: 3,
+            [theme.breakpoints.down('sm')]: {
+              width: 300,
+            },
+          })}
           autoComplete="off"
         >
           <TextField
@@ -103,11 +108,11 @@ export default function TaskModal({
             {...register('title', {
               required: {
                 value: true,
-                message: 'Название обязательно',
+                message: intl.formatMessage({ id: `${'title_required'}` }),
               },
               maxLength: {
                 value: 50,
-                message: 'Максимум 50 символов',
+                message: intl.formatMessage({ id: `${'task_max_length'}` }),
               },
             })}
           />
@@ -117,16 +122,22 @@ export default function TaskModal({
             {...register('description', {
               required: {
                 value: true,
-                message: 'Описание обязательно',
+                message: intl.formatMessage({ id: `${'description_required'}` }),
               },
               maxLength: {
                 value: 100,
-                message: 'Максимум 100 символов',
+                message: intl.formatMessage({ id: `${'description_max_length'}` }),
               },
             })}
           />
-          <Button type="submit">{isCreate ? theme.create : theme.edit}</Button>
-          <Button onClick={onClick}>{theme.close}</Button>
+          <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+            <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+              {isCreate ? theme.create : theme.edit}
+            </Button>
+            <Button variant="outlined" sx={{ mt: 2 }} onClick={onClick}>
+              {theme.close}
+            </Button>
+          </Box>
         </Box>
       </div>
     </>

@@ -23,9 +23,8 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
     <>
       <Card
         key={id}
-        sx={{
-          maxWidth: 350,
-          minWidth: 350,
+        sx={(theme) => ({
+          width: 350,
           maxHeight: 'calc(100vh - 300px)',
           margin: 0.5,
           padding: 0.5,
@@ -34,7 +33,10 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
           alignItems: 'center',
           boxShadow: '0 0 10px 0 #D2D7E0',
           backgroundColor: '#F2F7FF',
-        }}
+          [theme.breakpoints.down('sm')]: {
+            width: 273,
+          },
+        })}
       >
         <Box sx={{ display: 'flex' }}>
           <Typography variant="h6" sx={{ m: 0.5 }}>
@@ -54,13 +56,16 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
           />
         )}
         <CardContent
-          sx={{
+          sx={(theme) => ({
             padding: 0.5,
             width: 330,
             overflow: 'hidden auto',
             minHeight: 8,
             maxHeight: 'calc(100vh - 270px)',
-          }}
+            [theme.breakpoints.down('sm')]: {
+              width: 270,
+            },
+          })}
         >
           <Tasks tasks={tasksArray} />
         </CardContent>

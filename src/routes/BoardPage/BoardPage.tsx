@@ -54,16 +54,7 @@ export default function BoardPage() {
           )}
           {changeActive && <BoardForm id={boardId} onClick={() => setChangeActive(false)} />}
           {addActive && <ColumnModal idBoard={boardId} onClick={() => setAddActive(false)} />}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              gap: 20,
-              overflowX: 'auto',
-              alignItems: 'flex-start',
-              marginBottom: 4,
-            }}
-          >
+          <div className="board-list">
             {columns &&
               columns.map((column: IColumnCard) => <ColumnCard key={column.id} data={column} />)}
           </div>

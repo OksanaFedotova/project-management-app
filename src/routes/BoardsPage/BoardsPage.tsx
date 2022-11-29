@@ -21,7 +21,7 @@ export default function BoardsPage() {
 
   return (
     <Layout>
-      <div className="layout">
+      <div>
         {(isLoadingDelete || isLoadingData) && (
           <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
             <CircularProgress color="inherit" size={60} />
@@ -42,7 +42,7 @@ export default function BoardsPage() {
         <Box textAlign="center">
           <Button
             variant="contained"
-            sx={{ p: 5, mb: 5 }}
+            sx={{ pr: 8, pl: 8, pt: 5, pb: 5, ml: 1 }}
             onClick={() => setBoardForm({ isActive: true, id: '' })}
           >
             <AddCircleOutlineIcon sx={{ mr: 1 }} />
