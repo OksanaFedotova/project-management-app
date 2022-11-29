@@ -2,7 +2,7 @@ import ModalDelete from 'components/ModalDelete';
 import React from 'react';
 import { toast } from 'react-toastify';
 import { useIntl } from 'react-intl';
-import { useDeleteColumnMutation } from 'store/services/columnsAPI';
+import { useDeleteColumnMutation } from 'store/services/boardAPI';
 
 export default function ModalDeleteColumns({
   idBoard,

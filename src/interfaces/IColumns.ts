@@ -1,6 +1,7 @@
 interface IColumn {
-  id: 'Column id';
+  id: string;
   title: 'Column title';
   order: 1;
   boardId: string;
 }
+export default IColumn;

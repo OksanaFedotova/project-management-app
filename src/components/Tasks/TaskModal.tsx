@@ -1,10 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useCreateTaskMutation, useUpdateTaskMutation } from 'store/services/taskAPI';
-import { ITaskResponse, TTaskRequest } from 'interfaces/IBoard';
+import { useCreateTaskMutation, useUpdateTaskMutation } from 'store/services/boardAPI';
+import { ITask, TTaskRequest } from 'interfaces/IBoard';
 import { ErrorAuth } from 'interfaces/IUser';
-import { Button, Box, TextField } from '@mui/material';
+import { Button, Box, TextField, Backdrop } from '@mui/material';
 import { useIntl } from 'react-intl';
 
 export default function TaskModal({
@@ -18,7 +18,7 @@ export default function TaskModal({
   boardId: string;
   onClick: () => void;
   isCreate: boolean;
-  task?: ITaskResponse;
+  task?: ITask;
 }) {
   const [createTask] = useCreateTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
@@ -60,7 +60,7 @@ export default function TaskModal({
       columnId,
     };
     try {
-      await updateTask({ idTask, body });
+      await updateTask({ idTask, idColumn: columnId, body });
       toast.success('Task updated!');
     } catch (e) {
       const err = e as ErrorAuth;
@@ -68,60 +68,75 @@ export default function TaskModal({
     }
     onClick();
   };
+
   const intl = useIntl();
   const ru = {
     title: intl.formatMessage({ id: `${'board_title'}` }),
     description: intl.formatMessage({ id: `${'board_description'}` }),
     create: intl.formatMessage({ id: `${'create'}` }),
-    edit: 'Изменить',
+    edit: intl.formatMessage({ id: `${'change'}` }),
     close: intl.formatMessage({ id: `${'close'}` }),
   };
   const theme = ru;
+
   return (
-    <div className="boards-form">
-      <Box
-        onSubmit={handleSubmit(onSubmit)}
-        component="form"
-        sx={{
-          width: 350,
-          display: 'flex',
-          flexDirection: 'column',
-          '& .MuiTextField-root': { m: 1 },
-          backgroundColor: '#ffffff',
-        }}
-        autoComplete="off"
-      >
-        <TextField
-          label={errors.title ? errors.title.message : theme.title}
-          error={!!errors.title}
-          {...register('title', {
-            required: {
-              value: true,
-              message: 'Название обязательно',
-            },
-            maxLength: {
-              value: 50,
-              message: 'Максимум 50 символов',
+    <div className="form-wrapper">
+      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+        <Box
+          onSubmit={handleSubmit(onSubmit)}
+          component="form"
+          sx={(theme) => ({
+            width: 350,
+            display: 'flex',
+            flexDirection: 'column',
+            '& .MuiTextField-root': { m: 1 },
+            backgroundColor: '#ffffff',
+            p: 3,
+            borderRadius: 3,
+            [theme.breakpoints.down('sm')]: {
+              width: 300,
             },
           })}
-        />
-        <TextField
-          label={errors.description ? errors.description.message : theme.description}
-          error={!!errors.description}
-          {...register('description', {
-            required: {
-              value: true,
-              message: 'Описание обязательно',
-            },
-            maxLength: {
-              value: 100,
-              message: 'Максимум 100 символов',
-            },
-          })}
-        />
-        <Button type="submit">{isCreate ? theme.create : theme.edit}</Button>
-        <Button onClick={onClick}>{theme.close}</Button>
-      </Box>
+          autoComplete="off"
+        >
+          <TextField
+            label={errors.title ? errors.title.message : theme.title}
+            error={!!errors.title}
+            {...register('title', {
+              required: {
+                value: true,
+                message: intl.formatMessage({ id: `${'title_required'}` }),
+              },
+              maxLength: {
+                value: 50,
+                message: intl.formatMessage({ id: `${'task_max_length'}` }),
+              },
+            })}
+          />
+          <TextField
+            label={errors.description ? errors.description.message : theme.description}
+            error={!!errors.description}
+            {...register('description', {
+              required: {
+                value: true,
+                message: intl.formatMessage({ id: `${'description_required'}` }),
+              },
+              maxLength: {
+                value: 100,
+                message: intl.formatMessage({ id: `${'description_max_length'}` }),
+              },
+            })}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'space-evenly', padding: 3 }}>
+            <Button type="submit" variant="contained">
+              {isCreate ? theme.create : theme.edit}
+            </Button>
+            <Button variant="outlined" onClick={onClick}>
+              {theme.close}
+            </Button>
+          </Box>
+        </Box>
+      </Backdrop>
     </div>
   );
 }

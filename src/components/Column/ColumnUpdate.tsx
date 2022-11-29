@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useUpdateColumnMutation } from 'store/services/columnsAPI';
+import { useUpdateColumnMutation } from 'store/services/boardAPI';
 import { Button, Input } from '@mui/material';
 import { Done } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import { useIntl } from 'react-intl';
+import { IColumn } from 'interfaces/IBoard';
 
 export default function ColumnUpdate({
   columnData,
