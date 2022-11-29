@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
-import { useGetBoardByIdQuery } from 'store/services/boardAPI';
+import {
+  useGetBoardByIdQuery,
+  useUpdateColumnMutation,
+  useUpdateTaskMutation,
+} from 'store/services/boardAPI';
 import { Button } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
@@ -13,11 +17,6 @@ import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
 import IColumnCard from 'interfaces/IColumnCard';
 import { IColumn } from 'interfaces/IBoard';
-import {
-  useCreateTaskMutation,
-  useDeleteTaskMutation,
-  useUpdateTaskMutation,
-} from 'store/services/boardAPI';
 
 export default function BoardPage() {
   const { id } = useParams();
@@ -26,6 +25,7 @@ export default function BoardPage() {
   const userId = localStorage.getItem('userId');
 
   const [updateTask] = useUpdateTaskMutation();
+  const [updateColumn] = useUpdateColumnMutation();
 
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
@@ -46,8 +46,6 @@ export default function BoardPage() {
   };
   const theme = ru;
 
-  function onDragStart() {}
-  function onDragUpdate() {}
   async function onDragEnd(result: DropResult) {
     if (data) {
       const { destination, source, draggableId, type } = result;
@@ -63,65 +61,9 @@ export default function BoardPage() {
         const currTask = startColumn!.tasks.find((task) => task.id === draggableId);
 
         if (startColumn?.id === finishColumn?.id) {
-          const newTasks = Array.from(startColumn!.tasks).sort((a, b) => a.order - b.order);
-
-          const [task] = newTasks.splice(source.index, 1);
-          newTasks.splice(destination.index, 0, task);
-
-          const newColumn = {
-            ...startColumn,
-            tasks: newTasks.map((task, index) => ({
-              ...task,
-              order: index + 1,
-            })),
-          };
-
-          const newColumns = Array.from(columns);
-
-          newColumns.splice(
-            columns.findIndex((column) => column.id === startColumn!.id),
-            1,
-            newColumn as IColumn
-          );
-
-          setColumns(newColumns);
+          dropTask(source.index, destination.index, startColumn!);
         } else {
-          const newTasksStart = Array.from(startColumn!.tasks).sort((a, b) => a.order - b.order);
-          const newTasksEnd = Array.from(finishColumn!.tasks).sort((a, b) => a.order - b.order);
-
-          const [task] = newTasksStart.splice(source.index, 1);
-          newTasksEnd.splice(destination.index, 0, task);
-
-          const newStartColumn = {
-            ...startColumn,
-            tasks: newTasksStart.map((task, index) => ({
-              ...task,
-              order: index + 1,
-            })),
-          };
-
-          const newFinishColumn = {
-            ...finishColumn,
-            tasks: newTasksEnd.map((task, index) => ({
-              ...task,
-              order: index + 1,
-            })),
-          };
-
-          const newListColumn = Array.from(columns);
-          newListColumn.splice(
-            columns.findIndex((column) => column.id === startColumn!.id),
-            1,
-            newStartColumn as IColumn
-          );
-
-          newListColumn.splice(
-            columns.findIndex((column) => column.id === finishColumn!.id),
-            1,
-            newFinishColumn as IColumn
-          );
-
-          setColumns(newListColumn);
+          dropTaskBtwColumns(source.index, destination.index, startColumn!, finishColumn!);
         }
 
         currTask &&
@@ -138,7 +80,108 @@ export default function BoardPage() {
             },
           }));
       }
+
+      if (type === 'column') {
+        const currColumn = columns.find((column) => column.id === draggableId);
+        dropColumn(destination.index, source.index);
+
+        currColumn &&
+          (await updateColumn({
+            idBoard: boardId,
+            idColumn: currColumn.id,
+            body: {
+              title: currColumn.title,
+              order: destination.index + 1,
+            },
+          }));
+      }
     }
+  }
+
+  function dropTask(sourceIdx: number, destinationIdx: number, column: IColumn) {
+    const newTasks = Array.from(column.tasks).sort((a, b) => a.order - b.order);
+
+    const [task] = newTasks.splice(sourceIdx, 1);
+    newTasks.splice(destinationIdx, 0, task);
+
+    const newColumn = {
+      ...column,
+      tasks: newTasks.map((task, index) => ({
+        ...task,
+        order: index + 1,
+      })),
+    };
+
+    const newColumns = Array.from(columns);
+
+    newColumns.splice(
+      columns.findIndex((item) => item.id === column.id),
+      1,
+      newColumn as IColumn
+    );
+
+    setColumns(newColumns);
+  }
+
+  function dropTaskBtwColumns(
+    sourceIdx: number,
+    destinationIdx: number,
+    startColumn: IColumn,
+    finishColumn: IColumn
+  ) {
+    const newTasksStart = Array.from(startColumn.tasks).sort((a, b) => a.order - b.order);
+    const newTasksEnd = Array.from(finishColumn.tasks).sort((a, b) => a.order - b.order);
+
+    const [task] = newTasksStart.splice(sourceIdx, 1);
+    newTasksEnd.splice(destinationIdx, 0, task);
+
+    const newStartColumn = {
+      ...startColumn,
+      tasks: newTasksStart.map((task, index) => ({
+        ...task,
+        order: index + 1,
+      })),
+    };
+
+    const newFinishColumn = {
+      ...finishColumn,
+      tasks: newTasksEnd.map((task, index) => ({
+        ...task,
+        order: index + 1,
+      })),
+    };
+
+    const newListColumn = Array.from(columns);
+    newListColumn.splice(
+      columns.findIndex((column) => column.id === startColumn!.id),
+      1,
+      newStartColumn as IColumn
+    );
+
+    newListColumn.splice(
+      columns.findIndex((column) => column.id === finishColumn!.id),
+      1,
+      newFinishColumn as IColumn
+    );
+
+    setColumns(newListColumn);
+  }
+
+  function dropColumn(destinationIdx: number, sourceIdx: number) {
+    const sortedColumns = Array.from(columns).sort((a, b) => a.order - b.order);
+
+    const [column] = sortedColumns.splice(sourceIdx, 1);
+    sortedColumns.splice(destinationIdx, 0, column);
+
+    const newBoard = {
+      ...columns,
+      columns: sortedColumns.map((item, index) => ({
+        ...item,
+        order: index + 1,
+      })),
+    };
+
+    setColumns(newBoard.columns);
   }
 
   return (
@@ -162,11 +205,7 @@ export default function BoardPage() {
           {changeActive && <BoardForm id={boardId} onClick={() => setChangeActive(false)} />}
           {addActive && <ColumnModal idBoard={boardId} onClick={() => setAddActive(false)} />}
 
-          <DragDropContext
-            onDragStart={onDragStart}
-            onDragUpdate={onDragUpdate}
-            onDragEnd={onDragEnd}
-          >
+          <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type="column">
               {(provided) => (
                 <div
@@ -184,7 +223,9 @@ export default function BoardPage() {
                   {columns &&
                     [...columns]
                       .sort((a, b) => a.order - b.order)
-                      .map((column: IColumnCard) => <ColumnCard key={column.id} data={column} />)}
+                      .map((column: IColumnCard, index: number) => (
+                        <ColumnCard key={column.id} data={column} index={index} />
+                      ))}
                   {provided.placeholder}
                 </div>
               )}

@@ -1,5 +1,9 @@
 type TBoardRequest = Omit<IBoard, 'id'>;
-type TColumnRequest = Omit<IColumn, 'id'>;
+
+type TColumnRequest = {
+  title: string;
+  order: number;
+};
 
 type TTaskRequest = {
   title: string;
