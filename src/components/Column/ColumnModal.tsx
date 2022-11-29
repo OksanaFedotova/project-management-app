@@ -1,8 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { useIntl } from 'react-intl';
 import { Button, Box, TextField } from '@mui/material';
 import { useCreateColumnMutation } from 'store/services/boardAPI';
-import { useIntl } from 'react-intl';
 
 export default function ColumnModal({
   idBoard,
@@ -11,26 +12,27 @@ export default function ColumnModal({
   idBoard: string;
   onClick: () => void;
 }) {
+  const intl = useIntl();
+  const theme = {
+    label: intl.formatMessage({ id: `${'board_label'}` }),
+    title: intl.formatMessage({ id: `${'board_title'}` }),
+    change: intl.formatMessage({ id: `${'change'}` }),
+    close: intl.formatMessage({ id: `${'close'}` }),
+    succes: intl.formatMessage({ id: `${'column_create_notification'}` }),
+  };
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<{ title: string }>({ mode: 'onSubmit' });
-
   const [createColumn] = useCreateColumnMutation();
   const onSubmit = ({ title }: { title: string }) => {
     const body = { title: title };
-    createColumn({ idBoard, body }).catch((e) => console.error(e));
+    createColumn({ idBoard, body })
+      .then(() => toast(theme.succes))
+      .catch((e) => console.error(e));
     onClick();
   };
-  const intl = useIntl();
-  const ru = {
-    label: intl.formatMessage({ id: `${'board_label'}` }),
-    title: intl.formatMessage({ id: `${'board_title'}` }),
-    change: intl.formatMessage({ id: `${'add'}` }),
-    close: intl.formatMessage({ id: `${'close'}` }),
-  };
-  const theme = ru;
   return (
     <div className="form-wrapper">
       <div className="boards-form">

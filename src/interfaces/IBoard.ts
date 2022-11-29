@@ -36,6 +36,7 @@ interface IColumn {
   title: string;
   order: number;
   tasks: ITask[];
+  boardId?: string;
 }
 
 interface ITask {
