@@ -19,7 +19,7 @@ export default function BoardCard({
     <Card
       key={id}
       sx={{
-        maxWidth: 275,
+        width: 300,
         margin: 1,
         cursor: 'pointer',
         ':hover': { boxShadow: 5 },

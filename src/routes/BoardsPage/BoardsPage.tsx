@@ -38,17 +38,29 @@ export default function BoardsPage() {
                 onClick={() => navigator(`${board.id}`)}
               />
             ))}
+          <Box textAlign="center">
+            <Button
+              variant="contained"
+              sx={(theme) => ({
+                pr: 8,
+                pl: 8,
+                pt: 7,
+                pb: 7,
+                ml: 1,
+                mt: 1,
+                mb: 1,
+                width: 300,
+                [theme.breakpoints.down('sm')]: {
+                  width: 275,
+                },
+              })}
+              onClick={() => setBoardForm({ isActive: true, id: '' })}
+            >
+              <AddCircleOutlineIcon sx={{ mr: 1 }} />
+              <FormattedMessage id="add_board" />
+            </Button>
+          </Box>
         </div>
-        <Box textAlign="center">
-          <Button
-            variant="contained"
-            sx={{ pr: 8, pl: 8, pt: 5, pb: 5, ml: 1 }}
-            onClick={() => setBoardForm({ isActive: true, id: '' })}
-          >
-            <AddCircleOutlineIcon sx={{ mr: 1 }} />
-            <FormattedMessage id="add_board" />
-          </Button>
-        </Box>
       </div>
       {boardForm.isActive && (
         <ChangeBoardForm
