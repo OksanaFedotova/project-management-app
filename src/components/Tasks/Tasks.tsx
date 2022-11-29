@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { toast } from 'react-toastify';
-import { useDeleteTaskMutation } from 'store/services/taskAPI';
-import ModalDelete from 'components/ModalDelete';
-import { ITaskResponse } from 'interfaces/IBoard';
-import { IconButton, ListItem, ListItemText, Typography } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import TaskModal from './TaskModal';
 import { useIntl } from 'react-intl';
+import { useDeleteTaskMutation } from 'store/services/boardAPI';
+import ModalDelete from 'components/ModalDelete';
+import TaskModal from './TaskModal';
+import Task from './Task';
+import { ITask } from 'interfaces/IBoard';
+import { ListItem } from '@mui/material';
 
-export default function Tasks({ tasks }: { tasks: ITaskResponse[] }) {
+export default function Tasks({ tasks, columnId }: { tasks: ITask[]; columnId: string }) {
+  const { id } = useParams();
+  const boardId = id ? id : '';
   const [isModal, setIsModal] = useState(false);
   const [addActive, setAddActive] = useState(false);
-  const [currTask, setCurrTask] = useState<ITaskResponse>();
+  const [currTask, setCurrTask] = useState<ITask>();
 
   const [deleteTask] = useDeleteTaskMutation();
 
   const deleteHandler = async (type: string) => {
     if (currTask) {
-      const { boardId, columnId, id } = currTask;
+      const { id } = currTask;
       if (type === intl.formatMessage({ id: `${'yes'}` })) {
         await deleteTask({ boardId, columnId, idTask: id });
         toast.success('Task deleted!');
@@ -43,64 +46,55 @@ export default function Tasks({ tasks }: { tasks: ITaskResponse[] }) {
       )}
       {addActive && (
         <TaskModal
-          columnId={currTask ? currTask.columnId : ''}
-          boardId={currTask ? currTask.boardId : ''}
+          columnId={columnId}
+          boardId={boardId}
           isCreate={false}
           task={currTask}
           onClick={() => setAddActive(false)}
         />
       )}
-      <div style={{ overflow: 'hidden auto' }}>
-        {tasks &&
-          tasks.map((item: ITaskResponse) => (
-            <ListItem
-              key={item.id}
-              sx={{
-                borderRadius: 2,
-                backgroundColor: '#FFFFFF',
-                marginBottom: 0.5,
-                padding: 1,
-                display: 'flex',
-                justifyContent: 'space-between',
-                cursor: 'grab',
-              }}
-            >
-              <div>
-                <Typography variant="subtitle1" sx={{ maxWidth: 200, overflowWrap: 'break-word' }}>
-                  {item.title}
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  sx={{ maxWidth: 200, overflowWrap: 'break-word', color: '#777777' }}
-                >
-                  {item.description}
-                </Typography>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <IconButton
-                  sx={{ padding: 0.5 }}
-                  aria-label="edit"
-                  onClick={() => {
-                    setAddActive(true);
-                    setCurrTask(item);
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  sx={{ padding: 0.5 }}
-                  aria-label="delete"
-                  onClick={() => {
-                    setIsModal(true);
-                    setCurrTask(item);
-                  }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </div>
-            </ListItem>
-          ))}
-      </div>
+      <Droppable droppableId={columnId} type="tasks" direction="vertical">
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps} style={{ minHeight: '70px' }}>
+            {tasks &&
+              [...tasks]
+                .sort((a, b) => a.order - b.order)
+                .map((item: ITask, index: number) => (
+                  <Draggable draggableId={item.id} index={index} key={item.id}>
+                    {(provided, snapshot) => (
+                      <div
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        <ListItem
+                          sx={{
+                            borderRadius: 2,
+                            backgroundColor: snapshot.isDragging ? '#d1e6fa' : '#FFFFFF',
+                            transition: 'background-color .3 s ease',
+                            marginBottom: 0.5,
+                            padding: 1,
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            cursor: 'grab',
+                          }}
+                          draggable={true}
+                        >
+                          <Task
+                            task={item}
+                            setTask={setCurrTask}
+                            setAdd={setAddActive}
+                            setIsModal={setIsModal}
+                          />
+                        </ListItem>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </>
   );
 }
