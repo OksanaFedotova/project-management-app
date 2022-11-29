@@ -8,7 +8,7 @@ import ModalDelete from 'components/ModalDelete';
 import TaskModal from './TaskModal';
 import Task from './Task';
 import { ITask } from 'interfaces/IBoard';
-import { ListItem } from '@mui/material';
+import { ListItem, Backdrop, CircularProgress } from '@mui/material';
 
 export default function Tasks({ tasks, columnId }: { tasks: ITask[]; columnId: string }) {
   const { id } = useParams();
@@ -17,7 +17,7 @@ export default function Tasks({ tasks, columnId }: { tasks: ITask[]; columnId: s
   const [addActive, setAddActive] = useState(false);
   const [currTask, setCurrTask] = useState<ITask>();
 
-  const [deleteTask] = useDeleteTaskMutation();
+  const [deleteTask, { isLoading: isLoadingDelete }] = useDeleteTaskMutation();
 
   const deleteHandler = async (type: string) => {
     if (currTask) {
@@ -35,6 +35,11 @@ export default function Tasks({ tasks, columnId }: { tasks: ITask[]; columnId: s
 
   return (
     <>
+      {isLoadingDelete && (
+        <Backdrop sx={{ color: '#fff', zIndex: 1500 }} open={true}>
+          <CircularProgress color="inherit" size={60} />
+        </Backdrop>
+      )}
       {isModal && (
         <ModalDelete
           title={intl.formatMessage({ id: `${'delete_confirm'}` })}

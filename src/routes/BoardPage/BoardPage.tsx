@@ -16,7 +16,6 @@ import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
 import IColumnCard from 'interfaces/IColumnCard';
 import { IColumn } from 'interfaces/IBoard';
-import './BoardPage.css';
 import { useNavigate } from 'react-router-dom';
 import ModalDelete from 'components/ModalDelete';
 import { toast } from 'react-toastify';
