@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useCreateTaskMutation, useUpdateTaskMutation } from 'store/services/boardAPI';
 import { ITask, TTaskRequest } from 'interfaces/IBoard';
 import { ErrorAuth } from 'interfaces/IUser';
-import { Button, Box, TextField, Backdrop } from '@mui/material';
+import { Button, Box, TextField, Backdrop, CircularProgress } from '@mui/material';
 import { useIntl } from 'react-intl';
 
 export default function TaskModal({
@@ -20,8 +20,8 @@ export default function TaskModal({
   isCreate: boolean;
   task?: ITask;
 }) {
-  const [createTask] = useCreateTaskMutation();
-  const [updateTask] = useUpdateTaskMutation();
+  const [createTask, { isLoading: isLoadingTaskCreate }] = useCreateTaskMutation();
+  const [updateTask, { isLoading: isLoadingTaskUpdate }] = useUpdateTaskMutation();
   const userId = localStorage.getItem('userId') ?? '';
 
   const {
@@ -80,63 +80,70 @@ export default function TaskModal({
   const theme = ru;
 
   return (
-    <div className="form-wrapper">
-      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
-        <Box
-          onSubmit={handleSubmit(onSubmit)}
-          component="form"
-          sx={(theme) => ({
-            width: 350,
-            display: 'flex',
-            flexDirection: 'column',
-            '& .MuiTextField-root': { m: 1 },
-            backgroundColor: '#ffffff',
-            p: 3,
-            borderRadius: 3,
-            [theme.breakpoints.down('sm')]: {
-              width: 300,
-            },
-          })}
-          autoComplete="off"
-        >
-          <TextField
-            label={errors.title ? errors.title.message : theme.title}
-            error={!!errors.title}
-            {...register('title', {
-              required: {
-                value: true,
-                message: intl.formatMessage({ id: `${'title_required'}` }),
-              },
-              maxLength: {
-                value: 50,
-                message: intl.formatMessage({ id: `${'task_max_length'}` }),
+    <>
+      {(isLoadingTaskCreate || isLoadingTaskUpdate) && (
+        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+          <CircularProgress color="inherit" size={60} />
+        </Backdrop>
+      )}
+      <div className="form-wrapper">
+        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+          <Box
+            onSubmit={handleSubmit(onSubmit)}
+            component="form"
+            sx={(theme) => ({
+              width: 350,
+              display: 'flex',
+              flexDirection: 'column',
+              '& .MuiTextField-root': { m: 1 },
+              backgroundColor: '#ffffff',
+              p: 3,
+              borderRadius: 3,
+              [theme.breakpoints.down('sm')]: {
+                width: 300,
               },
             })}
-          />
-          <TextField
-            label={errors.description ? errors.description.message : theme.description}
-            error={!!errors.description}
-            {...register('description', {
-              required: {
-                value: true,
-                message: intl.formatMessage({ id: `${'description_required'}` }),
-              },
-              maxLength: {
-                value: 100,
-                message: intl.formatMessage({ id: `${'description_max_length'}` }),
-              },
-            })}
-          />
-          <Box sx={{ display: 'flex', justifyContent: 'space-evenly', padding: 3 }}>
-            <Button type="submit" variant="contained">
-              {isCreate ? theme.create : theme.edit}
-            </Button>
-            <Button variant="outlined" onClick={onClick}>
-              {theme.close}
-            </Button>
+            autoComplete="off"
+          >
+            <TextField
+              label={errors.title ? errors.title.message : theme.title}
+              error={!!errors.title}
+              {...register('title', {
+                required: {
+                  value: true,
+                  message: intl.formatMessage({ id: `${'title_required'}` }),
+                },
+                maxLength: {
+                  value: 50,
+                  message: intl.formatMessage({ id: `${'task_max_length'}` }),
+                },
+              })}
+            />
+            <TextField
+              label={errors.description ? errors.description.message : theme.description}
+              error={!!errors.description}
+              {...register('description', {
+                required: {
+                  value: true,
+                  message: intl.formatMessage({ id: `${'description_required'}` }),
+                },
+                maxLength: {
+                  value: 100,
+                  message: intl.formatMessage({ id: `${'description_max_length'}` }),
+                },
+              })}
+            />
+            <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                {isCreate ? theme.create : theme.edit}
+              </Button>
+              <Button variant="outlined" sx={{ mt: 2 }} onClick={onClick}>
+                {theme.close}
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Backdrop>
-    </div>
+        </Backdrop>
+      </div>
+    </>
   );
 }

@@ -16,7 +16,16 @@ export default function BoardCard({
 }) {
   const { title, description, id } = board;
   return (
-    <Card key={id} sx={{ width: 300, margin: 1 }} onClick={onClick}>
+    <Card
+      key={id}
+      sx={{
+        width: 300,
+        margin: 1,
+        cursor: 'pointer',
+        ':hover': { boxShadow: 5 },
+      }}
+      onClick={onClick}
+    >
       <CardContent>
         <Typography variant="h5" color="text.secondary" gutterBottom>
           {title}

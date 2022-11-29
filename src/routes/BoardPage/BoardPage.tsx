@@ -16,7 +16,6 @@ import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
 import IColumnCard from 'interfaces/IColumnCard';
 import { IColumn } from 'interfaces/IBoard';
-import './BoardPage.css';
 import { useNavigate } from 'react-router-dom';
 import ModalDelete from 'components/ModalDelete';
 import { toast } from 'react-toastify';
@@ -27,8 +26,10 @@ export default function BoardPage() {
   const boardId = id ? id : '';
   const { data, isLoading: isLoadingData } = useGetBoardByIdQuery(boardId);
   const userId = localStorage.getItem('userId');
+
   const [updateTask] = useUpdateTaskMutation();
   const [updateColumn] = useUpdateColumnMutation();
+
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
   const [addActive, setAddActive] = useState(false);

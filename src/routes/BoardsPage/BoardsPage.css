@@ -31,7 +31,7 @@
   }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 375px) {
   .boards-container {
     padding-top: 20vh;
   }
