@@ -16,9 +16,9 @@ export default function ColumnModal({
   const theme = {
     label: intl.formatMessage({ id: `${'board_label'}` }),
     title: intl.formatMessage({ id: `${'board_title'}` }),
-    change: intl.formatMessage({ id: `${'change'}` }),
     close: intl.formatMessage({ id: `${'close'}` }),
     succes: intl.formatMessage({ id: `${'column_create_notification'}` }),
+    add: intl.formatMessage({ id: `${'add'}` }),
   };
   const {
     register,
@@ -69,7 +69,7 @@ export default function ColumnModal({
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
               <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-                {theme.change}
+                {theme.add}
               </Button>
               <Button variant="outlined" sx={{ mt: 2 }} onClick={onClick}>
                 {theme.close}

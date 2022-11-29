@@ -15,6 +15,7 @@ import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
 import IColumnCard from 'interfaces/IColumnCard';
 import { IColumn } from 'interfaces/IBoard';
+import './BoardPage.css';
 
 export default function BoardPage() {
   const { id } = useParams();
