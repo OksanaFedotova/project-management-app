@@ -7,7 +7,9 @@ const Footer = () => {
   return (
     <footer className="footer">
       <Box>
-        <img src={'https://rs.school/images/rs_school_js.svg'} width="70px" alt="rs-logo"></img>
+        <a target="_blank" rel="noopener noreferrer" href="https://rs.school/react/">
+          <img src={'https://rs.school/images/rs_school_js.svg'} width="70px" alt="rs-logo" />
+        </a>
       </Box>
       <Box className="github-links-box">
         <Link href="https://github.com/oksanafedotova" color="inherit" className="github-link">

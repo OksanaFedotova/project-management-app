@@ -64,6 +64,7 @@ export const messages = {
     task_max_length: 'Максимум 50 символов',
     description_required: 'Описание обязательно',
     description_max_length: 'Максимум 100 символов',
+    board_delete_toast: 'Доска удалена',
   },
   [LOCALES.ENGLISH]: {
     project_title: 'Task manager',
@@ -128,5 +129,6 @@ export const messages = {
     task_max_length: 'Max: 50 symbols',
     description_required: 'Description required',
     description_max_length: 'Max: 100 symbols',
+    board_delete_toast: 'Board deleted',
   },
 };

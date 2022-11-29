@@ -5,6 +5,7 @@ import {
   useGetBoardByIdQuery,
   useUpdateColumnMutation,
   useUpdateTaskMutation,
+  useDeleteBoardMutation,
 } from 'store/services/boardAPI';
 import { Backdrop, Button, CircularProgress } from '@mui/material';
 import Layout from 'components/Layout';
@@ -15,6 +16,9 @@ import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
 import IColumnCard from 'interfaces/IColumnCard';
 import { IColumn } from 'interfaces/IBoard';
+import { useNavigate } from 'react-router-dom';
+import ModalDelete from 'components/ModalDelete';
+import { toast } from 'react-toastify';
 import './BoardPage.css';
 
 export default function BoardPage() {
@@ -22,11 +26,16 @@ export default function BoardPage() {
   const boardId = id ? id : '';
   const { data, isLoading: isLoadingData } = useGetBoardByIdQuery(boardId);
   const userId = localStorage.getItem('userId');
+
   const [updateTask] = useUpdateTaskMutation();
   const [updateColumn] = useUpdateColumnMutation();
+
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
   const [addActive, setAddActive] = useState(false);
+
+  const navigator = useNavigate();
+  const [isModalDelete, setIsModalDelete] = useState(false);
 
   const [columns, setColumns] = useState<IColumn[]>([]);
 
@@ -40,6 +49,10 @@ export default function BoardPage() {
     delete: intl.formatMessage({ id: `${'yes'}` }),
     change: intl.formatMessage({ id: `${'change'}` }),
     addColumn: intl.formatMessage({ id: `${'add_list'}` }),
+    title: intl.formatMessage({ id: `${'delete_confirm'}` }),
+    yes: intl.formatMessage({ id: `${'yes'}` }),
+    no: intl.formatMessage({ id: `${'no'}` }),
+    boardDelete: intl.formatMessage({ id: `${'board_delete_toast'}` }),
   };
   const theme = ru;
 
@@ -181,12 +194,33 @@ export default function BoardPage() {
     setColumns(newBoard.columns);
   }
 
+  const [deleteBoard, { isLoading: isLoadingDelete }] = useDeleteBoardMutation();
+  const handleDelete = async (type: string) => {
+    if (type === intl.formatMessage({ id: `${'yes'}` })) {
+      await deleteBoard(boardId).catch((e) => console.error(e));
+      toast(theme.boardDelete);
+      setIsModalDelete(false);
+      navigator('/boards');
+    } else {
+      setIsModalDelete(false);
+    }
+  };
+
   return (
     <Layout>
-      {isLoadingData && (
-        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+      {(isLoadingData || isLoadingDelete) && (
+        <Backdrop sx={{ color: '#fff', zIndex: 1500 }} open={true}>
           <CircularProgress color="inherit" size={60} />
         </Backdrop>
+      )}
+      {isModalDelete && (
+        <ModalDelete
+          title={theme.title}
+          btnSubmit={theme.yes}
+          btnCancel={theme.no}
+          handleClick={handleDelete}
+          open={true}
+        />
       )}
       {data && (
         <section
@@ -199,7 +233,7 @@ export default function BoardPage() {
           <h3>{data.description}</h3>
           <Button onClick={() => setDescriptionActive(true)}>{theme.description}</Button>
           <Button onClick={() => setChangeActive(true)}>{theme.change}</Button>
-          <Button>{theme.delete}</Button>
+          <Button onClick={() => setIsModalDelete(true)}>{theme.delete}</Button>
           <Button onClick={() => setAddActive(true)}>{theme.addColumn}</Button>
           {descriptionActive && (
             <BoardDescription title={data.title} description={data.description} />
