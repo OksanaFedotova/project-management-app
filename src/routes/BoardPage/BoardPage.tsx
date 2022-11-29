@@ -6,7 +6,7 @@ import {
   useUpdateColumnMutation,
   useUpdateTaskMutation,
 } from 'store/services/boardAPI';
-import { Button } from '@mui/material';
+import { Backdrop, Button, CircularProgress } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
 import { useIntl } from 'react-intl';
@@ -15,16 +15,15 @@ import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
 import IColumnCard from 'interfaces/IColumnCard';
 import { IColumn } from 'interfaces/IBoard';
+import './BoardPage.css';
 
 export default function BoardPage() {
   const { id } = useParams();
   const boardId = id ? id : '';
-  const { data } = useGetBoardByIdQuery(boardId);
+  const { data, isLoading: isLoadingData } = useGetBoardByIdQuery(boardId);
   const userId = localStorage.getItem('userId');
-
   const [updateTask] = useUpdateTaskMutation();
   const [updateColumn] = useUpdateColumnMutation();
-
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
   const [addActive, setAddActive] = useState(false);
@@ -184,6 +183,11 @@ export default function BoardPage() {
 
   return (
     <Layout>
+      {isLoadingData && (
+        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+          <CircularProgress color="inherit" size={60} />
+        </Backdrop>
+      )}
       {data && (
         <section
           className="board-container"

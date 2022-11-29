@@ -6,15 +6,15 @@ import ChangeBoardForm from '../../components/BoardForm';
 import { IBoard } from 'interfaces/IBoard';
 import './BoardsPage.css';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { FormattedMessage } from 'react-intl';
 
 export default function BoardsPage() {
-  const { data } = useGetAllBoardsQuery('');
+  const { data, isLoading: isLoadingData } = useGetAllBoardsQuery('');
   const navigator = useNavigate();
   const [boardForm, setBoardForm] = useState({ isActive: false, id: '' });
-  const [deleteBoard] = useDeleteBoardMutation();
+  const [deleteBoard, { isLoading: isLoadingDelete }] = useDeleteBoardMutation();
   const handleDelete = (id: string) => {
     deleteBoard(id).catch((e) => console.error(e));
   };
@@ -22,6 +22,11 @@ export default function BoardsPage() {
   return (
     <Layout>
       <div>
+        {(isLoadingDelete || isLoadingData) && (
+          <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+            <CircularProgress color="inherit" size={60} />
+          </Backdrop>
+        )}
         <div className="boards-container">
           {data &&
             data.map((board: IBoard) => (
@@ -36,7 +41,19 @@ export default function BoardsPage() {
           <Box textAlign="center">
             <Button
               variant="contained"
-              sx={{ pr: 8, pl: 8, pt: 5, pb: 5, ml: 1 }}
+              sx={(theme) => ({
+                pr: 8,
+                pl: 8,
+                pt: 7,
+                pb: 7,
+                ml: 1,
+                mt: 1,
+                mb: 1,
+                width: 300,
+                [theme.breakpoints.down('sm')]: {
+                  width: 275,
+                },
+              })}
               onClick={() => setBoardForm({ isActive: true, id: '' })}
             >
               <AddCircleOutlineIcon sx={{ mr: 1 }} />

@@ -16,7 +16,7 @@
   text-decoration: none;
 }
 
-@media (max-width: 550px) {
+@media (max-width: 670px) {
   .toolbar {
     display: flex;
     flex-wrap: wrap;

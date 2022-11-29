@@ -24,7 +24,7 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
         <div {...provided.draggableProps} ref={provided.innerRef}>
           <Card
             key={id}
-            sx={{
+            sx={(theme) => ({
               width: 350,
               maxHeight: 'calc(100vh - 300px)',
               minHeight: 180,
@@ -36,7 +36,10 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
               alignItems: 'center',
               boxShadow: '0 0 10px 0 #D2D7E0',
               backgroundColor: '#F2F7FF',
-            }}
+              [theme.breakpoints.down('sm')]: {
+                width: 273,
+              },
+            })}
             {...provided.dragHandleProps}
           >
             <Box sx={{ display: 'flex' }}>
