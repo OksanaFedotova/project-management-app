@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import ModalDeleteColumns from './ColumnDeleteModal';
+import ColumnUpdate from './ColumnUpdate';
 import { Draggable } from 'react-beautiful-dnd';
 import Tasks from 'components/Tasks';
 import TaskModal from 'components/Tasks/TaskModal';
 import { CardContent, Typography, Card, Button, Box } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModalDeleteColumns from './ColumnDeleteModal';
+import { Mode, Delete } from '@mui/icons-material';
+//import DeleteIcon from '@mui/icons-material/Delete';
 import { IColumn } from 'interfaces/IBoard';
 
 export default function ColumnCard({ data, index }: { data: IColumn; index: number }) {
@@ -15,6 +17,7 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
   const { id: boardId } = useParams<string>();
   const [addActive, setAddActive] = useState(false);
   const [deleteColumnActive, setDeleteColumnActive] = useState(false);
+  const [changeColumnActive, setChangeColumnActive] = useState(false);
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -40,12 +43,31 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
             {...provided.dragHandleProps}
           >
             <Box sx={{ display: 'flex' }}>
-              <Typography variant="h6" sx={{ m: 0.5 }}>
-                {title}
-              </Typography>
-              <Button
-                sx={{ mb: 1.5 }}
-                startIcon={<DeleteIcon />}
+              {!changeColumnActive && (
+                <>
+                  <Typography
+                    variant="h6"
+                    sx={{ m: 0.5 }}
+                    onClick={() => setChangeColumnActive(true)}
+                  >
+                    {title}
+                  </Typography>
+                  <Mode
+                    color="primary"
+                    sx={{ m: 0.5, cursor: 'pointer' }}
+                    onClick={() => setChangeColumnActive(true)}
+                  />
+                </>
+              )}
+              {changeColumnActive && (
+                <ColumnUpdate
+                  columnData={{ ...data, boardId: boardId as string }}
+                  onClick={() => setChangeColumnActive(false)}
+                />
+              )}
+              <Delete
+                color="primary"
+                sx={{ m: 0.5, cursor: 'pointer' }}
                 onClick={() => setDeleteColumnActive(true)}
               />
             </Box>

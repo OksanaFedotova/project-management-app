@@ -1,5 +1,6 @@
 import ModalDelete from 'components/ModalDelete';
 import React from 'react';
+import { toast } from 'react-toastify';
 import { useIntl } from 'react-intl';
 import { useDeleteColumnMutation } from 'store/services/boardAPI';
 import { Backdrop, CircularProgress } from '@mui/material';
@@ -19,10 +20,13 @@ export default function ModalDeleteColumns({
     title: intl.formatMessage({ id: `${'delete_confirm'}` }),
     yes: intl.formatMessage({ id: `${'yes'}` }),
     no: intl.formatMessage({ id: `${'no'}` }),
+    succes: intl.formatMessage({ id: `${'column_delete_notification'}` }),
   };
   const handleDelete = async (type: string) => {
     if (type === theme.yes) {
-      await deleteColumn({ idBoard, idColumn }).catch((e) => console.error(e));
+      await deleteColumn({ idBoard, idColumn })
+        .then(() => toast(theme.succes))
+        .catch((e) => console.error(e));
     }
     onClick();
   };

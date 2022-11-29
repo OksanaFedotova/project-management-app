@@ -10,8 +10,6 @@ import { Backdrop, Button, CircularProgress } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
 import { useIntl } from 'react-intl';
-
-import './BoardPage.css';
 import BoardForm from 'components/BoardForm';
 import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
