@@ -1,8 +1,12 @@
 .boards-container {
-  padding: 7%;
+  padding-bottom: 50px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-top: 10vh;
+  align-items: center;
 }
+
 .boards-form {
   position: fixed;
   top: 0;
@@ -13,4 +17,22 @@
   width: 300px;
   height: fit-content;
   z-index: 10;
+}
+
+@media (max-width: 1300px) {
+  .boards-container {
+    padding-top: 13vh;
+  }
+}
+
+@media (max-width: 621px) {
+  .boards-container {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 350px) {
+  .boards-container {
+    padding-top: 20vh;
+  }
 }

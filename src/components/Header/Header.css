@@ -16,10 +16,12 @@
   text-decoration: none;
 }
 
-@media (max-width: 475px) {
+@media (max-width: 550px) {
   .toolbar {
     display: flex;
     flex-wrap: wrap;
     padding: 10px 0;
+    row-gap: 10px;
+    justify-content: flex-end;
   }
 }

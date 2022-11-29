@@ -38,13 +38,18 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
         <Box
           onSubmit={handleSubmit(onSubmit)}
           component="form"
-          sx={{
+          sx={(theme) => ({
             width: 350,
             display: 'flex',
             flexDirection: 'column',
             '& .MuiTextField-root': { m: 1 },
             backgroundColor: '#ffffff',
-          }}
+            p: 3,
+            borderRadius: 3,
+            [theme.breakpoints.down('sm')]: {
+              width: 300,
+            },
+          })}
           autoComplete="off"
         >
           <Typography align="center" sx={{ pt: 1, pb: 2, textTransform: 'uppercase' }}>
