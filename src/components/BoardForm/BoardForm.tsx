@@ -5,7 +5,6 @@ import { useCreateBoardMutation, useUpdateBoardMutation } from 'store/services/b
 import FormInputs from 'interfaces/IFormBoards';
 import './BoardForm.css';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { IBoard } from 'interfaces/IBoard';
 
 export default function BoardForm({ id, onClick }: { id?: string; onClick: () => void }) {
   const {
