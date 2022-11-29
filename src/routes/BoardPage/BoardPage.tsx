@@ -5,19 +5,19 @@ import { Button } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
 import { useIntl } from 'react-intl';
-
-import './BoardPage.css';
 import BoardForm from 'components/BoardForm';
 import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
-import IColumnCard from 'interfaces/IColumnCard';
 import { useGetAllColumnsQuery } from 'store/services/columnsAPI';
+import { IBoard } from 'interfaces/IBoard';
+
+import './BoardPage.css';
 
 export default function BoardPage() {
   const { id } = useParams();
   const boardId = id ? id : '';
   const { data } = useGetBoardByIdQuery(boardId);
-  const columns = useGetAllColumnsQuery(boardId).data;
+  const columns: IColumn[] = useGetAllColumnsQuery(boardId).data;
   const [descriptionActive, setDescriptionActive] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
   const [addActive, setAddActive] = useState(false);
@@ -60,7 +60,7 @@ export default function BoardPage() {
             }}
           >
             {columns &&
-              columns.map((column: IColumnCard) => <ColumnCard key={column.id} data={column} />)}
+              columns.map((column: IColumn) => <ColumnCard key={column.id} data={column} />)}
           </div>
         </section>
       )}

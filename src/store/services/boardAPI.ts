@@ -14,7 +14,7 @@ export const boardAPI = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Boards', 'Columns'],
+  tagTypes: ['Boards'],
   endpoints: (builder) => ({
     getAllBoards: builder.query({
       query: () => 'boards',

@@ -55,6 +55,9 @@ export const messages = {
     board: 'Доска',
     create_task: 'Создать задачу',
     create: 'Создать',
+    column_update_notification: 'Колонка обновлена',
+    column_delete_notification: 'Колонка удалена',
+    column_create_notification: 'Колонка создана',
   },
   [LOCALES.ENGLISH]: {
     project_title: 'Task manager',
@@ -110,5 +113,8 @@ export const messages = {
     board: 'Board',
     create_task: 'Create task',
     create: 'Create',
+    column_update_notification: 'Column is updated',
+    column_delete_notification: 'Column is deleted',
+    column_create_notification: 'Column is created',
   },
 };

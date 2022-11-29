@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetAllTasksQuery } from 'store/services/taskAPI';
+import ModalDeleteColumns from './ColumnDeleteModal';
+import ColumnUpdate from './ColumnUpdate';
 import Tasks from 'components/Tasks';
 import TaskModal from 'components/Tasks/TaskModal';
-import IColumnCard from 'interfaces/IColumnCard';
 import { CardContent, Typography, Card, Button, Box } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModalDeleteColumns from './ColumnDeleteModal';
+import { Mode, Delete } from '@mui/icons-material';
 
-export default function ColumnCard({ data }: { data: IColumnCard }) {
+export default function ColumnCard({ data }: { data: IColumn }) {
   const { id, title } = data;
   const { id: boardId } = useParams<string>();
   const { data: tasksArray } = useGetAllTasksQuery({ boardId, columnId: id });
   const [addActive, setAddActive] = useState(false);
   const [deleteColumnActive, setDeleteColumnActive] = useState(false);
+  const [changeColumnActive, setChangeColumnActive] = useState(false);
   return (
     <>
       <Card
@@ -34,12 +35,27 @@ export default function ColumnCard({ data }: { data: IColumnCard }) {
         }}
       >
         <Box sx={{ display: 'flex' }}>
-          <Typography variant="h6" sx={{ m: 0.5 }}>
-            {title}
-          </Typography>
-          <Button
-            sx={{ mb: 1.5 }}
-            startIcon={<DeleteIcon />}
+          {!changeColumnActive && (
+            <>
+              <Typography variant="h6" sx={{ m: 0.5 }} onClick={() => setChangeColumnActive(true)}>
+                {title}
+              </Typography>
+              <Mode
+                color="primary"
+                sx={{ m: 0.5, cursor: 'pointer' }}
+                onClick={() => setChangeColumnActive(true)}
+              />
+            </>
+          )}
+          {changeColumnActive && (
+            <ColumnUpdate
+              columnData={{ ...data, boardId: boardId as string }}
+              onClick={() => setChangeColumnActive(false)}
+            />
+          )}
+          <Delete
+            color="primary"
+            sx={{ m: 0.5, cursor: 'pointer' }}
             onClick={() => setDeleteColumnActive(true)}
           />
         </Box>
