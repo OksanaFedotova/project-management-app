@@ -1,10 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useCreateTaskMutation, useUpdateTaskMutation } from 'store/services/taskAPI';
-import { ITaskResponse, TTaskRequest } from 'interfaces/IBoard';
+import { useCreateTaskMutation, useUpdateTaskMutation } from 'store/services/boardAPI';
+import { ITask, TTaskRequest } from 'interfaces/IBoard';
 import { ErrorAuth } from 'interfaces/IUser';
-import { Button, Box, TextField, CircularProgress, Backdrop } from '@mui/material';
+import { Button, Box, TextField, Backdrop, CircularProgress } from '@mui/material';
 import { useIntl } from 'react-intl';
 
 export default function TaskModal({
@@ -18,7 +18,7 @@ export default function TaskModal({
   boardId: string;
   onClick: () => void;
   isCreate: boolean;
-  task?: ITaskResponse;
+  task?: ITask;
 }) {
   const [createTask, { isLoading: isLoadingTaskCreate }] = useCreateTaskMutation();
   const [updateTask, { isLoading: isLoadingTaskUpdate }] = useUpdateTaskMutation();
@@ -60,7 +60,7 @@ export default function TaskModal({
       columnId,
     };
     try {
-      await updateTask({ idTask, body });
+      await updateTask({ idTask, idColumn: columnId, body });
       toast.success('Task updated!');
     } catch (e) {
       const err = e as ErrorAuth;
@@ -68,6 +68,7 @@ export default function TaskModal({
     }
     onClick();
   };
+
   const intl = useIntl();
   const ru = {
     title: intl.formatMessage({ id: `${'board_title'}` }),
@@ -77,6 +78,7 @@ export default function TaskModal({
     close: intl.formatMessage({ id: `${'close'}` }),
   };
   const theme = ru;
+
   return (
     <>
       {(isLoadingTaskCreate || isLoadingTaskUpdate) && (
@@ -85,7 +87,7 @@ export default function TaskModal({
         </Backdrop>
       )}
       <div className="form-wrapper">
-        <div className="boards-form">
+        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
           <Box
             onSubmit={handleSubmit(onSubmit)}
             component="form"
@@ -140,7 +142,7 @@ export default function TaskModal({
               </Button>
             </Box>
           </Box>
-        </div>
+        </Backdrop>
       </div>
     </>
   );

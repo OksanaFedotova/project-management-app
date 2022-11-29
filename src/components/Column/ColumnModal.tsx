@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Box, TextField, Backdrop, CircularProgress } from '@mui/material';
-import { useCreateColumnMutation } from 'store/services/columnsAPI';
+import { useCreateColumnMutation } from 'store/services/boardAPI';
 import { useIntl } from 'react-intl';
 
 export default function ColumnModal({

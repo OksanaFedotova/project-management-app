@@ -8,8 +8,6 @@ import languageReducer from './reducers/LanguageSlice';
 import { authAPI } from './services/authAPI';
 import { boardAPI } from './services/boardAPI';
 import { userAPI } from './services/userAPI';
-import { columnAPI } from './services/columnsAPI';
-import { taskAPI } from './services/taskAPI';
 
 const setupStore = () =>
   configureStore({
@@ -17,8 +15,6 @@ const setupStore = () =>
       [authAPI.reducerPath]: authAPI.reducer,
       [boardAPI.reducerPath]: boardAPI.reducer,
       [userAPI.reducerPath]: userAPI.reducer,
-      [columnAPI.reducerPath]: columnAPI.reducer,
-      [taskAPI.reducerPath]: taskAPI.reducer,
       auth: authReducer,
       board: boardReducer,
       user: userReducer,
@@ -31,8 +27,6 @@ const setupStore = () =>
       authAPI.middleware,
       boardAPI.middleware,
       userAPI.middleware,
-      columnAPI.middleware,
-      taskAPI.middleware,
     ],
   });
 

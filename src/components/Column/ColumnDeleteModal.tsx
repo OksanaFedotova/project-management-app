@@ -1,7 +1,7 @@
 import ModalDelete from 'components/ModalDelete';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useDeleteColumnMutation } from 'store/services/columnsAPI';
+import { useDeleteColumnMutation } from 'store/services/boardAPI';
 import { Backdrop, CircularProgress } from '@mui/material';
 
 export default function ModalDeleteColumns({
