@@ -1,4 +1,6 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
+import { useGetUserByIdQuery } from 'store/services/userAPI';
 import { ITask } from 'interfaces/IBoard';
 import { IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -15,6 +17,9 @@ export default function Task({
   setAdd: (bool: boolean) => void;
   setIsModal: (bool: boolean) => void;
 }) {
+  const { data } = useGetUserByIdQuery(task.userId);
+  const name = data ? data.name : '';
+  const intl = useIntl();
   return (
     <div
       style={{
@@ -32,6 +37,9 @@ export default function Task({
           sx={{ maxWidth: 200, overflowWrap: 'break-word', color: '#777777' }}
         >
           {task.description}
+        </Typography>
+        <Typography variant="subtitle2" sx={{ maxWidth: 200, overflowWrap: 'break-word' }}>
+          {intl.formatMessage({ id: `${'owner'}` })}: {name}
         </Typography>
       </div>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
