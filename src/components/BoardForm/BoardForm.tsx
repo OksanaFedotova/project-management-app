@@ -62,16 +62,50 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
               <FormattedMessage id="board" />
             </Typography>
             <TextField
-              {...register('title', { required: true })}
+              {...register('title', {
+                required: {
+                  value: true,
+                  message: intl.formatMessage({ id: `${'title_required'}` }),
+                },
+                minLength: {
+                  value: 1,
+                  message: intl.formatMessage({ id: `${'task_min_length'}` }),
+                },
+                maxLength: {
+                  value: 25,
+                  message: intl.formatMessage({ id: `${'login_max_length'}` }),
+                },
+                pattern: {
+                  value: /(?=.*\S)/,
+                  message: intl.formatMessage({ id: `${'text_pattern'}` }),
+                },
+              })}
               id="outlined-required"
-              label={theme.label}
+              label={errors.title ? errors.title.message : theme.label}
               defaultValue={theme.title}
               error={!!errors.title}
             />
             <TextField
-              {...register('description', { required: true })}
+              {...register('description', {
+                required: {
+                  value: true,
+                  message: intl.formatMessage({ id: `${'title_required'}` }),
+                },
+                minLength: {
+                  value: 1,
+                  message: intl.formatMessage({ id: `${'task_min_length'}` }),
+                },
+                maxLength: {
+                  value: 100,
+                  message: intl.formatMessage({ id: `${'description_max_length'}` }),
+                },
+                pattern: {
+                  value: /(?=.*\S)/,
+                  message: intl.formatMessage({ id: `${'text_pattern'}` }),
+                },
+              })}
               id="outlined-required"
-              label={theme.label}
+              label={errors.description ? errors.description.message : theme.label}
               defaultValue={theme.descripion}
               multiline
               error={!!errors.description}

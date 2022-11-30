@@ -24,7 +24,7 @@ export default function ColumnModal({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ title: string }>({ mode: 'onSubmit' });
+  } = useForm<{ title: string }>({ mode: 'onChange' });
 
   const [createColumn, { isLoading: isLoadingNewColumn }] = useCreateColumnMutation();
   const onSubmit = async ({ title }: { title: string }) => {
@@ -61,9 +61,26 @@ export default function ColumnModal({
             autoComplete="off"
           >
             <TextField
-              {...register('title', { required: true })}
+              {...register('title', {
+                required: {
+                  value: true,
+                  message: intl.formatMessage({ id: `${'title_required'}` }),
+                },
+                minLength: {
+                  value: 1,
+                  message: intl.formatMessage({ id: `${'task_min_length'}` }),
+                },
+                maxLength: {
+                  value: 25,
+                  message: intl.formatMessage({ id: `${'login_max_length'}` }),
+                },
+                pattern: {
+                  value: /(?=.*\S)/,
+                  message: intl.formatMessage({ id: `${'text_pattern'}` }),
+                },
+              })}
               id="outlined-required"
-              label={theme.label}
+              label={errors.title ? errors.title.message : theme.label}
               defaultValue={theme.title}
               error={!!errors.title}
             />
