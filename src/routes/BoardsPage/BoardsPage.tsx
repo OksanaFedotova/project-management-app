@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDeleteBoardMutation, useGetAllBoardsQuery } from 'store/services/boardAPI';
+import { useGetAllBoardsQuery } from 'store/services/boardAPI';
 import Layout from 'components/Layout';
 import BoardCard from '../../components/BoardCard';
 import ChangeBoardForm from '../../components/BoardForm';
@@ -14,15 +14,11 @@ export default function BoardsPage() {
   const { data, isLoading: isLoadingData } = useGetAllBoardsQuery('');
   const navigator = useNavigate();
   const [boardForm, setBoardForm] = useState({ isActive: false, id: '' });
-  const [deleteBoard, { isLoading: isLoadingDelete }] = useDeleteBoardMutation();
-  const handleDelete = (id: string) => {
-    deleteBoard(id).catch((e) => console.error(e));
-  };
 
   return (
     <Layout>
       <div>
-        {(isLoadingDelete || isLoadingData) && (
+        {isLoadingData && (
           <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
             <CircularProgress color="inherit" size={60} />
           </Backdrop>
@@ -33,7 +29,6 @@ export default function BoardsPage() {
               <BoardCard
                 key={board.id}
                 board={board}
-                handleDelete={() => handleDelete(board.id)}
                 handleUpdate={() => setBoardForm({ isActive: true, id: board.id })}
                 onClick={() => navigator(`${board.id}`)}
               />
