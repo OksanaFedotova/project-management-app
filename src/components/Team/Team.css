@@ -18,8 +18,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 25%;
+  min-height: 580px;
   flex-wrap: wrap;
   padding: 10px;
   border: 2px var(--blue-color) solid;
@@ -33,7 +34,6 @@
 
 .team-member-image {
   width: 90%;
-  height: 90%;
   object-fit: cover;
   border-radius: 50%;
 }
@@ -45,13 +45,13 @@
 }
 
 .team-member-role {
-  padding-bottom: 15px;
+  padding-bottom: 10px;
 }
 
 .team-member-decription {
-  padding: 20px;
+  padding: 20px 10px 15px 10px;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   cursor: pointer;
 }
 
@@ -68,6 +68,7 @@
 @media (max-width: 640px) {
   .team-member {
     width: 80%;
+    min-height: 450px;
   }
 
   .team-member-image {
