@@ -113,9 +113,17 @@ export default function TaskModal({
                   value: true,
                   message: intl.formatMessage({ id: `${'title_required'}` }),
                 },
+                minLength: {
+                  value: 1,
+                  message: intl.formatMessage({ id: `${'task_min_length'}` }),
+                },
                 maxLength: {
                   value: 50,
                   message: intl.formatMessage({ id: `${'task_max_length'}` }),
+                },
+                pattern: {
+                  value: /(?=.*\S)/,
+                  message: intl.formatMessage({ id: `${'text_pattern'}` }),
                 },
               })}
             />
@@ -127,9 +135,17 @@ export default function TaskModal({
                   value: true,
                   message: intl.formatMessage({ id: `${'description_required'}` }),
                 },
+                minLength: {
+                  value: 1,
+                  message: intl.formatMessage({ id: `${'task_min_length'}` }),
+                },
                 maxLength: {
                   value: 100,
                   message: intl.formatMessage({ id: `${'description_max_length'}` }),
+                },
+                pattern: {
+                  value: /(?=.*\S)/,
+                  message: intl.formatMessage({ id: `${'text_pattern'}` }),
                 },
               })}
             />
