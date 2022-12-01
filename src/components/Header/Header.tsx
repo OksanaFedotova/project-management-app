@@ -21,6 +21,8 @@ import type { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { setCurrentLocale } from 'store/reducers/LanguageSlice';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import BoardForm from 'components/BoardForm';
 
 const theme = createTheme({
   palette: {
@@ -52,6 +54,7 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
     navigator('/welcome');
     toast.success('You are logged out!');
   };
+  const [boardForm, setBoardForm] = useState(false);
 
   return (
     <header className={isSticky ? 'appbar-sticky' : 'appbar'}>
@@ -74,6 +77,11 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
               onClick={() => navigator('..')}
             />
           )}
+          {boardForm && <BoardForm onClick={() => setBoardForm(false)} />}
+          <Button variant="contained" sx={{ p: 1, m: 1 }} onClick={() => setBoardForm(true)}>
+            <AddCircleOutlineIcon sx={{ mr: 1 }} />
+            <FormattedMessage id="add_board" />
+          </Button>
           <ThemeProvider theme={theme}>
             <ToggleButtonGroup
               color="primary"
