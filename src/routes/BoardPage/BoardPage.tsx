@@ -240,21 +240,13 @@ export default function BoardPage() {
           )}
           {changeActive && <BoardForm id={boardId} onClick={() => setChangeActive(false)} />}
           {addActive && <ColumnModal idBoard={boardId} onClick={() => setAddActive(false)} />}
-
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type="column">
               {(provided) => (
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    gap: 20,
-                    overflowX: 'auto',
-                    alignItems: 'flex-start',
-                    marginBottom: 4,
-                  }}
+                  className="columns-container"
                 >
                   {columns &&
                     [...columns]

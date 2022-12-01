@@ -63,17 +63,18 @@ export default function BoardCard({
         key={id}
         sx={{
           width: 300,
+          height: 200,
           margin: 1,
           cursor: 'pointer',
           ':hover': { boxShadow: 5 },
         }}
         onClick={onClick}
       >
-        <CardContent>
+        <CardContent sx={{ height: '140px' }}>
           <Typography variant="h5" color="text.secondary" gutterBottom>
             {title}
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+          <Typography color="text.secondary" sx={{ height: '45px', overflowY: 'hidden' }}>
             {description}
           </Typography>
         </CardContent>

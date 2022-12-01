@@ -17,9 +17,12 @@ export const messages = {
     developer_two: 'Дарья',
     team_role: 'Разработчик',
     team_role_lead: 'Лидер группы',
-    lead_role_description: 'Добавить инфо',
-    role_one_description: 'Добавить инфо',
-    role_two_description: 'Добавить инфо',
+    lead_role_description:
+      'Осуществила деплой бекенда, реализовала страницы Main Route и работу досками, а также Board Route и работу с колонками',
+    role_one_description:
+      'Настроила Redux и Routes, осуществила регистрацию и авторизацию пользователя с валидацией, создала страницу Edit Profile, реализовала работу с тасками в колонке, добавила Drag-and-drop',
+    role_two_description:
+      'Создала структуру и дизайн приложения, модальное окно, реализовала главную и 404 страницы, осуществила перевод приложения',
     enter: 'Войти',
     login_required: 'Логин обязателен',
     have_no_account: 'Ещё нет аккаунта? Зарегистрироваться',
@@ -85,9 +88,12 @@ export const messages = {
     developer_two: 'Darya',
     team_role: 'Developer',
     team_role_lead: 'Team lead',
-    lead_role_description: 'Add info',
-    role_one_description: 'Add info',
-    role_two_description: 'Add info',
+    lead_role_description:
+      'Deployed backend, implemented Main Route page with boards and Board Route page with columns',
+    role_one_description:
+      'Set up Redux and Routes, performed user registration and authorization with validation, created Edit Profile page, implemented work with tasks in the column, added Drag-and-drop',
+    role_two_description:
+      'Created the structure, design of application and modal window, implemented Welcome and 404 pages, translated the application',
     enter: 'Sign In',
     login_required: 'Login required',
     have_no_account: 'Do not have an account? Register',

@@ -26,7 +26,7 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
             key={id}
             sx={(theme) => ({
               width: 350,
-              maxHeight: 'calc(100vh - 300px)',
+              maxHeight: 'calc(100vh - 330px)',
               minHeight: 180,
               margin: 0.5,
               padding: 0.5,
@@ -38,6 +38,7 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
               backgroundColor: '#F2F7FF',
               [theme.breakpoints.down('sm')]: {
                 width: 273,
+                maxHeight: 'calc(100vh - 470px)',
               },
             })}
             {...provided.dragHandleProps}
