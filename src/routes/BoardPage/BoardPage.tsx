@@ -18,7 +18,6 @@ import IColumnCard from 'interfaces/IColumnCard';
 import { IColumn } from 'interfaces/IBoard';
 import { useNavigate } from 'react-router-dom';
 import ModalDelete from 'components/ModalDelete';
-import { toast } from 'react-toastify';
 import './BoardPage.css';
 
 export default function BoardPage() {
@@ -198,7 +197,6 @@ export default function BoardPage() {
   const handleDelete = async (type: string) => {
     if (type === intl.formatMessage({ id: `${'yes'}` })) {
       await deleteBoard(boardId).catch((e) => console.error(e));
-      toast(theme.boardDelete);
       setIsModalDelete(false);
       navigator('/boards');
     } else {
