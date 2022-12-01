@@ -12,6 +12,16 @@
   margin: 25px 0;
 }
 
+.columns-container {
+  display: flex;
+  flex-direction:row;
+  gap: 20px;
+  overflow-x: auto;
+  align-items: flex-start;
+  margin-bottom: 4px;
+  height: 68vh;
+}
+
 @media (max-width: 775px) {
   .board-list {
     flex-direction: column;
@@ -22,10 +32,18 @@
   .board-container {
     padding-top: 150px;
   }
+
+  .columns-container {
+    height: calc(90vh - 300px);
+  }
 }
 
 @media (max-width: 347px) {
   .board-container {
     padding-top: 200px;
+  }
+
+  .columns-container {
+    height: calc(90vh - 350px);
   }
 }
