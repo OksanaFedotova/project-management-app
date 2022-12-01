@@ -35,6 +35,8 @@ export default function EditProfile() {
   const { data, isLoading: isLoadingName } = useGetUserByIdQuery(userId);
   const auth = useAuth();
   const isAuth = auth.token;
+  const [nameState, setName] = useState<string>();
+  const [loginState, setLogin] = useState<string>();
 
   const getUserName = (): Omit<IUser, 'id'> => {
     if (data && isAuth) {
@@ -44,8 +46,8 @@ export default function EditProfile() {
       };
     }
     return {
-      name: 'Name',
-      login: 'Login',
+      name: '',
+      login: '',
     };
   };
 
@@ -54,20 +56,20 @@ export default function EditProfile() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
-  } = useForm<ISignupRequest>({ mode: 'onChange' });
+  } = useForm<ISignupRequest>({ mode: 'onSubmit' });
 
   const onSubmit = async (data: ISignupRequest) => {
     try {
       const userUpdate = await updateUser({ id: userId, user: data }).unwrap();
       dispatch(setUpdatedUser(userUpdate));
       toast.success('Your profile updated');
+      setName(data.name);
+      setLogin(data.login);
     } catch (e) {
       const err = e as ErrorAuth;
       toast.error(err.data.message);
     }
-    reset();
   };
 
   const deleteProfile = async (type: string) => {
@@ -103,13 +105,13 @@ export default function EditProfile() {
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
         <Typography component="h3" variant="h6" paddingTop={15}>
           <span>
-            <FormattedMessage id="name_placeholder" />: {data && name}
+            <FormattedMessage id="name_placeholder" />: {nameState ? nameState : name}
           </span>
         </Typography>
         <Typography component="h3" variant="h6">
           <span>
             {' '}
-            <FormattedMessage id="login" />: {data && login}
+            <FormattedMessage id="login" />: {loginState ? loginState : login}
           </span>
         </Typography>
       </div>
@@ -137,7 +139,7 @@ export default function EditProfile() {
         <Typography component="h1" variant="h5">
           <FormattedMessage id="edit_profile" />
         </Typography>
-        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
+        <Box component="form" sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)} noValidate>
           <TextField
             margin="normal"
             required
@@ -150,7 +152,7 @@ export default function EditProfile() {
             }
             type="text"
             error={!!errors.name}
-            autoComplete="on"
+            defaultValue={nameState ? nameState : name}
             {...register('name', {
               required: {
                 value: true,
@@ -173,8 +175,11 @@ export default function EditProfile() {
             id="login"
             label={errors.login ? errors.login.message : intl.formatMessage({ id: `${'login'}` })}
             type="text"
+            inputProps={{
+              autoComplete: 'off',
+            }}
             error={!!errors.login}
-            autoComplete="on"
+            defaultValue={loginState ? loginState : login}
             {...register('login', {
               required: {
                 value: true,
@@ -206,7 +211,9 @@ export default function EditProfile() {
             }
             type="password"
             error={!!errors.password}
-            autoComplete="on"
+            inputProps={{
+              autoComplete: 'new-password',
+            }}
             {...register('password', {
               required: {
                 value: true,
