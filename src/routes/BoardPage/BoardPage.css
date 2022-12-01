@@ -14,7 +14,7 @@
 
 .columns-container {
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   gap: 20px;
   overflow-x: auto;
   align-items: flex-start;
