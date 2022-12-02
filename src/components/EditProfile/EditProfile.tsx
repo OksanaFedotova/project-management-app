@@ -23,6 +23,7 @@ import {
   Divider,
 } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function EditProfile() {
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
@@ -90,7 +91,15 @@ export default function EditProfile() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      sx={(theme) => ({
+        width: 500,
+        [theme.breakpoints.down('sm')]: {
+          width: 300,
+        },
+      })}
+    >
       {isModal && (
         <ModalDelete
           title={intl.formatMessage({ id: `${'delete_confirm'}` })}
@@ -101,7 +110,16 @@ export default function EditProfile() {
         />
       )}
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <Typography component="h3" variant="h6" paddingTop={15}>
+        <Typography
+          component="h3"
+          variant="h6"
+          sx={(theme) => ({
+            pt: 15,
+            [theme.breakpoints.down('sm')]: {
+              pt: 25,
+            },
+          })}
+        >
           <span>
             <FormattedMessage id="name_placeholder" />: {data && name}
           </span>
@@ -115,15 +133,18 @@ export default function EditProfile() {
       </div>
 
       <Divider
-        sx={{
+        sx={(theme) => ({
           marginBottom: 1,
-          width: 390,
-        }}
+          width: 450,
+          [theme.breakpoints.down('sm')]: {
+            width: 280,
+          },
+        })}
       />
       <Box
         sx={{
           marginTop: 0,
-          paddingTop: 20,
+          paddingTop: 12,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -226,23 +247,29 @@ export default function EditProfile() {
               },
             })}
           />
-          <Button
-            type="submit"
-            variant="contained"
-            color="success"
-            sx={{ mt: 3, mb: 2, mr: 3, ml: 2 }}
-          >
-            <FormattedMessage id="edit" />
-          </Button>
-          <Button
-            onClick={() => setIsModal(true)}
-            variant="outlined"
-            color="error"
-            sx={{ mt: 3, mb: 2, mr: 2 }}
-          >
-            <FormattedMessage id="delete_profile" />
-          </Button>
+          <Box textAlign="center">
+            <Button
+              type="submit"
+              variant="contained"
+              color="success"
+              sx={{ mt: 3, mb: 2, mr: 3, ml: 2 }}
+            >
+              <FormattedMessage id="edit" />
+            </Button>
+            <Button
+              onClick={() => setIsModal(true)}
+              variant="outlined"
+              color="error"
+              sx={{ mt: 3, mb: 2, mr: 2 }}
+            >
+              <FormattedMessage id="delete_profile" />
+            </Button>
+          </Box>
         </Box>
+        <ArrowBackIosIcon
+          sx={{ cursor: 'pointer', mt: 1, '&:hover': { color: 'green' } }}
+          onClick={() => navigate('/welcome')}
+        />
       </Box>
     </Container>
   );

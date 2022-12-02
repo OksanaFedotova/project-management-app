@@ -19,6 +19,7 @@ import {
 import parseToken from 'helpers/parseToken';
 import './SignInForm.css';
 import { FormattedMessage, useIntl } from 'react-intl';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function SignInForm() {
   const [signin, { isLoading }] = useSigninMutation();
@@ -51,7 +52,15 @@ export default function SignInForm() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      sx={(theme) => ({
+        width: 400,
+        [theme.breakpoints.down('sm')]: {
+          width: 280,
+        },
+      })}
+    >
       <Box
         sx={{
           marginTop: 0,
@@ -135,16 +144,23 @@ export default function SignInForm() {
           </Button>
         </Box>
         <Divider
-          sx={{
+          sx={(theme) => ({
             marginBottom: 1,
             width: 390,
-          }}
+            [theme.breakpoints.down('sm')]: {
+              width: 280,
+            },
+          })}
         >
           <FormattedMessage id="or" />
         </Divider>
         <RouterLink to="/sign-up" className="link">
           <FormattedMessage id="have_no_account" />
         </RouterLink>
+        <ArrowBackIosIcon
+          sx={{ cursor: 'pointer', mt: 3, '&:hover': { color: 'green' } }}
+          onClick={() => navigate('/welcome')}
+        />
       </Box>
     </Container>
   );
