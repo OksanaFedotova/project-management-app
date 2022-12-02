@@ -18,20 +18,15 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
   const [createBoard, { isLoading: isLoadingUCreate }] = useCreateBoardMutation();
 
   const onSubmit = async ({ title, description }: FormInputs) => {
-    if (id) {
-      try {
+    try {
+      if (id) {
         await updateBoard({ title, description, id });
-      } catch (e) {
-        const err = e as ErrorAuth;
-        toast.error(err.data.message);
-      }
-    } else {
-      try {
+      } else {
         await createBoard({ title, description });
-      } catch (e) {
-        const err = e as ErrorAuth;
-        toast.error(err.data.message);
       }
+    } catch (e) {
+      const err = e as ErrorAuth;
+      toast.error(err.data.message);
     }
     onClick();
   };
