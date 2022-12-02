@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { Button, Box, TextField, Backdrop, CircularProgress } from '@mui/material';
 import { useCreateColumnMutation } from 'store/services/boardAPI';
 import { useIntl } from 'react-intl';
+import { toast } from 'react-toastify';
+import { ErrorAuth } from 'interfaces/IUser';
 
 export default function ColumnModal({
   idBoard,
@@ -28,7 +30,12 @@ export default function ColumnModal({
   const [createColumn, { isLoading: isLoadingNewColumn }] = useCreateColumnMutation();
   const onSubmit = async ({ title }: { title: string }) => {
     const body = { title: title };
-    await createColumn({ idBoard, body }).catch((e) => console.error(e));
+    try {
+      await createColumn({ idBoard, body });
+    } catch (e) {
+      const err = e as ErrorAuth;
+      toast.error(err.data.message);
+    }
     onClick();
   };
   return (
