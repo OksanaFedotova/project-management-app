@@ -77,11 +77,6 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
               onClick={() => navigator('..')}
             />
           )}
-          {boardForm && <BoardForm onClick={() => setBoardForm(false)} />}
-          <Button variant="contained" sx={{ p: 1, m: 1 }} onClick={() => setBoardForm(true)}>
-            <AddCircleOutlineIcon sx={{ mr: 1 }} />
-            <FormattedMessage id="add_board" />
-          </Button>
           <ThemeProvider theme={theme}>
             <ToggleButtonGroup
               color="primary"
@@ -98,31 +93,115 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
           </ThemeProvider>
           {isAuth ? (
             <>
+              {boardForm && <BoardForm onClick={() => setBoardForm(false)} />}
+              <Button
+                variant="contained"
+                sx={(theme) => ({
+                  width: 200,
+                  mr: 1,
+                  [theme.breakpoints.down('md')]: {
+                    width: 110,
+                    fontSize: 11,
+                  },
+                })}
+                onClick={() => setBoardForm(true)}
+              >
+                <AddCircleOutlineIcon sx={{ mr: 1 }} className="plus-icon" />
+                <FormattedMessage id="add_board" />
+              </Button>
               <NavLink to="/welcome" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  sx={(theme) => ({
+                    width: 140,
+                    mr: 1,
+                    [theme.breakpoints.down('md')]: {
+                      width: 110,
+                      fontSize: 11,
+                    },
+                    [theme.breakpoints.down('sm')]: {
+                      p: 1,
+                      mr: 1,
+                    },
+                  })}
+                >
                   <FormattedMessage id="to_main" />
-                </Buttons>
+                </Button>
               </NavLink>
               <NavLink to="/edit-profile" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  sx={(theme) => ({
+                    width: 140,
+                    mr: 1,
+                    [theme.breakpoints.down('md')]: {
+                      width: 110,
+                      fontSize: 11,
+                    },
+                    [theme.breakpoints.down('sm')]: {
+                      p: 1,
+                      mr: 1,
+                    },
+                  })}
+                >
                   <FormattedMessage id="to_edit_page" />
-                </Buttons>
+                </Button>
               </NavLink>
-              <Button variant="outlined" color="inherit" sx={{ mr: 1 }} onClick={logout}>
+              <Button
+                variant="outlined"
+                color="inherit"
+                sx={(theme) => ({
+                  width: 110,
+                  mr: 1,
+                  [theme.breakpoints.down('md')]: {
+                    width: 110,
+                    fontSize: 11,
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                    p: 1,
+                    mr: 1,
+                  },
+                })}
+                onClick={logout}
+              >
                 <FormattedMessage id="sign_out" />
               </Button>
             </>
           ) : (
             <>
               <NavLink to="/sign-in" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  sx={(theme) => ({
+                    width: 120,
+                    mr: 1,
+                    [theme.breakpoints.down('sm')]: {
+                      p: 1,
+                      mr: 1,
+                    },
+                  })}
+                >
                   <FormattedMessage id="sign_in" />
-                </Buttons>
+                </Button>
               </NavLink>
               <NavLink to="/sign-up" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  sx={(theme) => ({
+                    width: 120,
+                    mr: 1,
+                    [theme.breakpoints.down('sm')]: {
+                      p: 1,
+                      mr: 1,
+                    },
+                  })}
+                >
                   <FormattedMessage id="sign_up" />
-                </Buttons>
+                </Button>
               </NavLink>
             </>
           )}
