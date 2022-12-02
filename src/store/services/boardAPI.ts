@@ -119,6 +119,17 @@ export const boardAPI = createApi({
       }),
       invalidatesTags: ['Tasks'],
     }),
+    uploadFile: builder.mutation({
+      query: (data) => ({
+        url: 'file',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    downloadFile: builder.query({
+      query: ({ taskId, filename }: { taskId: string; filename: string }) =>
+        `file/${taskId}/${filename}`,
+    }),
   }),
 });
 
@@ -138,4 +149,6 @@ export const {
   useDeleteTaskMutation,
   useGetTaskByIdQuery,
   useUpdateTaskMutation,
+  useDownloadFileQuery,
+  useUploadFileMutation,
 } = boardAPI;

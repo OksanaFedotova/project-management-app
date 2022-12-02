@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useGetUserByIdQuery } from 'store/services/userAPI';
 import { ITask } from 'interfaces/IBoard';
 import { IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import CloseIcon from '@mui/icons-material/Close';
+import FileLoader from './FileLoader';
 
 export default function Task({
   task,
@@ -20,50 +23,68 @@ export default function Task({
   const { data } = useGetUserByIdQuery(task.userId);
   const name = data ? data.name : '';
   const intl = useIntl();
+  const [addFile, setAddFile] = useState(false);
   return (
     <div
       style={{
         display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: 'column',
       }}
     >
-      <div>
-        <Typography variant="subtitle1" sx={{ maxWidth: 200, overflowWrap: 'break-word' }}>
-          {task.title}
-        </Typography>
-        <Typography
-          variant="subtitle2"
-          sx={{ maxWidth: 200, overflowWrap: 'break-word', color: '#777777' }}
-        >
-          {task.description}
-        </Typography>
-        <Typography variant="subtitle2" sx={{ maxWidth: 200, overflowWrap: 'break-word' }}>
-          {intl.formatMessage({ id: `${'owner'}` })}: {name}
-        </Typography>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div>
+          <Typography variant="subtitle1" sx={{ maxWidth: 200, overflowWrap: 'break-word' }}>
+            {task.title}
+          </Typography>
+          <Typography
+            variant="subtitle2"
+            sx={{ maxWidth: 200, overflowWrap: 'break-word', color: '#777777' }}
+          >
+            {task.description}
+          </Typography>
+          <Typography variant="subtitle2" sx={{ maxWidth: 200, overflowWrap: 'break-word' }}>
+            {intl.formatMessage({ id: `${'owner'}` })}: {name}
+          </Typography>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <IconButton
+            onClick={() => {
+              setAddFile(!addFile);
+              console.log(task);
+            }}
+          >
+            {addFile && <CloseIcon />}
+            {!addFile && <AttachFileIcon />}
+          </IconButton>
+          <IconButton
+            sx={{ padding: 0.5 }}
+            aria-label="edit"
+            onClick={() => {
+              setAdd(true);
+              setTask(task);
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+          <IconButton
+            sx={{ padding: 0.5 }}
+            aria-label="delete"
+            onClick={() => {
+              setIsModal(true);
+              setTask(task);
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </div>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <IconButton
-          sx={{ padding: 0.5 }}
-          aria-label="edit"
-          onClick={() => {
-            setAdd(true);
-            setTask(task);
-          }}
-        >
-          <EditIcon />
-        </IconButton>
-        <IconButton
-          sx={{ padding: 0.5 }}
-          aria-label="delete"
-          onClick={() => {
-            setIsModal(true);
-            setTask(task);
-          }}
-        >
-          <DeleteIcon />
-        </IconButton>
-      </div>
+      {addFile && <FileLoader taskId={task.id} />}
     </div>
   );
 }

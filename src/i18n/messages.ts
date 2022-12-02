@@ -68,6 +68,8 @@ export const messages = {
     description_max_length: 'Максимум 100 символов',
     board_delete_toast: 'Доска удалена',
     owner: 'Создатель',
+    file_drag: 'Перетащите файл для загрузки',
+    file_safe: 'Отпустите файл для загрузки',
   },
   [LOCALES.ENGLISH]: {
     project_title: 'Task manager',
@@ -136,5 +138,7 @@ export const messages = {
     description_max_length: 'Max: 100 symbols',
     board_delete_toast: 'Board deleted',
     owner: 'Owner',
+    file_drag: 'Drag file to upload',
+    file_safe: 'Drop file to safe',
   },
 };
