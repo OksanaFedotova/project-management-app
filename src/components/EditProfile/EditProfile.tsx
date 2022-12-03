@@ -145,14 +145,9 @@ export default function EditProfile() {
             required
             fullWidth
             id="name"
-            label={
-              errors.name
-                ? errors.name.message
-                : intl.formatMessage({ id: `${'name_placeholder'}` })
-            }
             type="text"
             error={!!errors.name}
-            defaultValue={nameState ? nameState : name}
+            value={nameState ? nameState : name}
             {...register('name', {
               required: {
                 value: true,
@@ -167,6 +162,7 @@ export default function EditProfile() {
                 message: intl.formatMessage({ id: `${'name_pattern'}` }),
               },
             })}
+            onChange={(e) => setName(e.target.value)}
           />
           <TextField
             margin="normal"
