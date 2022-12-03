@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useGetAllBoardsQuery } from 'store/services/boardAPI';
+import { useGetAllBoardsQuery, useGetBoardByIdQuery } from 'store/services/boardAPI';
 import Layout from 'components/Layout';
 import BoardCard from '../../components/BoardCard';
-import ChangeBoardForm from '../../components/BoardForm';
+import BoardForm from '../../components/BoardForm';
 import { IBoard } from 'interfaces/IBoard';
 import './BoardsPage.css';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,8 @@ export default function BoardsPage() {
   const { data, isLoading: isLoadingData } = useGetAllBoardsQuery('');
   const navigator = useNavigate();
   const [boardForm, setBoardForm] = useState({ isActive: false, id: '' });
+  const [isAdd, setIsAdd] = useState(false);
+  const { data: board } = useGetBoardByIdQuery(boardForm.id, { skip: !boardForm.id });
 
   return (
     <Layout>
@@ -49,7 +51,10 @@ export default function BoardsPage() {
                   width: 275,
                 },
               })}
-              onClick={() => setBoardForm({ isActive: true, id: '' })}
+              onClick={() => {
+                setBoardForm({ isActive: true, id: '' });
+                setIsAdd(true);
+              }}
             >
               <AddCircleOutlineIcon sx={{ mr: 1 }} />
               <FormattedMessage id="add_board" />
@@ -57,10 +62,23 @@ export default function BoardsPage() {
           </Box>
         </div>
       </div>
-      {boardForm.isActive && (
-        <ChangeBoardForm
+      {boardForm.isActive && board && (
+        <BoardForm
           id={boardForm.id}
-          onClick={() => setBoardForm({ isActive: false, id: '' })}
+          title={board ? board.title : ''}
+          description={board ? board.description : ''}
+          onClick={() => {
+            setBoardForm({ isActive: false, id: '' });
+          }}
+        />
+      )}
+      {boardForm.isActive && isAdd && (
+        <BoardForm
+          id={boardForm.id}
+          onClick={() => {
+            setBoardForm({ isActive: false, id: '' });
+            setIsAdd(false);
+          }}
         />
       )}
     </Layout>

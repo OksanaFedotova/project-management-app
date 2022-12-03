@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useCreateTaskMutation, useUpdateTaskMutation } from 'store/services/boardAPI';
@@ -23,9 +23,6 @@ export default function TaskModal({
   const [createTask, { isLoading: isLoadingTaskCreate }] = useCreateTaskMutation();
   const [updateTask, { isLoading: isLoadingTaskUpdate }] = useUpdateTaskMutation();
   const userId = localStorage.getItem('userId') ?? '';
-
-  const [titleState, setTitle] = useState(task?.title);
-  const [descriptionState, setDescription] = useState(task?.description);
 
   const {
     register,
@@ -109,6 +106,7 @@ export default function TaskModal({
             <TextField
               label={errors.title ? errors.title.message : theme.title}
               error={!!errors.title}
+              defaultValue={task?.title}
               {...register('title', {
                 required: {
                   value: true,
@@ -127,12 +125,11 @@ export default function TaskModal({
                   message: intl.formatMessage({ id: `${'text_pattern'}` }),
                 },
               })}
-              value={titleState}
-              onChange={(e) => setTitle(e.target.value)}
             />
             <TextField
               label={errors.description ? errors.description.message : theme.description}
               error={!!errors.description}
+              defaultValue={task?.description}
               {...register('description', {
                 required: {
                   value: true,
@@ -151,8 +148,6 @@ export default function TaskModal({
                   message: intl.formatMessage({ id: `${'text_pattern'}` }),
                 },
               })}
-              value={descriptionState}
-              onChange={(e) => setDescription(e.target.value)}
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
               <Button type="submit" variant="contained" sx={{ mt: 2 }}>

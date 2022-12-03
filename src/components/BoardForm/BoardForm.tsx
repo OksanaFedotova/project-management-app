@@ -8,12 +8,23 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { ErrorAuth } from 'interfaces/IUser';
 import { toast } from 'react-toastify';
 
-export default function BoardForm({ id, onClick }: { id?: string; onClick: () => void }) {
+export default function BoardForm({
+  id,
+  onClick,
+  title,
+  description,
+}: {
+  description?: string;
+  id?: string;
+  onClick: () => void;
+  title?: string;
+}) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormInputs>({ mode: 'onSubmit' });
+  } = useForm<FormInputs>({ mode: 'onChange' });
+
   const [updateBoard, { isLoading: isLoadingUpdate }] = useUpdateBoardMutation();
   const [createBoard, { isLoading: isLoadingUCreate }] = useCreateBoardMutation();
 
@@ -71,6 +82,11 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
               <FormattedMessage id="board" />
             </Typography>
             <TextField
+              id="outlined-required"
+              label={errors.title ? errors.title.message : theme.label}
+              multiline
+              error={!!errors.title}
+              defaultValue={title}
               {...register('title', {
                 required: {
                   value: true,
@@ -89,12 +105,13 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
                   message: intl.formatMessage({ id: `${'text_pattern'}` }),
                 },
               })}
-              id="outlined-required"
-              label={errors.title ? errors.title.message : theme.label}
-              defaultValue={theme.title}
-              error={!!errors.title}
             />
             <TextField
+              id="outlined-required"
+              label={errors.description ? errors.description.message : theme.label}
+              multiline
+              error={!!errors.description}
+              defaultValue={description}
               {...register('description', {
                 required: {
                   value: true,
@@ -113,11 +130,6 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
                   message: intl.formatMessage({ id: `${'text_pattern'}` }),
                 },
               })}
-              id="outlined-required"
-              label={errors.description ? errors.description.message : theme.label}
-              defaultValue={theme.descripion}
-              multiline
-              error={!!errors.description}
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
               {id && (
