@@ -23,6 +23,8 @@ import { FormattedMessage } from 'react-intl';
 import { setCurrentLocale } from 'store/reducers/LanguageSlice';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import BoardForm from 'components/BoardForm';
+import LoginIcon from '@mui/icons-material/Login';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const theme = createTheme({
   palette: {
@@ -85,7 +87,7 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
               exclusive
               onChange={handleChange}
               aria-label="Platform"
-              sx={{ mr: 2 }}
+              sx={{ mr: 2, ml: 1.5 }}
             >
               <ToggleButton value="ru">RU</ToggleButton>
               <ToggleButton value="en">EN</ToggleButton>
@@ -100,14 +102,15 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
                   width: 200,
                   mr: 1,
                   [theme.breakpoints.down('md')]: {
-                    width: 110,
-                    fontSize: 11,
+                    width: 60,
                   },
                 })}
                 onClick={() => setBoardForm(true)}
               >
-                <AddCircleOutlineIcon sx={{ mr: 1 }} className="plus-icon" />
-                <FormattedMessage id="add_board" />
+                <AddCircleOutlineIcon sx={{ mr: 1 }} />
+                <Box sx={{ display: { xs: 'none', sm: 'none', md: 'inline-block' } }}>
+                  <FormattedMessage id="add_board" />
+                </Box>
               </Button>
               <NavLink to="/welcome" style={{ color: `inherit`, textDecoration: `none` }}>
                 <Button
@@ -137,16 +140,17 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
                     width: 140,
                     mr: 1,
                     [theme.breakpoints.down('md')]: {
-                      width: 110,
+                      width: 60,
                       fontSize: 11,
-                    },
-                    [theme.breakpoints.down('sm')]: {
-                      p: 1,
-                      mr: 1,
                     },
                   })}
                 >
-                  <FormattedMessage id="to_edit_page" />
+                  <AccountCircleIcon
+                    sx={{ display: { xs: 'inline-block', sm: 'inline-bloc', md: 'none' } }}
+                  />
+                  <Box sx={{ display: { xs: 'none', sm: 'none', md: 'inline-block' } }}>
+                    <FormattedMessage id="to_edit_page" />
+                  </Box>
                 </Button>
               </NavLink>
               <Button
@@ -156,17 +160,17 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
                   width: 110,
                   mr: 1,
                   [theme.breakpoints.down('md')]: {
-                    width: 110,
-                    fontSize: 11,
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    p: 1,
-                    mr: 1,
+                    width: 60,
                   },
                 })}
                 onClick={logout}
               >
-                <FormattedMessage id="sign_out" />
+                <LoginIcon
+                  sx={{ display: { xs: 'inline-block', sm: 'inline-bloc', md: 'none' } }}
+                />
+                <Box sx={{ display: { xs: 'none', sm: 'none', md: 'inline-block' } }}>
+                  <FormattedMessage id="sign_out" />
+                </Box>
               </Button>
             </>
           ) : (

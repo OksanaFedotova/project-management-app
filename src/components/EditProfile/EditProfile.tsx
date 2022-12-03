@@ -116,7 +116,7 @@ export default function EditProfile() {
           sx={(theme) => ({
             pt: 15,
             [theme.breakpoints.down('sm')]: {
-              pt: 25,
+              pt: 20,
             },
           })}
         >
@@ -144,7 +144,7 @@ export default function EditProfile() {
       <Box
         sx={{
           marginTop: 0,
-          paddingTop: 12,
+          paddingTop: 10,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -267,7 +267,7 @@ export default function EditProfile() {
           </Box>
         </Box>
         <ArrowBackIosIcon
-          sx={{ cursor: 'pointer', mt: 1, '&:hover': { color: 'green' } }}
+          sx={{ cursor: 'pointer', mt: 1, mb: 3, '&:hover': { color: 'green' } }}
           onClick={() => navigate('/welcome')}
         />
       </Box>
