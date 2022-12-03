@@ -122,7 +122,7 @@ export default function BoardPage() {
               boardId,
               columnId: finishColumn!.id,
             },
-          }));
+          }).then(() => setIsDropping(false)));
       }
 
       if (type === 'column') {
@@ -137,9 +137,8 @@ export default function BoardPage() {
               title: currColumn.title,
               order: destination.index + 1,
             },
-          }));
+          }).then(() => setIsDropping(false)));
       }
-      setTimeout(() => setIsDropping(false), 1000);
     }
   }
 
