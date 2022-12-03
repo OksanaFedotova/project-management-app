@@ -52,7 +52,6 @@ export default function ColumnUpdate({
         };
         try {
           await updateColumn(req);
-          toast.success(theme.success);
         } catch (e) {
           const err = e as ErrorAuth;
           toast.error(err.data.message);

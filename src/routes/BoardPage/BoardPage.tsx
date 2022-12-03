@@ -18,8 +18,9 @@ import IColumnCard from 'interfaces/IColumnCard';
 import { IColumn } from 'interfaces/IBoard';
 import { useNavigate } from 'react-router-dom';
 import ModalDelete from 'components/ModalDelete';
-import { toast } from 'react-toastify';
 import './BoardPage.css';
+import { ErrorAuth } from 'interfaces/IUser';
+import { toast } from 'react-toastify';
 
 export default function BoardPage() {
   const { id } = useParams();
@@ -195,10 +196,14 @@ export default function BoardPage() {
   }
 
   const [deleteBoard, { isLoading: isLoadingDelete }] = useDeleteBoardMutation();
-  const handleDelete = async (type: string) => {
+  const handleDelete = (type: string) => {
     if (type === intl.formatMessage({ id: `${'yes'}` })) {
-      await deleteBoard(boardId).catch((e) => console.error(e));
-      toast(theme.boardDelete);
+      try {
+        deleteBoard(boardId);
+      } catch (e) {
+        const err = e as ErrorAuth;
+        toast.error(err.data.message);
+      }
       setIsModalDelete(false);
       navigator('/boards');
     } else {

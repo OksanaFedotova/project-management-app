@@ -32,7 +32,7 @@ export default function BoardCard({
   const handleDelete = (type: string) => {
     if (type === intl.formatMessage({ id: `${'yes'}` })) {
       try {
-        deleteBoard(id).catch((e) => console.error(e));
+        deleteBoard(id);
       } catch (e) {
         const err = e as ErrorAuth;
         toast.error(err.data.message);

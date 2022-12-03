@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import { toast } from 'react-toastify';
 import { useIntl } from 'react-intl';
 import { useDeleteTaskMutation } from 'store/services/boardAPI';
 import ModalDelete from 'components/ModalDelete';
@@ -24,7 +23,6 @@ export default function Tasks({ tasks, columnId }: { tasks: ITask[]; columnId: s
       const { id } = currTask;
       if (type === intl.formatMessage({ id: `${'yes'}` })) {
         await deleteTask({ boardId, columnId, idTask: id });
-        toast.success('Task deleted!');
         setIsModal(false);
       } else {
         setIsModal(false);

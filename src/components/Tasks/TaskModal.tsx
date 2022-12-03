@@ -41,7 +41,6 @@ export default function TaskModal({
   const createHandler = async ({ title, description }: Omit<TTaskRequest, 'userId'>) => {
     try {
       await createTask({ columnId, boardId, body: { title, description, userId } });
-      toast.success('Task created!');
     } catch (e) {
       const err = e as ErrorAuth;
       toast.error(err.data.message);
@@ -61,7 +60,6 @@ export default function TaskModal({
     };
     try {
       await updateTask({ idTask, idColumn: columnId, body });
-      toast.success('Task updated!');
     } catch (e) {
       const err = e as ErrorAuth;
       toast.error(err.data.message);

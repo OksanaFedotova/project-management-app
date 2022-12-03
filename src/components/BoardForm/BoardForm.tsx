@@ -5,6 +5,8 @@ import { useCreateBoardMutation, useUpdateBoardMutation } from 'store/services/b
 import FormInputs from 'interfaces/IFormBoards';
 import './BoardForm.css';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { ErrorAuth } from 'interfaces/IUser';
+import { toast } from 'react-toastify';
 
 export default function BoardForm({ id, onClick }: { id?: string; onClick: () => void }) {
   const {
@@ -16,9 +18,16 @@ export default function BoardForm({ id, onClick }: { id?: string; onClick: () =>
   const [createBoard, { isLoading: isLoadingUCreate }] = useCreateBoardMutation();
 
   const onSubmit = async ({ title, description }: FormInputs) => {
-    id
-      ? await updateBoard({ title, description, id }).catch((e) => console.error(e))
-      : await createBoard({ title, description }).catch((e) => console.error(e));
+    try {
+      if (id) {
+        await updateBoard({ title, description, id });
+      } else {
+        await createBoard({ title, description });
+      }
+    } catch (e) {
+      const err = e as ErrorAuth;
+      toast.error(err.data.message);
+    }
     onClick();
   };
   const intl = useIntl();
