@@ -9,7 +9,6 @@ export default function BoardDescription({
   title: string;
   description: string;
 }) {
-  console.log(title, description);
   return (
     <Card sx={{ width: 300, margin: 1 }}>
       <Typography variant="h2">
