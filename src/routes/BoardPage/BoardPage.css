@@ -48,11 +48,19 @@
   .board-list {
     flex-direction: column;
   }
+
+  .columns-container {
+    height: 61vh;
+  }
 }
 
 @media (max-width: 611px) {
   .board-container {
     padding-top: 130px;
+  }
+
+  .bg-board {
+    display: none;
   }
 }
 
