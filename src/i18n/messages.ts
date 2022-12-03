@@ -70,6 +70,7 @@ export const messages = {
     owner: 'Создатель',
     file_drag: 'Перетащите файл для загрузки',
     file_safe: 'Отпустите файл для загрузки',
+    file_success: 'Файл добавлен',
   },
   [LOCALES.ENGLISH]: {
     project_title: 'Task manager',
@@ -140,5 +141,6 @@ export const messages = {
     owner: 'Owner',
     file_drag: 'Drag file to upload',
     file_safe: 'Drop file to safe',
+    file_success: 'File is uploaded',
   },
 };

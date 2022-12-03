@@ -2,6 +2,7 @@ import { Box, Paper } from '@mui/material';
 import React from 'react';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
+import { toast } from 'react-toastify';
 import { useUploadFileMutation } from 'store/services/boardAPI';
 
 export default function FileUploader({ taskId }: { taskId: string }) {
@@ -9,9 +10,10 @@ export default function FileUploader({ taskId }: { taskId: string }) {
   const theme = {
     drag: intl.formatMessage({ id: `${'file_drag'}` }),
     drop: intl.formatMessage({ id: `${'file_safe'}` }),
+    success: intl.formatMessage({ id: 'file_success' }),
   };
-  const [drag, setDrag] = useState(false);
   const [uploadFile] = useUploadFileMutation();
+  const [drag, setDrag] = useState(false);
   const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDrag(true);
@@ -21,14 +23,20 @@ export default function FileUploader({ taskId }: { taskId: string }) {
     setDrag(false);
   };
   const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    [...e.dataTransfer.files].forEach((file) => {
-      const data = new FormData();
-      data.append('taskId', taskId);
-      data.append('file', file);
-      uploadFile(data);
-    });
-    setDrag(false);
+    try {
+      e.preventDefault();
+      [...e.dataTransfer.files].forEach(async (file) => {
+        const data = new FormData();
+        data.append('taskId', taskId);
+        data.append('file', file);
+        uploadFile(data).then(() => toast.success(theme.success));
+      });
+      setDrag(false);
+    } catch (e) {
+      if (e instanceof Error) {
+        toast.error(e.message);
+      }
+    }
   };
   return (
     <Box>

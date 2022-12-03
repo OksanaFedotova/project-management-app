@@ -8,6 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CloseIcon from '@mui/icons-material/Close';
 import FileLoader from './FileLoader';
+import FileDownload from './FileDownload';
 
 export default function Task({
   task,
@@ -24,6 +25,7 @@ export default function Task({
   const name = data ? data.name : '';
   const intl = useIntl();
   const [addFile, setAddFile] = useState(false);
+
   return (
     <div
       style={{
@@ -56,7 +58,6 @@ export default function Task({
           <IconButton
             onClick={() => {
               setAddFile(!addFile);
-              console.log(task);
             }}
           >
             {addFile && <CloseIcon />}
@@ -85,6 +86,18 @@ export default function Task({
         </div>
       </div>
       {addFile && <FileLoader taskId={task.id} />}
+      {task.files.length > 0 && (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+        >
+          {task.files.map(({ filename }) => (
+            <FileDownload key={`${task.id}${filename}`} filename={filename} taskId={task.id} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
