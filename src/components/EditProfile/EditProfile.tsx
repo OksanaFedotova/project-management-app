@@ -23,6 +23,7 @@ import {
   Divider,
 } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function EditProfile() {
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
@@ -35,6 +36,8 @@ export default function EditProfile() {
   const { data, isLoading: isLoadingName } = useGetUserByIdQuery(userId);
   const auth = useAuth();
   const isAuth = auth.token;
+  const [nameState, setName] = useState<string>();
+  const [loginState, setLogin] = useState<string>();
 
   const getUserName = (): Omit<IUser, 'id'> => {
     if (data && isAuth) {
@@ -44,8 +47,8 @@ export default function EditProfile() {
       };
     }
     return {
-      name: 'Name',
-      login: 'Login',
+      name: '',
+      login: '',
     };
   };
 
@@ -54,20 +57,20 @@ export default function EditProfile() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
-  } = useForm<ISignupRequest>({ mode: 'onChange' });
+  } = useForm<ISignupRequest>({ mode: 'onSubmit' });
 
   const onSubmit = async (data: ISignupRequest) => {
     try {
       const userUpdate = await updateUser({ id: userId, user: data }).unwrap();
       dispatch(setUpdatedUser(userUpdate));
       toast.success('Your profile updated');
+      setName(data.name);
+      setLogin(data.login);
     } catch (e) {
       const err = e as ErrorAuth;
       toast.error(err.data.message);
     }
-    reset();
   };
 
   const deleteProfile = async (type: string) => {
@@ -90,7 +93,15 @@ export default function EditProfile() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      sx={(theme) => ({
+        width: 500,
+        [theme.breakpoints.down('sm')]: {
+          width: 300,
+        },
+      })}
+    >
       {isModal && (
         <ModalDelete
           title={intl.formatMessage({ id: `${'delete_confirm'}` })}
@@ -101,29 +112,41 @@ export default function EditProfile() {
         />
       )}
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <Typography component="h3" variant="h6" paddingTop={15}>
+        <Typography
+          component="h3"
+          variant="h6"
+          sx={(theme) => ({
+            pt: 15,
+            [theme.breakpoints.down('sm')]: {
+              pt: 20,
+            },
+          })}
+        >
           <span>
-            <FormattedMessage id="name_placeholder" />: {data && name}
+            <FormattedMessage id="name_placeholder" />: {nameState ? nameState : name}
           </span>
         </Typography>
         <Typography component="h3" variant="h6">
           <span>
             {' '}
-            <FormattedMessage id="login" />: {data && login}
+            <FormattedMessage id="login" />: {loginState ? loginState : login}
           </span>
         </Typography>
       </div>
 
       <Divider
-        sx={{
+        sx={(theme) => ({
           marginBottom: 1,
-          width: 390,
-        }}
+          width: 450,
+          [theme.breakpoints.down('sm')]: {
+            width: 280,
+          },
+        })}
       />
       <Box
         sx={{
           marginTop: 0,
-          paddingTop: 20,
+          paddingTop: 10,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -137,20 +160,15 @@ export default function EditProfile() {
         <Typography component="h1" variant="h5">
           <FormattedMessage id="edit_profile" />
         </Typography>
-        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
+        <Box component="form" sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)} noValidate>
           <TextField
             margin="normal"
             required
             fullWidth
             id="name"
-            label={
-              errors.name
-                ? errors.name.message
-                : intl.formatMessage({ id: `${'name_placeholder'}` })
-            }
             type="text"
             error={!!errors.name}
-            autoComplete="on"
+            value={nameState ? nameState : name}
             {...register('name', {
               required: {
                 value: true,
@@ -165,6 +183,7 @@ export default function EditProfile() {
                 message: intl.formatMessage({ id: `${'name_pattern'}` }),
               },
             })}
+            onChange={(e) => setName(e.target.value)}
           />
           <TextField
             margin="normal"
@@ -173,8 +192,11 @@ export default function EditProfile() {
             id="login"
             label={errors.login ? errors.login.message : intl.formatMessage({ id: `${'login'}` })}
             type="text"
+            inputProps={{
+              autoComplete: 'off',
+            }}
             error={!!errors.login}
-            autoComplete="on"
+            defaultValue={loginState ? loginState : login}
             {...register('login', {
               required: {
                 value: true,
@@ -206,7 +228,9 @@ export default function EditProfile() {
             }
             type="password"
             error={!!errors.password}
-            autoComplete="on"
+            inputProps={{
+              autoComplete: 'new-password',
+            }}
             {...register('password', {
               required: {
                 value: true,
@@ -226,23 +250,29 @@ export default function EditProfile() {
               },
             })}
           />
-          <Button
-            type="submit"
-            variant="contained"
-            color="success"
-            sx={{ mt: 3, mb: 2, mr: 3, ml: 2 }}
-          >
-            <FormattedMessage id="edit" />
-          </Button>
-          <Button
-            onClick={() => setIsModal(true)}
-            variant="outlined"
-            color="error"
-            sx={{ mt: 3, mb: 2, mr: 2 }}
-          >
-            <FormattedMessage id="delete_profile" />
-          </Button>
+          <Box textAlign="center">
+            <Button
+              type="submit"
+              variant="contained"
+              color="success"
+              sx={{ mt: 3, mb: 2, mr: 3, ml: 2 }}
+            >
+              <FormattedMessage id="edit" />
+            </Button>
+            <Button
+              onClick={() => setIsModal(true)}
+              variant="outlined"
+              color="error"
+              sx={{ mt: 3, mb: 2, mr: 2 }}
+            >
+              <FormattedMessage id="delete_profile" />
+            </Button>
+          </Box>
         </Box>
+        <ArrowBackIosIcon
+          sx={{ cursor: 'pointer', mt: 1, mb: 3, '&:hover': { color: 'green' } }}
+          onClick={() => navigate('/welcome')}
+        />
       </Box>
     </Container>
   );

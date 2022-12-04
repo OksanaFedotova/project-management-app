@@ -17,6 +17,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function SignUpForm() {
   const [signup] = useSignupMutation();
@@ -54,7 +55,15 @@ export default function SignUpForm() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      sx={(theme) => ({
+        width: 450,
+        [theme.breakpoints.down('sm')]: {
+          width: 280,
+        },
+      })}
+    >
       <Box
         sx={{
           marginTop: 0,
@@ -166,16 +175,23 @@ export default function SignUpForm() {
           </Button>
         </Box>
         <Divider
-          sx={{
+          sx={(theme) => ({
             marginBottom: 1,
             width: 390,
-          }}
+            [theme.breakpoints.down('sm')]: {
+              width: 280,
+            },
+          })}
         >
           <FormattedMessage id="or" />
         </Divider>
         <RouterLink to="/sign-in" className="link">
           <FormattedMessage id="have_account" />
         </RouterLink>
+        <ArrowBackIosIcon
+          sx={{ cursor: 'pointer', mt: 3, '&:hover': { color: 'green' } }}
+          onClick={() => navigate('/welcome')}
+        />
       </Box>
     </Container>
   );
