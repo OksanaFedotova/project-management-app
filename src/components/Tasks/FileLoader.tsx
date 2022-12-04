@@ -30,12 +30,9 @@ export default function FileUploader({ taskId }: { taskId: string }) {
         const data = new FormData();
         data.append('taskId', taskId);
         data.append('file', file);
-        const res = (await uploadFile(data)) as TFileResponse;
-        if (res.error === 'File uploaded!') {
-          toast.success(theme.success);
-        } else {
-          if (typeof res.error !== 'string') toast.error(res.error.message);
-        }
+        const response = (await uploadFile(data)) as TFileResponse;
+        if (response.data === 'File uploaded!') toast.success(theme.success);
+        if (response.error) toast.error(response.error.data.message);
       });
       setDrag(false);
     } catch (e) {

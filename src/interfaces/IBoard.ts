@@ -53,7 +53,11 @@ interface IFile {
   fileSize: number;
 }
 type TFileResponse = {
-  error: string | { message: string; statusCode: number };
+  data?: string;
+  error?: {
+    data: { message: string };
+    status: number;
+  };
 };
 export {
   IBoard,
