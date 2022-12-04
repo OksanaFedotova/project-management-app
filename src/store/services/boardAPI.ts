@@ -123,6 +123,8 @@ export const boardAPI = createApi({
       query: (data) => ({
         url: 'file',
         method: 'POST',
+        responseHandler: (response) =>
+          response.status === 200 ? response.text() : response.json(),
         body: data,
       }),
       invalidatesTags: ['Tasks'],

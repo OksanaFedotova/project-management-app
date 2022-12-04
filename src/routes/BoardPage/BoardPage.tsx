@@ -55,7 +55,7 @@ export default function BoardPage() {
     } else {
       data && setColumns(data.columns);
     }
-  }, [data]);
+  }, [checked, data, userId]);
 
   const intl = useIntl();
   const ru = {
