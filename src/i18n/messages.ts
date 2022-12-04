@@ -18,9 +18,9 @@ export const messages = {
     team_role: 'Разработчик',
     team_role_lead: 'Лидер группы',
     lead_role_description:
-      'Осуществила деплой бекенда, реализовала страницы Main Route и работу досками, а также Board Route и работу с колонками',
+      'Осуществила деплой бекенда, реализовала страницы Main Route и работу досками, а также Board Route и работу с колонками, добавила загрузку файла в таск',
     role_one_description:
-      'Настроила Redux и Routes, осуществила регистрацию и авторизацию пользователя с валидацией, создала страницу Edit Profile, реализовала работу с тасками в колонке, добавила Drag-and-drop',
+      'Настроила Redux и Routes, реализовала регистрацию и авторизацию пользователя с валидацией, создала страницу Edit Profile, осуществила работу с тасками в колонке, добавила Drag-and-drop, поиск тасков пользователя',
     role_two_description:
       'Создала структуру и дизайн приложения, модальное окно, реализовала главную и 404 страницы, осуществила перевод приложения',
     enter: 'Войти',
@@ -94,9 +94,9 @@ export const messages = {
     team_role: 'Developer',
     team_role_lead: 'Team lead',
     lead_role_description:
-      'Deployed backend, implemented Main Route page with boards and Board Route page with columns',
+      'Deployed backend, implemented Main Route page with boards and Board Route page with columns, added file upload to task',
     role_one_description:
-      'Set up Redux and Routes, performed user registration and authorization with validation, created Edit Profile page, implemented work with tasks in the column, added Drag-and-drop',
+      'Set up Redux and Routes, performed user registration and authorization with validation, created Edit Profile page, implemented work with tasks in the column, added Drag-and-drop, search for user tasks',
     role_two_description:
       'Created the structure, design of application and modal window, implemented Welcome and 404 pages, translated the application',
     enter: 'Sign In',
