@@ -26,7 +26,7 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
             key={id}
             sx={(theme) => ({
               width: 350,
-              maxHeight: 'calc(100vh - 330px)',
+              maxHeight: '57vh',
               minHeight: 180,
               margin: 0.5,
               padding: 0.5,

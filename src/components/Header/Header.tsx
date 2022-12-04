@@ -23,6 +23,8 @@ import { FormattedMessage } from 'react-intl';
 import { setCurrentLocale } from 'store/reducers/LanguageSlice';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import BoardForm from 'components/BoardForm';
+import LoginIcon from '@mui/icons-material/Login';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const theme = createTheme({
   palette: {
@@ -77,11 +79,6 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
               onClick={() => navigator('..')}
             />
           )}
-          {boardForm && <BoardForm onClick={() => setBoardForm(false)} />}
-          <Button variant="contained" sx={{ p: 1, m: 1 }} onClick={() => setBoardForm(true)}>
-            <AddCircleOutlineIcon sx={{ mr: 1 }} />
-            <FormattedMessage id="add_board" />
-          </Button>
           <ThemeProvider theme={theme}>
             <ToggleButtonGroup
               color="primary"
@@ -90,7 +87,7 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
               exclusive
               onChange={handleChange}
               aria-label="Platform"
-              sx={{ mr: 2 }}
+              sx={{ mr: 2, ml: 1.5 }}
             >
               <ToggleButton value="ru">RU</ToggleButton>
               <ToggleButton value="en">EN</ToggleButton>
@@ -98,31 +95,117 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
           </ThemeProvider>
           {isAuth ? (
             <>
+              {boardForm && <BoardForm onClick={() => setBoardForm(false)} />}
+              <Button
+                variant="contained"
+                sx={(theme) => ({
+                  width: 200,
+                  mr: 1,
+                  [theme.breakpoints.down('md')]: {
+                    width: 60,
+                  },
+                })}
+                onClick={() => setBoardForm(true)}
+              >
+                <AddCircleOutlineIcon sx={{ mr: 1 }} />
+                <Box sx={{ display: { xs: 'none', sm: 'none', md: 'inline-block' } }}>
+                  <FormattedMessage id="add_board" />
+                </Box>
+              </Button>
               <NavLink to="/welcome" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  sx={(theme) => ({
+                    width: 140,
+                    mr: 1,
+                    [theme.breakpoints.down('md')]: {
+                      width: 110,
+                      fontSize: 11,
+                    },
+                    [theme.breakpoints.down('sm')]: {
+                      p: 1,
+                      mr: 1,
+                    },
+                  })}
+                >
                   <FormattedMessage id="to_main" />
-                </Buttons>
+                </Button>
               </NavLink>
               <NavLink to="/edit-profile" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons>
-                  <FormattedMessage id="to_edit_page" />
-                </Buttons>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  sx={(theme) => ({
+                    width: 140,
+                    mr: 1,
+                    [theme.breakpoints.down('md')]: {
+                      width: 60,
+                      fontSize: 11,
+                    },
+                  })}
+                >
+                  <AccountCircleIcon
+                    sx={{ display: { xs: 'inline-block', sm: 'inline-bloc', md: 'none' } }}
+                  />
+                  <Box sx={{ display: { xs: 'none', sm: 'none', md: 'inline-block' } }}>
+                    <FormattedMessage id="to_edit_page" />
+                  </Box>
+                </Button>
               </NavLink>
-              <Button variant="outlined" color="inherit" sx={{ mr: 1 }} onClick={logout}>
-                <FormattedMessage id="sign_out" />
+              <Button
+                variant="outlined"
+                color="inherit"
+                sx={(theme) => ({
+                  width: 110,
+                  mr: 1,
+                  [theme.breakpoints.down('md')]: {
+                    width: 60,
+                  },
+                })}
+                onClick={logout}
+              >
+                <LoginIcon
+                  sx={{ display: { xs: 'inline-block', sm: 'inline-bloc', md: 'none' } }}
+                />
+                <Box sx={{ display: { xs: 'none', sm: 'none', md: 'inline-block' } }}>
+                  <FormattedMessage id="sign_out" />
+                </Box>
               </Button>
             </>
           ) : (
             <>
               <NavLink to="/sign-in" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  sx={(theme) => ({
+                    width: 120,
+                    mr: 1,
+                    [theme.breakpoints.down('sm')]: {
+                      p: 1,
+                      mr: 1,
+                    },
+                  })}
+                >
                   <FormattedMessage id="sign_in" />
-                </Buttons>
+                </Button>
               </NavLink>
               <NavLink to="/sign-up" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Buttons>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  sx={(theme) => ({
+                    width: 120,
+                    mr: 1,
+                    [theme.breakpoints.down('sm')]: {
+                      p: 1,
+                      mr: 1,
+                    },
+                  })}
+                >
                   <FormattedMessage id="sign_up" />
-                </Buttons>
+                </Button>
               </NavLink>
             </>
           )}

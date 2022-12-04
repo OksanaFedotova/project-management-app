@@ -234,14 +234,22 @@ export default function BoardPage() {
             if (descriptionActive) setDescriptionActive(false);
           }}
         >
-          <h2>{data.title}</h2>
-          <h3>{data.description}</h3>
-          <Button onClick={() => setDescriptionActive(true)}>{theme.description}</Button>
-          <Button onClick={() => setChangeActive(true)}>{theme.change}</Button>
-          <Button onClick={() => setIsModalDelete(true)}>{theme.delete}</Button>
-          <Button onClick={() => setAddActive(true)}>{theme.addColumn}</Button>
+          <h2 className="h2-board">{data.title}</h2>
+          <h3 className="h3-board">{data.description}</h3>
+          <Button sx={{ mb: 2 }} onClick={() => setDescriptionActive(true)}>
+            {theme.description}
+          </Button>
+          <Button sx={{ mb: 2 }} onClick={() => setChangeActive(true)}>
+            {theme.change}
+          </Button>
+          <Button sx={{ mb: 2 }} onClick={() => setIsModalDelete(true)}>
+            {theme.delete}
+          </Button>
+          <Button variant="contained" sx={{ mb: 2 }} onClick={() => setAddActive(true)}>
+            {theme.addColumn}
+          </Button>
           {descriptionActive && (
-            <BoardDescription title={data.title} description={data.description} />
+            <BoardDescription title={data.title} description={data.description} open={true} />
           )}
           {changeActive && <BoardForm id={boardId} onClick={() => setChangeActive(false)} />}
           {addActive && <ColumnModal idBoard={boardId} onClick={() => setAddActive(false)} />}
@@ -266,6 +274,7 @@ export default function BoardPage() {
           </DragDropContext>
         </section>
       )}
+      <div className="bg-board" />
     </Layout>
   );
 }
