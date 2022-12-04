@@ -10,7 +10,7 @@ import {
 import { Backdrop, Button, CircularProgress, FormControlLabel, Switch } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import BoardForm from 'components/BoardForm';
 import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
@@ -21,6 +21,7 @@ import ModalDelete from 'components/ModalDelete';
 import './BoardPage.css';
 import { ErrorAuth } from 'interfaces/IUser';
 import { toast } from 'react-toastify';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function BoardPage() {
   const { id } = useParams();
@@ -268,18 +269,31 @@ export default function BoardPage() {
             if (descriptionActive) setDescriptionActive(false);
           }}
         >
+          <Button
+            color="inherit"
+            sx={{
+              mb: 1,
+              fontSize: 12,
+              textAlign: 'center',
+              '&:hover': { color: 'orange' },
+            }}
+            onClick={() => navigator('/boards')}
+          >
+            <ArrowBackIosIcon />
+            <FormattedMessage id="back" />
+          </Button>
           <h2 className="h2-board">{data.title}</h2>
           <h3 className="h3-board">{data.description}</h3>
-          <Button sx={{ mb: 2 }} onClick={() => setDescriptionActive(true)}>
+          <Button sx={{ mb: 1 }} onClick={() => setDescriptionActive(true)}>
             {theme.description}
           </Button>
-          <Button sx={{ mb: 2 }} onClick={() => setChangeActive(true)}>
+          <Button sx={{ mb: 1 }} onClick={() => setChangeActive(true)}>
             {theme.change}
           </Button>
-          <Button sx={{ mb: 2 }} onClick={() => setIsModalDelete(true)}>
+          <Button sx={{ mb: 1 }} onClick={() => setIsModalDelete(true)}>
             {theme.delete}
           </Button>
-          <Button variant="contained" sx={{ mb: 2 }} onClick={() => setAddActive(true)}>
+          <Button variant="contained" sx={{ mb: 1 }} onClick={() => setAddActive(true)}>
             {theme.addColumn}
           </Button>
           {descriptionActive && (
@@ -290,7 +304,7 @@ export default function BoardPage() {
             checked={checked}
             disabled={isDropping}
             label={ru.switcher}
-            sx={{ width: '100%' }}
+            sx={{ width: '100%', pb: 2 }}
             onChange={(e) => handleChecked(e)}
           />
           {changeActive && <BoardForm id={boardId} onClick={() => setChangeActive(false)} />}

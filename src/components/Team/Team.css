@@ -25,11 +25,6 @@
   padding: 10px;
   border: 2px var(--blue-color) solid;
   border-radius: 25px;
-  cursor: pointer;
-}
-
-.team-member:hover > .github-link {
-  filter: invert(89%) sepia(79%) saturate(4768%) hue-rotate(296deg) brightness(100%) contrast(88%);
 }
 
 .team-member-image {
