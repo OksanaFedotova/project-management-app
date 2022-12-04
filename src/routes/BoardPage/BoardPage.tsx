@@ -18,8 +18,9 @@ import IColumnCard from 'interfaces/IColumnCard';
 import { IColumn } from 'interfaces/IBoard';
 import { useNavigate } from 'react-router-dom';
 import ModalDelete from 'components/ModalDelete';
-import { toast } from 'react-toastify';
 import './BoardPage.css';
+import { ErrorAuth } from 'interfaces/IUser';
+import { toast } from 'react-toastify';
 
 export default function BoardPage() {
   const { id } = useParams();
@@ -231,8 +232,12 @@ export default function BoardPage() {
   const [deleteBoard, { isLoading: isLoadingDelete }] = useDeleteBoardMutation();
   const handleDelete = async (type: string) => {
     if (type === ru.yes) {
-      await deleteBoard(boardId).catch((e) => console.error(e));
-      toast(theme.boardDelete);
+      try {
+        await deleteBoard(boardId);
+      } catch (e) {
+        const err = e as ErrorAuth;
+        toast.error(err.data.message);
+      }
       setIsModalDelete(false);
       navigator('/boards');
     } else {
@@ -263,14 +268,22 @@ export default function BoardPage() {
             if (descriptionActive) setDescriptionActive(false);
           }}
         >
-          <h2>{data.title}</h2>
-          <h3>{data.description}</h3>
-          <Button onClick={() => setDescriptionActive(true)}>{theme.description}</Button>
-          <Button onClick={() => setChangeActive(true)}>{theme.change}</Button>
-          <Button onClick={() => setIsModalDelete(true)}>{theme.delete}</Button>
-          <Button onClick={() => setAddActive(true)}>{theme.addColumn}</Button>
+          <h2 className="h2-board">{data.title}</h2>
+          <h3 className="h3-board">{data.description}</h3>
+          <Button sx={{ mb: 2 }} onClick={() => setDescriptionActive(true)}>
+            {theme.description}
+          </Button>
+          <Button sx={{ mb: 2 }} onClick={() => setChangeActive(true)}>
+            {theme.change}
+          </Button>
+          <Button sx={{ mb: 2 }} onClick={() => setIsModalDelete(true)}>
+            {theme.delete}
+          </Button>
+          <Button variant="contained" sx={{ mb: 2 }} onClick={() => setAddActive(true)}>
+            {theme.addColumn}
+          </Button>
           {descriptionActive && (
-            <BoardDescription title={data.title} description={data.description} />
+            <BoardDescription title={data.title} description={data.description} open={true} />
           )}
           <FormControlLabel
             control={<Switch />}
@@ -303,6 +316,7 @@ export default function BoardPage() {
           </DragDropContext>
         </section>
       )}
+      <div className="bg-board" />
     </Layout>
   );
 }

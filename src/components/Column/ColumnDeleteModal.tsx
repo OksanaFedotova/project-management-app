@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { useIntl } from 'react-intl';
 import { useDeleteColumnMutation } from 'store/services/boardAPI';
 import { Backdrop, CircularProgress } from '@mui/material';
+import { ErrorAuth } from 'interfaces/IUser';
 
 export default function ModalDeleteColumns({
   idBoard,
@@ -24,9 +25,12 @@ export default function ModalDeleteColumns({
   };
   const handleDelete = async (type: string) => {
     if (type === theme.yes) {
-      await deleteColumn({ idBoard, idColumn })
-        .then(() => toast(theme.succes))
-        .catch((e) => console.error(e));
+      try {
+        await deleteColumn({ idBoard, idColumn });
+      } catch (e) {
+        const err = e as ErrorAuth;
+        toast.error(err.data.message);
+      }
     }
     onClick();
   };

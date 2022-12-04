@@ -72,6 +72,9 @@ export const messages = {
     board_delete_toast: 'Доска удалена',
     owner: 'Создатель',
     switcher: 'Показать только мои таски',
+    file_drag: 'Перетащите файл для загрузки',
+    file_safe: 'Отпустите файл для загрузки',
+    file_success: 'Файл добавлен',
   },
   [LOCALES.ENGLISH]: {
     project_title: 'Task manager',
@@ -144,5 +147,8 @@ export const messages = {
     board_delete_toast: 'Board deleted',
     owner: 'Owner',
     switcher: 'Display only my tasks',
+    file_drag: 'Drag file to upload',
+    file_safe: 'Drop file to safe',
+    file_success: 'File is uploaded',
   },
 };
