@@ -106,6 +106,7 @@ export default function TaskModal({
             <TextField
               label={errors.title ? errors.title.message : theme.title}
               error={!!errors.title}
+              defaultValue={task?.title}
               {...register('title', {
                 required: {
                   value: true,
@@ -128,6 +129,7 @@ export default function TaskModal({
             <TextField
               label={errors.description ? errors.description.message : theme.description}
               error={!!errors.description}
+              defaultValue={task?.description}
               {...register('description', {
                 required: {
                   value: true,
