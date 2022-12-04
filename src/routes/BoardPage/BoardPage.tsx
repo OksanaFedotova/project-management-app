@@ -7,7 +7,7 @@ import {
   useUpdateTaskMutation,
   useDeleteBoardMutation,
 } from 'store/services/boardAPI';
-import { Backdrop, Button, CircularProgress } from '@mui/material';
+import { Backdrop, Button, CircularProgress, FormControlLabel, Switch } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
 import { useIntl } from 'react-intl';
@@ -31,17 +31,30 @@ export default function BoardPage() {
   const [updateTask] = useUpdateTaskMutation();
   const [updateColumn] = useUpdateColumnMutation();
 
-  const [descriptionActive, setDescriptionActive] = useState(false);
-  const [changeActive, setChangeActive] = useState(false);
-  const [addActive, setAddActive] = useState(false);
+  const [descriptionActive, setDescriptionActive] = useState<boolean>(false);
+  const [changeActive, setChangeActive] = useState<boolean>(false);
+  const [addActive, setAddActive] = useState<boolean>(false);
 
   const navigator = useNavigate();
-  const [isModalDelete, setIsModalDelete] = useState(false);
+  const [isModalDelete, setIsModalDelete] = useState<boolean>(false);
+  const [checked, setChecked] = useState<boolean>(false);
+  const [isDropping, setIsDropping] = useState<boolean>(false);
 
   const [columns, setColumns] = useState<IColumn[]>([]);
 
   useEffect(() => {
-    data && setColumns(data.columns);
+    if (checked && data) {
+      const filteredArray = [...data!.columns].map((column: IColumn) => {
+        const newColumn = {
+          ...column,
+          tasks: column.tasks.filter((task) => task.userId === userId),
+        };
+        return newColumn;
+      });
+      setColumns(filteredArray);
+    } else {
+      data && setColumns(data.columns);
+    }
   }, [data]);
 
   const intl = useIntl();
@@ -54,10 +67,31 @@ export default function BoardPage() {
     yes: intl.formatMessage({ id: `${'yes'}` }),
     no: intl.formatMessage({ id: `${'no'}` }),
     boardDelete: intl.formatMessage({ id: `${'board_delete_toast'}` }),
+    switcher: intl.formatMessage({ id: `${'switcher'}` }),
   };
   const theme = ru;
 
+  const handleChecked = (e: React.SyntheticEvent<Element, Event>) => {
+    if (!isDropping) {
+      const value = (e.target as HTMLInputElement).checked;
+      setChecked(value);
+      if (value) {
+        const filteredArray = [...columns].map((column: IColumn) => {
+          const newColumn = {
+            ...column,
+            tasks: column.tasks.filter((task) => task.userId === userId),
+          };
+          return newColumn;
+        });
+        setColumns(filteredArray);
+      } else {
+        data && setColumns(data.columns);
+      }
+    }
+  };
+
   async function onDragEnd(result: DropResult) {
+    setIsDropping(true);
     if (data) {
       const { destination, source, draggableId, type } = result;
 
@@ -85,11 +119,11 @@ export default function BoardPage() {
               title: currTask.title,
               order: destination.index + 1,
               description: currTask.description,
-              userId: userId ? userId : '',
+              userId: currTask.userId,
               boardId,
               columnId: finishColumn!.id,
             },
-          }));
+          }).then(() => setIsDropping(false)));
       }
 
       if (type === 'column') {
@@ -104,7 +138,7 @@ export default function BoardPage() {
               title: currColumn.title,
               order: destination.index + 1,
             },
-          }));
+          }).then(() => setIsDropping(false)));
       }
     }
   }
@@ -196,10 +230,10 @@ export default function BoardPage() {
   }
 
   const [deleteBoard, { isLoading: isLoadingDelete }] = useDeleteBoardMutation();
-  const handleDelete = (type: string) => {
-    if (type === intl.formatMessage({ id: `${'yes'}` })) {
+  const handleDelete = async (type: string) => {
+    if (type === ru.yes) {
       try {
-        deleteBoard(boardId);
+        await deleteBoard(boardId);
       } catch (e) {
         const err = e as ErrorAuth;
         toast.error(err.data.message);
@@ -251,6 +285,14 @@ export default function BoardPage() {
           {descriptionActive && (
             <BoardDescription title={data.title} description={data.description} open={true} />
           )}
+          <FormControlLabel
+            control={<Switch />}
+            checked={checked}
+            disabled={isDropping}
+            label={ru.switcher}
+            sx={{ width: '100%' }}
+            onChange={(e) => handleChecked(e)}
+          />
           {changeActive && <BoardForm id={boardId} onClick={() => setChangeActive(false)} />}
           {addActive && <ColumnModal idBoard={boardId} onClick={() => setAddActive(false)} />}
           <DragDropContext onDragEnd={onDragEnd}>
