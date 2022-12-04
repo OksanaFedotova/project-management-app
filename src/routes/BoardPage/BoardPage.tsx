@@ -7,7 +7,7 @@ import {
   useUpdateTaskMutation,
   useDeleteBoardMutation,
 } from 'store/services/boardAPI';
-import { Backdrop, Box, Button, CircularProgress, FormControlLabel, Switch } from '@mui/material';
+import { Backdrop, Button, CircularProgress, FormControlLabel, Switch } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -269,13 +269,11 @@ export default function BoardPage() {
             if (descriptionActive) setDescriptionActive(false);
           }}
         >
-          <h2 className="h2-board">{data.title}</h2>
-          <h3 className="h3-board">{data.description}</h3>
           <Button
-            variant="outlined"
             color="inherit"
             sx={{
               mb: 1,
+              fontSize: 12,
               textAlign: 'center',
               '&:hover': { color: 'orange' },
             }}
@@ -284,6 +282,8 @@ export default function BoardPage() {
             <ArrowBackIosIcon />
             <FormattedMessage id="back" />
           </Button>
+          <h2 className="h2-board">{data.title}</h2>
+          <h3 className="h3-board">{data.description}</h3>
           <Button sx={{ mb: 1 }} onClick={() => setDescriptionActive(true)}>
             {theme.description}
           </Button>

@@ -1,5 +1,5 @@
 .board-container {
-  padding-top: 100px;
+  padding-top: 80px;
 }
 
 .board-list {
@@ -19,7 +19,7 @@
   overflow-x: auto;
   align-items: flex-start;
   margin-bottom: 4px;
-  height: 62vh;
+  height: calc(100vh - 450px);
 }
 
 .bg-board {
@@ -50,32 +50,28 @@
   }
 }
 
-@media (max-width: 611px) {
-  .board-container {
-    padding-top: 130px;
-  }
-
+@media (max-width: 620px) {
   .bg-board {
     display: none;
   }
-
-  .columns-container {
-    height: 60vh;
-  }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 484px) {
   .board-container {
-    padding-top: 140px;
+    padding-top: 120px;
+  }
+
+  .h2-board {
+    padding-bottom: 5px;
   }
 
   .h3-board {
-    padding-bottom: 5px;
+    padding-bottom: 7px;
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 405px) {
   .columns-container {
-    height: calc(90vh - 360px);
+    height: calc(100vh - 490px);
   }
 }

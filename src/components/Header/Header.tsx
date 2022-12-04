@@ -87,7 +87,7 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
               exclusive
               onChange={handleChange}
               aria-label="Platform"
-              sx={{ mr: 2, ml: 1.5 }}
+              sx={{ mr: 2, ml: 3 }}
             >
               <ToggleButton value="ru">RU</ToggleButton>
               <ToggleButton value="en">EN</ToggleButton>
@@ -117,15 +117,13 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
                   variant="outlined"
                   color="inherit"
                   sx={(theme) => ({
+                    display: { xs: 'none', sm: 'none', md: 'inline-block' },
                     width: 140,
                     mr: 1,
                     [theme.breakpoints.down('md')]: {
                       width: 110,
-                      fontSize: 11,
-                    },
-                    [theme.breakpoints.down('sm')]: {
+                      fontSize: 10,
                       p: 1,
-                      mr: 1,
                     },
                   })}
                 >
@@ -140,13 +138,20 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
                     width: 140,
                     mr: 1,
                     [theme.breakpoints.down('md')]: {
-                      width: 60,
-                      fontSize: 11,
+                      width: 50,
                     },
                   })}
                 >
                   <AccountCircleIcon
-                    sx={{ display: { xs: 'inline-block', sm: 'inline-bloc', md: 'none' } }}
+                    sx={{
+                      display: {
+                        xs: 'inline-block',
+                        sm: 'inline-bloc',
+                        md: 'none',
+                        height: '20px',
+                        width: '20px',
+                      },
+                    }}
                   />
                   <Box sx={{ display: { xs: 'none', sm: 'none', md: 'inline-block' } }}>
                     <FormattedMessage id="to_edit_page" />
@@ -166,7 +171,15 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
                 onClick={logout}
               >
                 <LoginIcon
-                  sx={{ display: { xs: 'inline-block', sm: 'inline-bloc', md: 'none' } }}
+                  sx={{
+                    display: {
+                      xs: 'inline-block',
+                      sm: 'inline-bloc',
+                      md: 'none',
+                      height: '20px',
+                      width: '20px',
+                    },
+                  }}
                 />
                 <Box sx={{ display: { xs: 'none', sm: 'none', md: 'inline-block' } }}>
                   <FormattedMessage id="sign_out" />
