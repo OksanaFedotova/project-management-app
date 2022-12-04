@@ -19,7 +19,7 @@
   overflow-x: auto;
   align-items: flex-start;
   margin-bottom: 4px;
-  height: 64vh;
+  height: 62vh;
 }
 
 .bg-board {
@@ -48,10 +48,6 @@
   .board-list {
     flex-direction: column;
   }
-
-  .columns-container {
-    height: 61vh;
-  }
 }
 
 @media (max-width: 611px) {
@@ -62,14 +58,24 @@
   .bg-board {
     display: none;
   }
+
+  .columns-container {
+    height: 60vh;
+  }
 }
 
 @media (max-width: 550px) {
   .board-container {
-    padding-top: 150px;
+    padding-top: 140px;
   }
 
+  .h3-board {
+    padding-bottom: 5px;
+  }
+}
+
+@media (max-width: 500px) {
   .columns-container {
-    height: calc(90vh - 340px);
+    height: calc(90vh - 360px);
   }
 }
