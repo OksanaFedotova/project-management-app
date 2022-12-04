@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { URL } from 'configs/constants';
 import { IBoard, IColumn, TColumnRequest, ITaskResponse, TTaskRequest } from 'interfaces/IBoard';
 
@@ -126,6 +126,8 @@ export const boardAPI = createApi({
         body: data,
       }),
       invalidatesTags: ['Tasks'],
+      transformResponse: (response: Response) => response.text(),
+      transformErrorResponse: (response: FetchBaseQueryError) => response.data,
     }),
   }),
 });

@@ -52,7 +52,9 @@ interface IFile {
   filename: string;
   fileSize: number;
 }
-
+type TFileResponse = {
+  error: string | { message: string; statusCode: number };
+};
 export {
   IBoard,
   TBoardRequest,
@@ -62,4 +64,5 @@ export {
   TColumnRequest,
   TTaskRequest,
   ITaskResponse,
+  TFileResponse,
 };
