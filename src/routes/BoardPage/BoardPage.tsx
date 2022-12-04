@@ -273,6 +273,7 @@ export default function BoardPage() {
           <h3 className="h3-board">{data.description}</h3>
           <Button
             variant="outlined"
+            color="inherit"
             sx={{
               mb: 1,
               textAlign: 'center',
