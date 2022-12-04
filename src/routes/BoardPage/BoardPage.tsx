@@ -7,10 +7,10 @@ import {
   useUpdateTaskMutation,
   useDeleteBoardMutation,
 } from 'store/services/boardAPI';
-import { Backdrop, Button, CircularProgress, FormControlLabel, Switch } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, FormControlLabel, Switch } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import BoardForm from 'components/BoardForm';
 import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
@@ -21,6 +21,7 @@ import ModalDelete from 'components/ModalDelete';
 import './BoardPage.css';
 import { ErrorAuth } from 'interfaces/IUser';
 import { toast } from 'react-toastify';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function BoardPage() {
   const { id } = useParams();
@@ -270,6 +271,18 @@ export default function BoardPage() {
         >
           <h2 className="h2-board">{data.title}</h2>
           <h3 className="h3-board">{data.description}</h3>
+          <Button
+            variant="outlined"
+            sx={{
+              mb: 1,
+              textAlign: 'center',
+              '&:hover': { color: 'orange' },
+            }}
+            onClick={() => navigator('/boards')}
+          >
+            <ArrowBackIosIcon />
+            <FormattedMessage id="back" />
+          </Button>
           <Button sx={{ mb: 1 }} onClick={() => setDescriptionActive(true)}>
             {theme.description}
           </Button>
