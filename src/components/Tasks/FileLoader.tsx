@@ -1,4 +1,5 @@
 import { Box, Paper } from '@mui/material';
+import { TFileResponse } from 'interfaces/IBoard';
 import React from 'react';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -29,7 +30,9 @@ export default function FileUploader({ taskId }: { taskId: string }) {
         const data = new FormData();
         data.append('taskId', taskId);
         data.append('file', file);
-        uploadFile(data).then(() => toast.success(theme.success));
+        const response = (await uploadFile(data)) as TFileResponse;
+        if (response.data === 'File uploaded!') toast.success(theme.success);
+        if (response.error) toast.error(response.error.data.message);
       });
       setDrag(false);
     } catch (e) {
