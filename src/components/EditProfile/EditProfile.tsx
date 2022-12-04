@@ -99,7 +99,6 @@ export default function EditProfile() {
         width: 500,
         [theme.breakpoints.down('sm')]: {
           width: 300,
-          // maxHeight: '60vh',
         },
       })}
     >
