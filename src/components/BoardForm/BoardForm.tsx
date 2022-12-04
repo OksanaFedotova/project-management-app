@@ -25,8 +25,21 @@ export default function BoardForm({
     formState: { errors },
   } = useForm<FormInputs>({ mode: 'onChange' });
 
-  const [updateBoard, { isLoading: isLoadingUpdate }] = useUpdateBoardMutation();
-  const [createBoard, { isLoading: isLoadingUCreate }] = useCreateBoardMutation();
+  const [updateBoard, { isLoading: isLoadingUpdate, isError, error }] = useUpdateBoardMutation();
+  const [createBoard, { isLoading: isLoadingUCreate, isError: isErr, error: err }] =
+    useCreateBoardMutation();
+
+  if (isError || isErr) {
+    let e;
+    if (err) {
+      e = err as ErrorAuth;
+    } else {
+      e = error as ErrorAuth;
+    }
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
 
   const onSubmit = async ({ title, description }: FormInputs) => {
     try {

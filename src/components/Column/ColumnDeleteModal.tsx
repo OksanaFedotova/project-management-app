@@ -15,7 +15,7 @@ export default function ModalDeleteColumns({
   idColumn: string;
   onClick: () => void;
 }) {
-  const [deleteColumn, { isLoading: isLoadingDeleteColumn }] = useDeleteColumnMutation();
+  const [deleteColumn, { isLoading: isLoadingDeleteColumn, error }] = useDeleteColumnMutation();
   const intl = useIntl();
   const theme = {
     title: intl.formatMessage({ id: `${'delete_confirm'}` }),
@@ -23,17 +23,21 @@ export default function ModalDeleteColumns({
     no: intl.formatMessage({ id: `${'no'}` }),
     succes: intl.formatMessage({ id: `${'column_delete_notification'}` }),
   };
+
+  if (error) {
+    const e = error as ErrorAuth;
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
+
   const handleDelete = async (type: string) => {
     if (type === theme.yes) {
-      try {
-        await deleteColumn({ idBoard, idColumn });
-      } catch (e) {
-        const err = e as ErrorAuth;
-        toast.error(err.data.message);
-      }
+      await deleteColumn({ idBoard, idColumn });
     }
     onClick();
   };
+
   return (
     <>
       <ModalDelete

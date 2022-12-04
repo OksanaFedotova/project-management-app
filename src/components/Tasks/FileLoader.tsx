@@ -1,10 +1,11 @@
-import { Box, Paper } from '@mui/material';
-import { TFileResponse } from 'interfaces/IBoard';
 import React from 'react';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 import { useUploadFileMutation } from 'store/services/boardAPI';
+import { Box, Paper } from '@mui/material';
+import { TFileResponse } from 'interfaces/IBoard';
+import { ErrorAuth } from 'interfaces/IUser';
 
 export default function FileUploader({ taskId }: { taskId: string }) {
   const intl = useIntl();
@@ -13,8 +14,16 @@ export default function FileUploader({ taskId }: { taskId: string }) {
     drop: intl.formatMessage({ id: `${'file_safe'}` }),
     success: intl.formatMessage({ id: 'file_success' }),
   };
-  const [uploadFile] = useUploadFileMutation();
+  const [uploadFile, { error }] = useUploadFileMutation();
   const [drag, setDrag] = useState(false);
+
+  if (error) {
+    const e = error as ErrorAuth;
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
+
   const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDrag(true);

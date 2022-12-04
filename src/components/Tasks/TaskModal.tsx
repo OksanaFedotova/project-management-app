@@ -20,9 +20,21 @@ export default function TaskModal({
   isCreate: boolean;
   task?: ITask;
 }) {
-  const [createTask, { isLoading: isLoadingTaskCreate }] = useCreateTaskMutation();
-  const [updateTask, { isLoading: isLoadingTaskUpdate }] = useUpdateTaskMutation();
+  const [createTask, { isLoading: isLoadingTaskCreate, error }] = useCreateTaskMutation();
+  const [updateTask, { isLoading: isLoadingTaskUpdate, error: err }] = useUpdateTaskMutation();
   const userId = localStorage.getItem('userId') ?? '';
+
+  if (error || err) {
+    let e;
+    if (error) {
+      e = error as ErrorAuth;
+    } else {
+      e = err as ErrorAuth;
+    }
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
 
   const {
     register,
