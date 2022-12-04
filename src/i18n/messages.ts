@@ -75,6 +75,7 @@ export const messages = {
     file_drag: 'Перетащите файл для загрузки',
     file_safe: 'Отпустите файл для загрузки',
     file_success: 'Файл добавлен',
+    back: 'Назад',
   },
   [LOCALES.ENGLISH]: {
     project_title: 'Task manager',
@@ -150,5 +151,6 @@ export const messages = {
     file_drag: 'Drag file to upload',
     file_safe: 'Drop file to safe',
     file_success: 'File is uploaded',
+    back: 'Back',
   },
 };
