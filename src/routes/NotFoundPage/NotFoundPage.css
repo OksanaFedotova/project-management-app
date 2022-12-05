@@ -1,0 +1,13 @@
+.not-found-page {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 50px;
+}
+
+.not-found-img {
+  padding-top: 10vh;
+  width: 65%;
+}

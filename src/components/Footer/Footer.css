@@ -1,0 +1,38 @@
+.footer {
+  height: 10vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: var(--blue-color);
+  color: var(--white-color);
+}
+
+.github-links-box {
+  display: flex;
+  flex-direction: row;
+  column-gap: 20px;
+}
+
+.github-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 5px;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+.github-link:hover {
+  color: var(--black-color);
+}
+
+@media (max-width: 600px) {
+  .github-links-box {
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    justify-content: center;
+  }
+}

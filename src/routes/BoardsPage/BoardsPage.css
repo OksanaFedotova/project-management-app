@@ -1,0 +1,38 @@
+.boards-container {
+  padding-bottom: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-top: 10vh;
+  align-items: center;
+}
+
+.boards-form {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 300px;
+  height: fit-content;
+  z-index: 10;
+}
+
+@media (max-width: 1300px) {
+  .boards-container {
+    padding-top: 13vh;
+  }
+}
+
+@media (max-width: 621px) {
+  .boards-container {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 375px) {
+  .boards-container {
+    padding-top: 20vh;
+  }
+}
