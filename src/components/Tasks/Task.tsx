@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useGetUserByIdQuery } from 'store/services/userAPI';
+import { useGetUserByIdQuery } from 'store/services/boardAPI';
 import { ITask } from 'interfaces/IBoard';
 import { IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';

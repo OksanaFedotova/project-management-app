@@ -27,7 +27,7 @@ export default function BoardPage() {
   const { id } = useParams();
   const boardId = id ? id : '';
   const { data, isLoading: isLoadingData } = useGetBoardByIdQuery(boardId);
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem('userId') ? localStorage.getItem('userId') : '';
 
   const [updateTask] = useUpdateTaskMutation();
   const [updateColumn] = useUpdateColumnMutation();

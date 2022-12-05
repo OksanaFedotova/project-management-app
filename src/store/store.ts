@@ -7,14 +7,12 @@ import taskReducer from './reducers/TaskSlice';
 import languageReducer from './reducers/LanguageSlice';
 import { authAPI } from './services/authAPI';
 import { boardAPI } from './services/boardAPI';
-import { userAPI } from './services/userAPI';
 
 const setupStore = () =>
   configureStore({
     reducer: {
       [authAPI.reducerPath]: authAPI.reducer,
       [boardAPI.reducerPath]: boardAPI.reducer,
-      [userAPI.reducerPath]: userAPI.reducer,
       auth: authReducer,
       board: boardReducer,
       user: userReducer,
@@ -26,7 +24,6 @@ const setupStore = () =>
       ...getDefaultMiddleware(),
       authAPI.middleware,
       boardAPI.middleware,
-      userAPI.middleware,
     ],
   });
 

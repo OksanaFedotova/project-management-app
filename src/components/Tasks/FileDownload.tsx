@@ -4,7 +4,7 @@ import { URL as url } from 'configs/constants';
 import { toast } from 'react-toastify';
 
 export default function FileDownload({ filename, taskId }: { filename: string; taskId: string }) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
   const [activeLink, setActiveLink] = useState(false);
   const linkRef = useRef<HTMLAnchorElement>(null);
   const onClick = async () => {
