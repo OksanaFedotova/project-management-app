@@ -67,10 +67,10 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
                   />
                   <IconButton
                     size="small"
-                    sx={{ color: 'grey' }}
+                    sx={{ width: 30, color: 'red' }}
                     onClick={() => setChangeColumnActive(false)}
                   >
-                    <CloseIcon sx={{ width: 22, color: 'red' }} />
+                    <CloseIcon sx={{ width: 22 }} />
                   </IconButton>
                 </>
               )}

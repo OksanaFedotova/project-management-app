@@ -69,7 +69,7 @@ export default function ColumnUpdate({
         onKeyDown={(e) => handleUpdateColumn(e)}
         onChange={(e) => setValue((e.target as HTMLInputElement).value)}
       />
-      <IconButton sx={{ color: 'green' }} onClick={(e) => handleUpdateColumn(e)}>
+      <IconButton sx={{ color: 'green', width: 30 }} onClick={(e) => handleUpdateColumn(e)}>
         <Done sx={{ width: 22 }} />
       </IconButton>
     </>
