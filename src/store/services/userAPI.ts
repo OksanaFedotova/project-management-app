@@ -14,12 +14,15 @@ export const userAPI = createApi({
       return headers;
     },
   }),
+  tagTypes: ['User'],
   endpoints: (builder) => ({
     getAllUsers: builder.query({
       query: () => 'users',
+      providesTags: ['User'],
     }),
     getUserById: builder.query({
       query: (id) => `users/${id}`,
+      providesTags: ['User'],
     }),
     updateUser: builder.mutation<IUser, TUpdateUser>({
       query: (body) => ({
@@ -27,12 +30,14 @@ export const userAPI = createApi({
         method: 'PUT',
         body: body.user,
       }),
+      invalidatesTags: ['User'],
     }),
     deleteUser: builder.mutation({
       query: (id) => ({
         url: `users/${id.id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['User'],
     }),
   }),
 });
