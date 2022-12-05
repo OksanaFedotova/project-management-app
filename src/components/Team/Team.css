@@ -55,6 +55,12 @@
   filter: invert(89%) sepia(79%) saturate(4768%) hue-rotate(296deg) brightness(100%) contrast(88%);
 }
 
+@media (max-width: 1370px) {
+  .h2 {
+    padding-top: 50px;
+  }
+}
+
 @media (max-width: 850px) {
   .team-member {
     width: 40%;
