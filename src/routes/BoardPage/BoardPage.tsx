@@ -313,15 +313,24 @@ export default function BoardPage() {
           {descriptionActive && (
             <BoardDescription title={data.title} description={data.description} open={true} />
           )}
-          <FormControlLabel
-            control={<Switch />}
-            checked={checked}
-            disabled={isDropping}
-            label={ru.switcher}
-            sx={{ width: '100%', pb: 2 }}
-            onChange={(e) => handleChecked(e)}
-          />
-          {changeActive && <BoardForm id={boardId} onClick={() => setChangeActive(false)} />}
+          <div style={{ width: '100%' }}>
+            <FormControlLabel
+              control={<Switch />}
+              checked={checked}
+              disabled={isDropping}
+              label={ru.switcher}
+              sx={{ pb: 2 }}
+              onChange={(e) => handleChecked(e)}
+            />
+          </div>
+          {changeActive && (
+            <BoardForm
+              title={data.title}
+              description={data.description}
+              id={boardId}
+              onClick={() => setChangeActive(false)}
+            />
+          )}
           {addActive && <ColumnModal idBoard={boardId} onClick={() => setAddActive(false)} />}
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type="column">
