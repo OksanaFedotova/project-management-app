@@ -24,19 +24,21 @@ export default function BoardCard({
   handleUpdate: (id: string) => void;
   onClick: () => void;
 }) {
-  const [deleteBoard, { isLoading: isLoadingDelete }] = useDeleteBoardMutation();
+  const [deleteBoard, { isLoading: isLoadingDelete, error, isError }] = useDeleteBoardMutation();
   const { title, description, id } = board;
   const [isModal, setIsModal] = useState(false);
   const intl = useIntl();
 
+  if (isError) {
+    const e = error as ErrorAuth;
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
+
   const handleDelete = (type: string) => {
     if (type === intl.formatMessage({ id: `${'yes'}` })) {
-      try {
-        deleteBoard(id);
-      } catch (e) {
-        const err = e as ErrorAuth;
-        toast.error(err.data.message);
-      }
+      deleteBoard(id);
       setIsModal(false);
     } else {
       setIsModal(false);

@@ -26,18 +26,38 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function EditProfile() {
-  const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
-  const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
+  const [updateUser, { isLoading: isLoadingUpdate, isError, error }] = useUpdateUserMutation();
+  const [deleteUser, { isLoading: isLoadingDelete, isError: isErr, error: err }] =
+    useDeleteUserMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
   const userId = localStorage.getItem('userId');
   const intl = useIntl();
-  const { data, isLoading: isLoadingName } = useGetUserByIdQuery(userId);
+  const {
+    data,
+    isLoading: isLoadingName,
+    isError: isErrorUser,
+    error: errUser,
+  } = useGetUserByIdQuery(userId);
   const auth = useAuth();
   const isAuth = auth.token;
   const [nameState, setName] = useState<string>();
   const [loginState, setLogin] = useState<string>();
+
+  if (isError || isErr || isErrorUser) {
+    let e;
+    if (err) {
+      e = err as ErrorAuth;
+    } else if (error) {
+      e = error as ErrorAuth;
+    } else {
+      e = errUser as ErrorAuth;
+    }
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
 
   const getUserName = (): Omit<IUser, 'id'> => {
     if (data && isAuth) {

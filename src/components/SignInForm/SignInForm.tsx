@@ -22,10 +22,17 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function SignInForm() {
-  const [signin, { isLoading }] = useSigninMutation();
+  const [signin, { isLoading, error }] = useSigninMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const intl = useIntl();
+
+  if (error) {
+    const e = error as ErrorAuth;
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
 
   const {
     register,

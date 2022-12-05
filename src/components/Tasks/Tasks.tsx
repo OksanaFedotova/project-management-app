@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { toast } from 'react-toastify';
 import { useIntl } from 'react-intl';
 import { useDeleteTaskMutation } from 'store/services/boardAPI';
 import ModalDelete from 'components/ModalDelete';
 import TaskModal from './TaskModal';
 import Task from './Task';
 import { ITask } from 'interfaces/IBoard';
+import { ErrorAuth } from 'interfaces/IUser';
 import { ListItem, Backdrop, CircularProgress } from '@mui/material';
 
 export default function Tasks({ tasks, columnId }: { tasks: ITask[]; columnId: string }) {
@@ -16,7 +18,14 @@ export default function Tasks({ tasks, columnId }: { tasks: ITask[]; columnId: s
   const [addActive, setAddActive] = useState(false);
   const [currTask, setCurrTask] = useState<ITask>();
 
-  const [deleteTask, { isLoading: isLoadingDelete }] = useDeleteTaskMutation();
+  const [deleteTask, { isLoading: isLoadingDelete, error }] = useDeleteTaskMutation();
+
+  if (error) {
+    const e = error as ErrorAuth;
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
 
   const deleteHandler = async (type: string) => {
     if (currTask) {
