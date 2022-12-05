@@ -91,7 +91,10 @@ export default function BoardForm({
             })}
             autoComplete="off"
           >
-            <Typography align="center" sx={{ pt: 1, pb: 2, textTransform: 'uppercase' }}>
+            <Typography
+              align="center"
+              sx={{ pt: 1, pb: 2, textTransform: 'uppercase', color: 'black' }}
+            >
               <FormattedMessage id="board" />
             </Typography>
             <TextField
