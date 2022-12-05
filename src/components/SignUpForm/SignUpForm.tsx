@@ -25,6 +25,7 @@ export default function SignUpForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
   const intl = useIntl();
 
   const {
@@ -32,9 +33,10 @@ export default function SignUpForm() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ISignupRequest>({ mode: 'onChange' });
+  } = useForm<ISignupRequest>({ mode: 'onSubmit' });
 
   const onSubmit = async (data: ISignupRequest) => {
+    setIsDisable(true);
     setIsLoading(true);
     const { login, password } = data;
     try {
@@ -52,6 +54,7 @@ export default function SignUpForm() {
     }
     reset();
     setIsLoading(false);
+    setIsDisable(false);
   };
 
   return (
@@ -170,7 +173,13 @@ export default function SignUpForm() {
               },
             })}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={isDisable}
+          >
             <FormattedMessage id="register" />
           </Button>
         </Box>

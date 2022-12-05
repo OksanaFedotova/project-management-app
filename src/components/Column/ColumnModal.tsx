@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Box, TextField, Backdrop, CircularProgress } from '@mui/material';
 import { useCreateColumnMutation } from 'store/services/boardAPI';
@@ -27,20 +27,27 @@ export default function ColumnModal({
     formState: { errors },
   } = useForm<{ title: string }>({ mode: 'onChange' });
 
-  const [createColumn, { isLoading: isLoadingNewColumn }] = useCreateColumnMutation();
+  const [createColumn, { isLoading, isError, error }] = useCreateColumnMutation();
+  const [isDisable, setIsDisable] = useState(false);
+
+  if (isError) {
+    const e = error as ErrorAuth;
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
+
   const onSubmit = async ({ title }: { title: string }) => {
+    setIsDisable(true);
     const body = { title: title };
-    try {
-      await createColumn({ idBoard, body });
-    } catch (e) {
-      const err = e as ErrorAuth;
-      toast.error(err.data.message);
-    }
+    await createColumn({ idBoard, body });
     onClick();
+    setIsDisable(false);
   };
+
   return (
     <>
-      {isLoadingNewColumn && (
+      {isLoading && (
         <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
           <CircularProgress color="inherit" size={60} />
         </Backdrop>
@@ -89,7 +96,7 @@ export default function ColumnModal({
               error={!!errors.title}
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+              <Button type="submit" variant="contained" sx={{ mt: 2 }} disabled={isDisable}>
                 {theme.add}
               </Button>
               <Button variant="outlined" sx={{ mt: 2 }} onClick={onClick}>

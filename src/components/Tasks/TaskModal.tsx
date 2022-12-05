@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useCreateTaskMutation, useUpdateTaskMutation } from 'store/services/boardAPI';
@@ -20,9 +20,22 @@ export default function TaskModal({
   isCreate: boolean;
   task?: ITask;
 }) {
-  const [createTask, { isLoading: isLoadingTaskCreate }] = useCreateTaskMutation();
-  const [updateTask, { isLoading: isLoadingTaskUpdate }] = useUpdateTaskMutation();
+  const [createTask, { isLoading: isLoadingTaskCreate, error }] = useCreateTaskMutation();
+  const [updateTask, { isLoading: isLoadingTaskUpdate, error: err }] = useUpdateTaskMutation();
   const userId = localStorage.getItem('userId') ?? '';
+  const [isDisable, setIsDisable] = useState(false);
+
+  if (error || err) {
+    let e;
+    if (error) {
+      e = error as ErrorAuth;
+    } else {
+      e = err as ErrorAuth;
+    }
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
 
   const {
     register,
@@ -30,12 +43,14 @@ export default function TaskModal({
     formState: { errors },
   } = useForm<{ title: string; description: string }>({ mode: 'onChange' });
 
-  const onSubmit = ({ title, description }: Omit<TTaskRequest, 'userId'>) => {
+  const onSubmit = async ({ title, description }: Omit<TTaskRequest, 'userId'>) => {
+    setIsDisable(true);
     if (isCreate) {
-      createHandler({ title, description });
+      await createHandler({ title, description });
     } else {
-      updateHandler({ title, description });
+      await updateHandler({ title, description });
     }
+    setIsDisable(false);
   };
 
   const createHandler = async ({ title, description }: Omit<TTaskRequest, 'userId'>) => {
@@ -150,7 +165,7 @@ export default function TaskModal({
               })}
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+              <Button type="submit" variant="contained" sx={{ mt: 2 }} disabled={isDisable}>
                 {isCreate ? theme.create : theme.edit}
               </Button>
               <Button variant="outlined" sx={{ mt: 2 }} onClick={onClick}>

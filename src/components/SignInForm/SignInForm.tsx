@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -23,6 +23,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function SignInForm() {
   const [signin, { isLoading }] = useSigninMutation();
+  const [isDisable, setIsDisable] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const intl = useIntl();
@@ -35,6 +36,7 @@ export default function SignInForm() {
   } = useForm<ISignupRequest>({ mode: 'onChange' });
 
   const onSubmit = async (data: ISignupRequest) => {
+    setIsDisable(true);
     const { login, password } = data;
     try {
       const userSignIn = await signin({ login, password }).unwrap();
@@ -49,6 +51,7 @@ export default function SignInForm() {
       toast.error(err.data.message);
     }
     reset();
+    setIsDisable(false);
   };
 
   return (
@@ -139,7 +142,13 @@ export default function SignInForm() {
               },
             })}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={isDisable}
+          >
             <FormattedMessage id="enter" />
           </Button>
         </Box>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Box, TextField, Typography, Backdrop, CircularProgress } from '@mui/material';
 import { useCreateBoardMutation, useUpdateBoardMutation } from 'store/services/boardAPI';
@@ -25,10 +25,25 @@ export default function BoardForm({
     formState: { errors },
   } = useForm<FormInputs>({ mode: 'onChange' });
 
-  const [updateBoard, { isLoading: isLoadingUpdate }] = useUpdateBoardMutation();
-  const [createBoard, { isLoading: isLoadingUCreate }] = useCreateBoardMutation();
+  const [updateBoard, { isLoading: isLoadingUpdate, isError, error }] = useUpdateBoardMutation();
+  const [createBoard, { isLoading: isLoadingUCreate, isError: isErr, error: err }] =
+    useCreateBoardMutation();
+  const [isDisable, setIsDisable] = useState(false);
+
+  if (isError || isErr) {
+    let e;
+    if (err) {
+      e = err as ErrorAuth;
+    } else {
+      e = error as ErrorAuth;
+    }
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
 
   const onSubmit = async ({ title, description }: FormInputs) => {
+    setIsDisable(true);
     try {
       if (id) {
         await updateBoard({ title, description, id });
@@ -40,6 +55,7 @@ export default function BoardForm({
       toast.error(err.data.message);
     }
     onClick();
+    setIsDisable(false);
   };
   const intl = useIntl();
   const ru = {
@@ -78,12 +94,15 @@ export default function BoardForm({
             })}
             autoComplete="off"
           >
-            <Typography align="center" sx={{ pt: 1, pb: 2, textTransform: 'uppercase' }}>
+            <Typography
+              align="center"
+              sx={{ pt: 1, pb: 2, textTransform: 'uppercase', color: 'black' }}
+            >
               <FormattedMessage id="board" />
             </Typography>
             <TextField
               id="outlined-required"
-              label={errors.title ? errors.title.message : theme.label}
+              label={errors.title ? errors.title.message : theme.title}
               multiline
               error={!!errors.title}
               defaultValue={title}
@@ -108,7 +127,7 @@ export default function BoardForm({
             />
             <TextField
               id="outlined-required"
-              label={errors.description ? errors.description.message : theme.label}
+              label={errors.description ? errors.description.message : theme.descripion}
               multiline
               error={!!errors.description}
               defaultValue={description}
@@ -133,12 +152,12 @@ export default function BoardForm({
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
               {id && (
-                <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                <Button type="submit" variant="contained" sx={{ mt: 2 }} disabled={isDisable}>
                   {theme.change}
                 </Button>
               )}
               {!id && (
-                <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                <Button type="submit" variant="contained" sx={{ mt: 2 }} disabled={isDisable}>
                   {theme.add}
                 </Button>
               )}

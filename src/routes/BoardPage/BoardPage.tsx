@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
+import { toast } from 'react-toastify';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
   useGetBoardByIdQuery,
   useUpdateColumnMutation,
   useUpdateTaskMutation,
   useDeleteBoardMutation,
 } from 'store/services/boardAPI';
-import { Backdrop, Button, CircularProgress, FormControlLabel, Switch } from '@mui/material';
 import Layout from 'components/Layout';
 import BoardDescription from 'components/BoardDescription/BoardDescription';
-import { FormattedMessage, useIntl } from 'react-intl';
 import BoardForm from 'components/BoardForm';
 import ColumnModal from 'components/Column/ColumnModal';
 import ColumnCard from 'components/Column/ColumnCard';
+import ModalDelete from 'components/ModalDelete';
 import IColumnCard from 'interfaces/IColumnCard';
 import { IColumn } from 'interfaces/IBoard';
-import { useNavigate } from 'react-router-dom';
-import ModalDelete from 'components/ModalDelete';
-import './BoardPage.css';
 import { ErrorAuth } from 'interfaces/IUser';
-import { toast } from 'react-toastify';
+import { Backdrop, Button, CircularProgress, FormControlLabel, Switch } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import './BoardPage.css';
 
 export default function BoardPage() {
   const { id } = useParams();
@@ -29,8 +28,9 @@ export default function BoardPage() {
   const { data, isLoading: isLoadingData } = useGetBoardByIdQuery(boardId);
   const userId = localStorage.getItem('userId') ? localStorage.getItem('userId') : '';
 
-  const [updateTask] = useUpdateTaskMutation();
-  const [updateColumn] = useUpdateColumnMutation();
+  const [updateTask, { error: errTask }] = useUpdateTaskMutation();
+  const [updateColumn, { error: errColumn }] = useUpdateColumnMutation();
+  const [deleteBoard, { isLoading: isLoadingDelete, error: errBoard }] = useDeleteBoardMutation();
 
   const [descriptionActive, setDescriptionActive] = useState<boolean>(false);
   const [changeActive, setChangeActive] = useState<boolean>(false);
@@ -42,6 +42,20 @@ export default function BoardPage() {
   const [isDropping, setIsDropping] = useState<boolean>(false);
 
   const [columns, setColumns] = useState<IColumn[]>([]);
+
+  if (errTask || errColumn || errBoard) {
+    let e;
+    if (errTask) {
+      e = errTask as ErrorAuth;
+    } else if (errColumn) {
+      e = errColumn as ErrorAuth;
+    } else {
+      e = errBoard as ErrorAuth;
+    }
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
 
   useEffect(() => {
     if (checked && data) {
@@ -98,6 +112,7 @@ export default function BoardPage() {
 
       if (!destination) return;
       if (destination.droppableId === source.droppableId && destination.index === source.index) {
+        setIsDropping(false);
         return;
       }
 
@@ -230,7 +245,6 @@ export default function BoardPage() {
     setColumns(newBoard.columns);
   }
 
-  const [deleteBoard, { isLoading: isLoadingDelete }] = useDeleteBoardMutation();
   const handleDelete = async (type: string) => {
     if (type === ru.yes) {
       try {

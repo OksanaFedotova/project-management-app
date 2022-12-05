@@ -26,8 +26,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function EditProfile() {
-  const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
-  const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
+  const [updateUser, { isLoading: isLoadingUpdate, isError, error }] = useUpdateUserMutation();
+  const [deleteUser, { isLoading: isLoadingDelete, isError: isErr, error: err }] =
+    useDeleteUserMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
@@ -39,6 +40,7 @@ export default function EditProfile() {
   const [nameState, setName] = useState<string>();
   const [loginState, setLogin] = useState<string>();
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [isDisable, setIsDisable] = useState(false);
 
   const getUserName = (): Omit<IUser, 'id'> => {
     if (user && isAuth) {
@@ -68,6 +70,7 @@ export default function EditProfile() {
       toast.info(intl.formatMessage({ id: `${'name_required'}` }));
       return;
     }
+    setIsDisable(true);
     if (!data.name) {
       data.name = `${user.name}`;
     }
@@ -81,6 +84,7 @@ export default function EditProfile() {
       const err = e as ErrorAuth;
       toast.error(err.data.message);
     }
+    setIsDisable(false);
   };
 
   const deleteProfile = async (type: string) => {
@@ -281,7 +285,13 @@ export default function EditProfile() {
             })}
           />
           <Box style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-            <Button type="submit" variant="contained" color="success" sx={{ mt: 3 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="success"
+              sx={{ mt: 3 }}
+              disabled={isDisable}
+            >
               <FormattedMessage id="edit" />
             </Button>
             <Button
