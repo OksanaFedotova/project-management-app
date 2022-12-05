@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDeleteBoardMutation } from 'store/services/boardAPI';
 import { FormattedMessage, useIntl } from 'react-intl';
 import ModalDelete from 'components/ModalDelete';
@@ -28,9 +29,13 @@ export default function BoardCard({
   const { title, description, id } = board;
   const [isModal, setIsModal] = useState(false);
   const intl = useIntl();
+  const navigate = useNavigate();
 
   if (isError) {
     const e = error as ErrorAuth;
+    if (e.data.statusCode === 401) {
+      navigate('/');
+    }
     toast.error(e.data.message, {
       toastId: 'Board',
     });
