@@ -5,12 +5,12 @@ import ColumnUpdate from './ColumnUpdate';
 import { Draggable } from 'react-beautiful-dnd';
 import Tasks from 'components/Tasks';
 import TaskModal from 'components/Tasks/TaskModal';
-import { CardContent, Typography, Card, Button, Box } from '@mui/material';
+import { CardContent, Typography, Card, Button, Box, IconButton } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import AddIcon from '@mui/icons-material/Add';
 import { Mode, Delete } from '@mui/icons-material';
-//import DeleteIcon from '@mui/icons-material/Delete';
 import { IColumn } from 'interfaces/IBoard';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function ColumnCard({ data, index }: { data: IColumn; index: number }) {
   const { id, title, tasks } = data;
@@ -38,7 +38,6 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
               backgroundColor: '#F2F7FF',
               [theme.breakpoints.down('sm')]: {
                 width: 273,
-                // maxHeight: 'calc(100vh - 500px)',
               },
             })}
             {...provided.dragHandleProps}
@@ -61,14 +60,23 @@ export default function ColumnCard({ data, index }: { data: IColumn; index: numb
                 </>
               )}
               {changeColumnActive && (
-                <ColumnUpdate
-                  columnData={{ ...data, boardId: boardId as string }}
-                  onClick={() => setChangeColumnActive(false)}
-                />
+                <>
+                  <ColumnUpdate
+                    columnData={{ ...data, boardId: boardId as string }}
+                    onClick={() => setChangeColumnActive(false)}
+                  />
+                  <IconButton
+                    size="small"
+                    sx={{ color: 'grey' }}
+                    onClick={() => setChangeColumnActive(false)}
+                  >
+                    <CloseIcon sx={{ width: 22, color: 'red' }} />
+                  </IconButton>
+                </>
               )}
               <Delete
                 color="primary"
-                sx={{ m: 0.5, cursor: 'pointer' }}
+                sx={{ mr: 0.5, mb: 0.5, mt: 0.5, ml: 1, cursor: 'pointer' }}
                 onClick={() => setDeleteColumnActive(true)}
               />
             </Box>
