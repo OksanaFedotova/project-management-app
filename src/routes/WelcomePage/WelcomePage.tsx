@@ -24,13 +24,13 @@ const HomePage = () => {
             </p>
             {isAuth ? (
               <NavLink to="/boards" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Button variant="contained" size="large" sx={{ pl: 5, pr: 5, pt: 2, pb: 2, mt: 5 }}>
+                <Button variant="contained" size="large" sx={{ pl: 5, pr: 5, pt: 2, pb: 2 }}>
                   <FormattedMessage id="start_work" />
                 </Button>
               </NavLink>
             ) : (
               <NavLink to="/sign-in" style={{ color: `inherit`, textDecoration: `none` }}>
-                <Button variant="contained" size="large" sx={{ pl: 5, pr: 5, pt: 2, pb: 2, mt: 5 }}>
+                <Button variant="contained" size="large" sx={{ pl: 5, pr: 5, pt: 2, pb: 2 }}>
                   <FormattedMessage id="start_work" />
                 </Button>
               </NavLink>
