@@ -33,9 +33,6 @@ export default function BoardCard({
 
   if (isError) {
     const e = error as ErrorAuth;
-    if (e.data.statusCode === 401) {
-      navigate('/');
-    }
     toast.error(e.data.message, {
       toastId: 'Board',
     });
