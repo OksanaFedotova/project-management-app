@@ -88,8 +88,7 @@ export default function ColumnModal({
                 },
               })}
               id="outlined-required"
-              label={errors.title ? errors.title.message : theme.label}
-              defaultValue={theme.title}
+              label={errors.title ? errors.title.message : theme.title}
               error={!!errors.title}
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>

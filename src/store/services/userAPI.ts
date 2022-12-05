@@ -10,6 +10,8 @@ export const userAPI = createApi({
       const token = localStorage.getItem('token');
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
+      } else {
+        document.location.href = 'https://rsboards.netlify.app/#/welcome';
       }
       return headers;
     },

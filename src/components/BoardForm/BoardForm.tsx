@@ -99,7 +99,7 @@ export default function BoardForm({
               label={errors.title ? errors.title.message : theme.title}
               multiline
               error={!!errors.title}
-              defaultValue={title}
+              defaultValue={id ? title : ''}
               {...register('title', {
                 required: {
                   value: true,
@@ -124,11 +124,11 @@ export default function BoardForm({
               label={errors.description ? errors.description.message : theme.descripion}
               multiline
               error={!!errors.description}
-              defaultValue={description}
+              defaultValue={id ? description : ''}
               {...register('description', {
                 required: {
                   value: true,
-                  message: intl.formatMessage({ id: `${'title_required'}` }),
+                  message: intl.formatMessage({ id: `${'description_required'}` }),
                 },
                 minLength: {
                   value: 1,
