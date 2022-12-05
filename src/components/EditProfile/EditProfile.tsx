@@ -44,6 +44,7 @@ export default function EditProfile() {
   const isAuth = auth.token;
   const [nameState, setName] = useState<string>();
   const [loginState, setLogin] = useState<string>();
+  const [isDisable, setIsDisable] = useState(false);
 
   if (isError || isErr || isErrorUser) {
     let e;
@@ -81,6 +82,7 @@ export default function EditProfile() {
   } = useForm<ISignupRequest>({ mode: 'onSubmit' });
 
   const onSubmit = async (data: ISignupRequest) => {
+    setIsDisable(true);
     try {
       const userUpdate = await updateUser({ id: userId, user: data }).unwrap();
       dispatch(setUpdatedUser(userUpdate));
@@ -91,6 +93,7 @@ export default function EditProfile() {
       const err = e as ErrorAuth;
       toast.error(err.data.message);
     }
+    setIsDisable(false);
   };
 
   const deleteProfile = async (type: string) => {
@@ -274,7 +277,13 @@ export default function EditProfile() {
             })}
           />
           <Box style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-            <Button type="submit" variant="contained" color="success" sx={{ mt: 3 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="success"
+              sx={{ mt: 3 }}
+              disabled={isDisable}
+            >
               <FormattedMessage id="edit" />
             </Button>
             <Button

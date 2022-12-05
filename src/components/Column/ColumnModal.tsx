@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Box, TextField, Backdrop, CircularProgress } from '@mui/material';
 import { useCreateColumnMutation } from 'store/services/boardAPI';
@@ -28,6 +28,7 @@ export default function ColumnModal({
   } = useForm<{ title: string }>({ mode: 'onChange' });
 
   const [createColumn, { isLoading, isError, error }] = useCreateColumnMutation();
+  const [isDisable, setIsDisable] = useState(false);
 
   if (isError) {
     const e = error as ErrorAuth;
@@ -37,9 +38,11 @@ export default function ColumnModal({
   }
 
   const onSubmit = async ({ title }: { title: string }) => {
+    setIsDisable(true);
     const body = { title: title };
     await createColumn({ idBoard, body });
     onClick();
+    setIsDisable(false);
   };
 
   return (
@@ -93,7 +96,7 @@ export default function ColumnModal({
               error={!!errors.title}
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+              <Button type="submit" variant="contained" sx={{ mt: 2 }} disabled={isDisable}>
                 {theme.add}
               </Button>
               <Button variant="outlined" sx={{ mt: 2 }} onClick={onClick}>
