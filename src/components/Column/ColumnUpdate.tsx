@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useUpdateColumnMutation } from 'store/services/boardAPI';
-import { Button, IconButton, Input } from '@mui/material';
+import { IconButton, Input } from '@mui/material';
 import { Done } from '@mui/icons-material';
 import { Id, toast } from 'react-toastify';
 import { useIntl } from 'react-intl';
