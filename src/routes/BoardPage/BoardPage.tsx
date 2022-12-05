@@ -98,6 +98,7 @@ export default function BoardPage() {
 
       if (!destination) return;
       if (destination.droppableId === source.droppableId && destination.index === source.index) {
+        setIsDropping(false);
         return;
       }
 
