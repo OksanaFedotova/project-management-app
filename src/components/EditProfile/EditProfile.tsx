@@ -138,7 +138,7 @@ export default function EditProfile() {
           sx={(theme) => ({
             pt: 15,
             [theme.breakpoints.down('sm')]: {
-              pt: 20,
+              pt: 18,
             },
           })}
         >
@@ -164,20 +164,23 @@ export default function EditProfile() {
         })}
       />
       <Box
-        sx={{
+        sx={(theme) => ({
           marginTop: 0,
           paddingTop: 10,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-        }}
+          [theme.breakpoints.down('sm')]: {
+            paddingTop: 5,
+          },
+        })}
       >
         {(isLoadingUpdate || isLoadingDelete || isLoadingName) && (
           <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
             <CircularProgress color="inherit" size={60} />
           </Backdrop>
         )}
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" textAlign="center">
           <FormattedMessage id="edit_profile" />
         </Typography>
         <Box component="form" sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -270,29 +273,35 @@ export default function EditProfile() {
               },
             })}
           />
-          <Box textAlign="center">
-            <Button
-              type="submit"
-              variant="contained"
-              color="success"
-              sx={{ mt: 3, mb: 2, mr: 3, ml: 2 }}
-            >
+          <Box style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
+            <Button type="submit" variant="contained" color="success" sx={{ mt: 3 }}>
               <FormattedMessage id="edit" />
             </Button>
             <Button
               onClick={() => setIsModal(true)}
               variant="outlined"
               color="error"
-              sx={{ mt: 3, mb: 2, mr: 2 }}
+              sx={{ mt: 3 }}
             >
               <FormattedMessage id="delete_profile" />
             </Button>
           </Box>
         </Box>
-        <ArrowBackIosIcon
-          sx={{ cursor: 'pointer', mt: 1, mb: 3, '&:hover': { color: 'green' } }}
-          onClick={() => navigate('/welcome')}
-        />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            mt: 7,
+            pb: 2,
+            cursor: 'pointer',
+            '&:hover': { color: 'orange' },
+          }}
+          onClick={() => navigate(-1)}
+        >
+          <ArrowBackIosIcon />
+          <FormattedMessage id="back" />
+        </Box>
       </Box>
     </Container>
   );

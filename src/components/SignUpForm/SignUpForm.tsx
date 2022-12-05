@@ -200,10 +200,21 @@ export default function SignUpForm() {
         <RouterLink to="/sign-in" className="link">
           <FormattedMessage id="have_account" />
         </RouterLink>
-        <ArrowBackIosIcon
-          sx={{ cursor: 'pointer', mt: 3, '&:hover': { color: 'green' } }}
-          onClick={() => navigate('/welcome')}
-        />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            mt: 7,
+            pb: 2,
+            cursor: 'pointer',
+            '&:hover': { color: 'orange' },
+          }}
+          onClick={() => navigate(-1)}
+        >
+          <ArrowBackIosIcon />
+          <FormattedMessage id="back" />
+        </Box>
       </Box>
     </Container>
   );

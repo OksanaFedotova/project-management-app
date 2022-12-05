@@ -8,3 +8,9 @@
   text-align: center;
   padding: 20px 0;
 }
+
+@media (max-width: 395px) {
+  .layout {
+    min-height: calc(90vh - 5px);
+  }
+}

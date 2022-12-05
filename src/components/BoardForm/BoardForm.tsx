@@ -96,7 +96,7 @@ export default function BoardForm({
             </Typography>
             <TextField
               id="outlined-required"
-              label={errors.title ? errors.title.message : theme.label}
+              label={errors.title ? errors.title.message : theme.title}
               multiline
               error={!!errors.title}
               defaultValue={title}
@@ -121,7 +121,7 @@ export default function BoardForm({
             />
             <TextField
               id="outlined-required"
-              label={errors.description ? errors.description.message : theme.label}
+              label={errors.description ? errors.description.message : theme.descripion}
               multiline
               error={!!errors.description}
               defaultValue={description}
