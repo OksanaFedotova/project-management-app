@@ -47,7 +47,7 @@ export default function SignUpForm() {
       localStorage.setItem('token', userSignIn.token);
       localStorage.setItem('userId', userSignUp.id);
       navigate('/boards');
-      toast.success('You are authorized');
+      toast.success(intl.formatMessage({ id: `${'auth_user'}` }));
     } catch (e) {
       const err = e as ErrorAuth;
       toast.error(err.data.message);
@@ -108,7 +108,7 @@ export default function SignUpForm() {
                 message: intl.formatMessage({ id: `${'login_max_length'}` }),
               },
               pattern: {
-                value: /^[A-Za-z]+$/i,
+                value: /^[A-Za-zА-Яа-я]+$/i,
                 message: intl.formatMessage({ id: `${'name_pattern'}` }),
               },
             })}

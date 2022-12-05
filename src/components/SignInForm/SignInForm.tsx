@@ -45,7 +45,7 @@ export default function SignInForm() {
       const parsedToken = parseToken(userSignIn.token);
       localStorage.setItem('userId', parsedToken.userId);
       navigate('/boards');
-      toast.success('You are authorized');
+      toast.success(intl.formatMessage({ id: `${'auth_user'}` }));
     } catch (e) {
       const err = e as ErrorAuth;
       toast.error(err.data.message);

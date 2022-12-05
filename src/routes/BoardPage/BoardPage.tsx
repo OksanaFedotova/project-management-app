@@ -25,8 +25,8 @@ import './BoardPage.css';
 export default function BoardPage() {
   const { id } = useParams();
   const boardId = id ? id : '';
-  const { data, isLoading: isLoadingData, error } = useGetBoardByIdQuery(boardId);
-  const userId = localStorage.getItem('userId');
+  const { data, isLoading: isLoadingData } = useGetBoardByIdQuery(boardId);
+  const userId = localStorage.getItem('userId') ? localStorage.getItem('userId') : '';
 
   const [updateTask, { error: errTask }] = useUpdateTaskMutation();
   const [updateColumn, { error: errColumn }] = useUpdateColumnMutation();
@@ -71,18 +71,6 @@ export default function BoardPage() {
       data && setColumns(data.columns);
     }
   }, [checked, data, userId]);
-
-  useEffect(() => {
-    if (error) {
-      const e = error as ErrorAuth;
-      if (e.status === 400) {
-        navigator('/');
-      }
-      toast.error(e.data.message, {
-        toastId: 'Board',
-      });
-    }
-  }, [error, navigator]);
 
   const intl = useIntl();
   const ru = {
