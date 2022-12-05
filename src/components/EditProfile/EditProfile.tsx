@@ -26,9 +26,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function EditProfile() {
-  const [updateUser, { isLoading: isLoadingUpdate, isError, error }] = useUpdateUserMutation();
-  const [deleteUser, { isLoading: isLoadingDelete, isError: isErr, error: err }] =
-    useDeleteUserMutation();
+  const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
+  const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
