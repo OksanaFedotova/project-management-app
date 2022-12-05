@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { URL } from 'configs/constants';
 import { IBoard, IColumn, TColumnRequest, ITaskResponse, TTaskRequest } from 'interfaces/IBoard';
+import { IUser, TUpdateUser } from 'interfaces/IUser';
 
 export const boardAPI = createApi({
   reducerPath: 'boardApi',
@@ -16,7 +17,7 @@ export const boardAPI = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Boards', 'Columns', 'Tasks'],
+  tagTypes: ['Boards', 'Columns', 'Tasks', 'User'],
   endpoints: (builder) => ({
     getAllBoards: builder.query({
       query: () => 'boards',
@@ -24,7 +25,7 @@ export const boardAPI = createApi({
     }),
     getBoardById: builder.query<IBoard, string>({
       query: (id) => `boards/${id}`,
-      providesTags: ['Boards', 'Columns', 'Tasks'],
+      providesTags: ['Boards', 'Columns', 'Tasks', 'User'],
     }),
     createBoard: builder.mutation<IBoard, { title: string; description: string }>({
       query: (body) => ({
@@ -131,6 +132,29 @@ export const boardAPI = createApi({
       }),
       invalidatesTags: ['Tasks'],
     }),
+    getAllUsers: builder.query({
+      query: () => 'users',
+      providesTags: ['User'],
+    }),
+    getUserById: builder.query({
+      query: (id) => `users/${id}`,
+      providesTags: ['User'],
+    }),
+    updateUser: builder.mutation<IUser, TUpdateUser>({
+      query: (body) => ({
+        url: `users/${body.id}`,
+        method: 'PUT',
+        body: body.user,
+      }),
+      invalidatesTags: ['User'],
+    }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `users/${id.id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['User'],
+    }),
   }),
 });
 
@@ -151,4 +175,8 @@ export const {
   useGetTaskByIdQuery,
   useUpdateTaskMutation,
   useUploadFileMutation,
+  useGetAllUsersQuery,
+  useDeleteUserMutation,
+  useGetUserByIdQuery,
+  useUpdateUserMutation,
 } = boardAPI;

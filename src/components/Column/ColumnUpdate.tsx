@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useUpdateColumnMutation } from 'store/services/boardAPI';
-import { Button, Input } from '@mui/material';
+import { IconButton, Input } from '@mui/material';
 import { Done } from '@mui/icons-material';
 import { Id, toast } from 'react-toastify';
 import { useIntl } from 'react-intl';
@@ -77,7 +77,9 @@ export default function ColumnUpdate({
         onKeyDown={(e) => handleUpdateColumn(e)}
         onChange={(e) => setValue((e.target as HTMLInputElement).value)}
       />
-      <Button sx={{ mb: 1.5 }} startIcon={<Done />} onClick={(e) => handleUpdateColumn(e)} />
+      <IconButton sx={{ color: 'green', width: 30 }} onClick={(e) => handleUpdateColumn(e)}>
+        <Done sx={{ width: 22 }} />
+      </IconButton>
     </>
   );
 }

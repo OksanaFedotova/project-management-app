@@ -19,7 +19,7 @@ import Buttons from '../Buttons';
 import './Header.css';
 import type { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { setCurrentLocale } from 'store/reducers/LanguageSlice';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import BoardForm from 'components/BoardForm';
@@ -34,6 +34,7 @@ const theme = createTheme({
   },
 });
 const Header = ({ isSticky }: { isSticky: boolean }) => {
+  const intl = useIntl();
   const lang = useSelector((state: RootState) => state.translate.currentLocale);
   const dispatch = useAppDispatch();
   const [alignment, setAlignment] = useState(lang);
@@ -54,7 +55,7 @@ const Header = ({ isSticky }: { isSticky: boolean }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     navigator('/welcome');
-    toast.success('You are logged out!');
+    toast.success(intl.formatMessage({ id: `${'logout_user'}` }));
   };
   const [boardForm, setBoardForm] = useState(false);
 

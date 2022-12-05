@@ -11,7 +11,7 @@ import {
   useDeleteUserMutation,
   useGetUserByIdQuery,
   useUpdateUserMutation,
-} from 'store/services/userAPI';
+} from 'store/services/boardAPI';
 import {
   Container,
   Box,
@@ -32,38 +32,21 @@ export default function EditProfile() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem('userId') ? localStorage.getItem('userId') : '';
   const intl = useIntl();
-  const {
-    data,
-    isLoading: isLoadingName,
-    isError: isErrorUser,
-    error: errUser,
-  } = useGetUserByIdQuery(userId);
+  const { data: user, isLoading: isLoadingName } = useGetUserByIdQuery(userId);
   const auth = useAuth();
   const isAuth = auth.token;
   const [nameState, setName] = useState<string>();
   const [loginState, setLogin] = useState<string>();
-
-  if (isError || isErr || isErrorUser) {
-    let e;
-    if (err) {
-      e = err as ErrorAuth;
-    } else if (error) {
-      e = error as ErrorAuth;
-    } else {
-      e = errUser as ErrorAuth;
-    }
-    toast.error(e.data.message, {
-      toastId: 'Board',
-    });
-  }
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [isDisable, setIsDisable] = useState(false);
 
   const getUserName = (): Omit<IUser, 'id'> => {
-    if (data && isAuth) {
+    if (user && isAuth) {
       return {
-        name: data.name,
-        login: data.login,
+        name: user.name,
+        login: user.login,
       };
     }
     return {
@@ -77,20 +60,31 @@ export default function EditProfile() {
   const {
     register,
     handleSubmit,
+    setError,
+    clearErrors,
     formState: { errors },
-  } = useForm<ISignupRequest>({ mode: 'onSubmit' });
+  } = useForm<ISignupRequest>({ mode: 'onChange' });
 
   const onSubmit = async (data: ISignupRequest) => {
+    if (isEmpty) {
+      toast.info(intl.formatMessage({ id: `${'name_required'}` }));
+      return;
+    }
+    setIsDisable(true);
+    if (!data.name) {
+      data.name = `${user.name}`;
+    }
     try {
       const userUpdate = await updateUser({ id: userId, user: data }).unwrap();
       dispatch(setUpdatedUser(userUpdate));
-      toast.success('Your profile updated');
+      toast.success(intl.formatMessage({ id: `${'update_user'}` }));
       setName(data.name);
       setLogin(data.login);
     } catch (e) {
       const err = e as ErrorAuth;
       toast.error(err.data.message);
     }
+    setIsDisable(false);
   };
 
   const deleteProfile = async (type: string) => {
@@ -98,7 +92,7 @@ export default function EditProfile() {
       try {
         await deleteUser({ id: userId });
         dispatch(removeUser);
-        toast.success('User deleted!');
+        toast.success(intl.formatMessage({ id: `${'delete_user'}` }));
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         navigate('/welcome');
@@ -191,10 +185,15 @@ export default function EditProfile() {
             id="name"
             type="text"
             error={!!errors.name}
-            value={nameState ? nameState : name}
+            label={
+              errors.name
+                ? errors.name.message
+                : intl.formatMessage({ id: `${'name_placeholder'}` })
+            }
+            value={nameState === undefined ? name : nameState.length ? nameState : ''}
             {...register('name', {
-              required: {
-                value: true,
+              minLength: {
+                value: 1,
                 message: intl.formatMessage({ id: `${'name_required'}` }),
               },
               maxLength: {
@@ -202,11 +201,23 @@ export default function EditProfile() {
                 message: intl.formatMessage({ id: `${'login_max_length'}` }),
               },
               pattern: {
-                value: /^[A-Za-z]+$/i,
+                value: /^[A-Za-zА-Яа-я]+$/i,
                 message: intl.formatMessage({ id: `${'name_pattern'}` }),
               },
             })}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              if (e.target.value === '') {
+                setIsEmpty(true);
+                setError('name', {
+                  type: 'required',
+                  message: intl.formatMessage({ id: `${'name_required'}` }),
+                });
+              } else {
+                clearErrors('name');
+                setIsEmpty(false);
+              }
+              setName(e.target.value);
+            }}
           />
           <TextField
             margin="normal"
@@ -219,7 +230,7 @@ export default function EditProfile() {
               autoComplete: 'off',
             }}
             error={!!errors.login}
-            defaultValue={loginState ? loginState : login}
+            defaultValue={loginState ? loginState : ''}
             {...register('login', {
               required: {
                 value: true,
@@ -274,7 +285,13 @@ export default function EditProfile() {
             })}
           />
           <Box style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-            <Button type="submit" variant="contained" color="success" sx={{ mt: 3 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="success"
+              sx={{ mt: 3 }}
+              disabled={isDisable}
+            >
               <FormattedMessage id="edit" />
             </Button>
             <Button

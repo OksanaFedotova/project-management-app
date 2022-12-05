@@ -14,11 +14,10 @@
 }
 
 .start-img {
-  width: 60%;
+  width: 55%;
   border-radius: 15px;
   position: absolute;
   right: 40px;
-  bottom: 140px;
 }
 
 .start-left-block {
@@ -40,10 +39,18 @@
 }
 
 .start-text {
-  font-size: 1.9rem;
+  font-size: 1.7rem;
   line-height: 40px;
   width: 40%;
   color: #555454;
+  padding-bottom: 25px;
+}
+
+@media (max-width: 1372px) {
+  .start-text {
+    font-size: 1.4rem;
+    padding-bottom: 20px;
+  }
 }
 
 @media (max-width: 1100px) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -22,17 +22,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function SignInForm() {
-  const [signin, { isLoading, error }] = useSigninMutation();
+  const [signin, { isLoading }] = useSigninMutation();
+  const [isDisable, setIsDisable] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const intl = useIntl();
-
-  if (error) {
-    const e = error as ErrorAuth;
-    toast.error(e.data.message, {
-      toastId: 'Board',
-    });
-  }
 
   const {
     register,
@@ -42,6 +36,7 @@ export default function SignInForm() {
   } = useForm<ISignupRequest>({ mode: 'onChange' });
 
   const onSubmit = async (data: ISignupRequest) => {
+    setIsDisable(true);
     const { login, password } = data;
     try {
       const userSignIn = await signin({ login, password }).unwrap();
@@ -50,12 +45,13 @@ export default function SignInForm() {
       const parsedToken = parseToken(userSignIn.token);
       localStorage.setItem('userId', parsedToken.userId);
       navigate('/boards');
-      toast.success('You are authorized');
+      toast.success(intl.formatMessage({ id: `${'auth_user'}` }));
     } catch (e) {
       const err = e as ErrorAuth;
       toast.error(err.data.message);
     }
     reset();
+    setIsDisable(false);
   };
 
   return (
@@ -146,7 +142,13 @@ export default function SignInForm() {
               },
             })}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={isDisable}
+          >
             <FormattedMessage id="enter" />
           </Button>
         </Box>

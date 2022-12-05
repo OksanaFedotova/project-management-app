@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useIntl } from 'react-intl';
-import { useGetUserByIdQuery } from 'store/services/userAPI';
+import { useGetUserByIdQuery } from 'store/services/boardAPI';
 import { ITask } from 'interfaces/IBoard';
 import { ErrorAuth } from 'interfaces/IUser';
 import { IconButton, Typography } from '@mui/material';

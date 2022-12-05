@@ -20,33 +20,23 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function SignUpForm() {
-  const [signup, { error }] = useSignupMutation();
-  const [signin, { error: err }] = useSigninMutation();
+  const [signup] = useSignupMutation();
+  const [signin] = useSigninMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
   const intl = useIntl();
-
-  if (error || err) {
-    let e;
-    if (error) {
-      e = error as ErrorAuth;
-    } else {
-      e = err as ErrorAuth;
-    }
-    toast.error(e.data.message, {
-      toastId: 'Board',
-    });
-  }
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ISignupRequest>({ mode: 'onChange' });
+  } = useForm<ISignupRequest>({ mode: 'onSubmit' });
 
   const onSubmit = async (data: ISignupRequest) => {
+    setIsDisable(true);
     setIsLoading(true);
     const { login, password } = data;
     try {
@@ -57,13 +47,14 @@ export default function SignUpForm() {
       localStorage.setItem('token', userSignIn.token);
       localStorage.setItem('userId', userSignUp.id);
       navigate('/boards');
-      toast.success('You are authorized');
+      toast.success(intl.formatMessage({ id: `${'auth_user'}` }));
     } catch (e) {
       const err = e as ErrorAuth;
       toast.error(err.data.message);
     }
     reset();
     setIsLoading(false);
+    setIsDisable(false);
   };
 
   return (
@@ -117,7 +108,7 @@ export default function SignUpForm() {
                 message: intl.formatMessage({ id: `${'login_max_length'}` }),
               },
               pattern: {
-                value: /^[A-Za-z]+$/i,
+                value: /^[A-Za-zА-Яа-я]+$/i,
                 message: intl.formatMessage({ id: `${'name_pattern'}` }),
               },
             })}
@@ -182,7 +173,13 @@ export default function SignUpForm() {
               },
             })}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={isDisable}
+          >
             <FormattedMessage id="register" />
           </Button>
         </Box>

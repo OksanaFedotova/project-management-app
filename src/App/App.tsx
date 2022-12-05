@@ -48,7 +48,7 @@ function App() {
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-        <ToastContainer autoClose={1500} />
+        <ToastContainer autoClose={1500} position="top-center" />
       </div>
     </IntlProvider>
   );

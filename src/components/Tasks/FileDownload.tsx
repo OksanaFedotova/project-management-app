@@ -8,7 +8,6 @@ export default function FileDownload({ filename, taskId }: { filename: string; t
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   if (!token) navigate('./');
-
   const [activeLink, setActiveLink] = useState(false);
   const linkRef = useRef<HTMLAnchorElement>(null);
   const onClick = async () => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Box, TextField, Typography, Backdrop, CircularProgress } from '@mui/material';
 import { useCreateBoardMutation, useUpdateBoardMutation } from 'store/services/boardAPI';
@@ -28,6 +28,7 @@ export default function BoardForm({
   const [updateBoard, { isLoading: isLoadingUpdate, isError, error }] = useUpdateBoardMutation();
   const [createBoard, { isLoading: isLoadingUCreate, isError: isErr, error: err }] =
     useCreateBoardMutation();
+  const [isDisable, setIsDisable] = useState(false);
 
   if (isError || isErr) {
     let e;
@@ -42,6 +43,7 @@ export default function BoardForm({
   }
 
   const onSubmit = async ({ title, description }: FormInputs) => {
+    setIsDisable(true);
     try {
       if (id) {
         await updateBoard({ title, description, id });
@@ -53,6 +55,7 @@ export default function BoardForm({
       toast.error(err.data.message);
     }
     onClick();
+    setIsDisable(false);
   };
   const intl = useIntl();
   const ru = {
@@ -91,7 +94,10 @@ export default function BoardForm({
             })}
             autoComplete="off"
           >
-            <Typography align="center" sx={{ pt: 1, pb: 2, textTransform: 'uppercase' }}>
+            <Typography
+              align="center"
+              sx={{ pt: 1, pb: 2, textTransform: 'uppercase', color: 'black' }}
+            >
               <FormattedMessage id="board" />
             </Typography>
             <TextField
@@ -146,12 +152,12 @@ export default function BoardForm({
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
               {id && (
-                <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                <Button type="submit" variant="contained" sx={{ mt: 2 }} disabled={isDisable}>
                   {theme.change}
                 </Button>
               )}
               {!id && (
-                <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                <Button type="submit" variant="contained" sx={{ mt: 2 }} disabled={isDisable}>
                   {theme.add}
                 </Button>
               )}
