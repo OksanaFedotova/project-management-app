@@ -1,21 +1,35 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { FormattedMessage } from 'react-intl';
 import { useGetAllBoardsQuery, useGetBoardByIdQuery } from 'store/services/boardAPI';
 import Layout from 'components/Layout';
 import BoardCard from '../../components/BoardCard';
 import BoardForm from '../../components/BoardForm';
 import { IBoard } from 'interfaces/IBoard';
-import './BoardsPage.css';
-import { useNavigate } from 'react-router-dom';
+import { ErrorAuth } from 'interfaces/IUser';
 import { Backdrop, Box, Button, CircularProgress } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { FormattedMessage } from 'react-intl';
+import './BoardsPage.css';
 
 export default function BoardsPage() {
-  const { data, isLoading: isLoadingData } = useGetAllBoardsQuery('');
+  const { data, isLoading: isLoadingData, error } = useGetAllBoardsQuery('');
   const navigator = useNavigate();
   const [boardForm, setBoardForm] = useState({ isActive: false, id: '' });
   const [isAdd, setIsAdd] = useState(false);
-  const { data: board } = useGetBoardByIdQuery(boardForm.id, { skip: !boardForm.id });
+  const { data: board, error: err } = useGetBoardByIdQuery(boardForm.id, { skip: !boardForm.id });
+
+  if (error || err) {
+    let e;
+    if (error) {
+      e = error as ErrorAuth;
+    } else {
+      e = err as ErrorAuth;
+    }
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
 
   return (
     <Layout>

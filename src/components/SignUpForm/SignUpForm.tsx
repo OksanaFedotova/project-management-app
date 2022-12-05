@@ -20,12 +20,24 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function SignUpForm() {
-  const [signup] = useSignupMutation();
-  const [signin] = useSigninMutation();
+  const [signup, { error }] = useSignupMutation();
+  const [signin, { error: err }] = useSigninMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const intl = useIntl();
+
+  if (error || err) {
+    let e;
+    if (error) {
+      e = error as ErrorAuth;
+    } else {
+      e = err as ErrorAuth;
+    }
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
 
   const {
     register,

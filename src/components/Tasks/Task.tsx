@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import { useIntl } from 'react-intl';
 import { useGetUserByIdQuery } from 'store/services/userAPI';
 import { ITask } from 'interfaces/IBoard';
+import { ErrorAuth } from 'interfaces/IUser';
 import { IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -21,10 +23,17 @@ export default function Task({
   setAdd: (bool: boolean) => void;
   setIsModal: (bool: boolean) => void;
 }) {
-  const { data } = useGetUserByIdQuery(task.userId);
+  const { data, error } = useGetUserByIdQuery(task.userId);
   const name = data ? data.name : '';
   const intl = useIntl();
   const [addFile, setAddFile] = useState(false);
+
+  if (error) {
+    const e = error as ErrorAuth;
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
 
   return (
     <div

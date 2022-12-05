@@ -20,11 +20,19 @@ export default function ColumnUpdate({
     maxLength: intl.formatMessage({ id: `${'login_max_length'}` }),
   };
   const { boardId, id, order, title } = columnData;
-  const [updateColumn] = useUpdateColumnMutation();
+  const [updateColumn, { isError, error }] = useUpdateColumnMutation();
   const [inputValue, setValue] = useState('');
   const [isCorrect, setIsCorrect] = useState(true);
   const borderBottom = isCorrect ? 'none' : 'solid 1px red';
   const toastId = React.useRef<Id>('');
+
+  if (isError) {
+    const e = error as ErrorAuth;
+    toast.error(e.data.message, {
+      toastId: 'Board',
+    });
+  }
+
   const handleUpdateColumn = async (
     e:
       | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
